@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import PathConstants from "util/PathConstants";
 export async function middleware(request) {
   const jwt = request.cookies.get(EnvConstants.REACT_APP_TOKEN)

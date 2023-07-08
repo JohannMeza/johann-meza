@@ -106,6 +106,7 @@ export async function getStaticProps() {
     await getLastPublicaciones()
     return { props: {listCategorias, listLastCategorias} }
   } catch (error) {
-    return { error: true, message: "Error en el servidor", detail: error || "Hubo un error al listar el blog", status: 500 }
+    let propError = { error: true, message: "Error en el servidor", detail: "Hubo un error al listar el blog", status: 500 }
+    return { props: {listCategorias, listLastCategorias, error: propError} }
   }
 }

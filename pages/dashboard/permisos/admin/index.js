@@ -8,13 +8,15 @@ import Icon from "src/components/icon/Icon";
 import ButtonsFilterComponent from "src/components/form/button/ButtonsFilterComponent";
 import useLoaderContext from "src/hooks/useLoaderContext";
 import MainComponent from "src/components/layout/dashboard/main/MainComponent";
+import { useRouter } from "next/router";
 
 const dataInitial = { PERMISOS: "", ESTADO: true }
 
 export default function PermisosAdminPage() {
   const [data, handleInputChange, resetData] = useForm(dataInitial);
   const [permisos, setPermisos] = useState([]);
-  const {setLoader} = useLoaderContext();
+  const { setLoader } = useLoaderContext();
+  const { push } = useRouter()
 
   const listPermisos = () => {
     setLoader(true)
@@ -54,7 +56,7 @@ export default function PermisosAdminPage() {
       <div className='margin-base-top-card'>
         <Controls.CardComponent zIndex={1} title={"Permisos"}>
           <div className='flex gap-2'>
-            <Controls.ButtonComponent title="Nuevo" className="color-secondary" onClick={() => navigate("/dashboard/permisos/nuevo")} />
+            <Controls.ButtonComponent title="Nuevo" className="color-secondary" onClick={() => push("/dashboard/permisos/nuevo")} />
           </div>
           <div>
             <Controls.TableComponent>
@@ -74,7 +76,7 @@ export default function PermisosAdminPage() {
                     <td>{el.estado ? "Activo" : "Inactivo"}</td>
                     <td>
                       <div className='flex gap-2 justify-center'>
-                        <Controls.ButtonIconComponent title="Editar" icon={<Icon.Edit />} onClick={() => navigate(`/dashboard/permisos/${el.id_permisos}`)} />
+                        <Controls.ButtonIconComponent title="Editar" icon={<Icon.Edit />} onClick={() => push(`/dashboard/permisos/${el.id_permisos}`)} />
                       </div>
                     </td>
                   </tr>

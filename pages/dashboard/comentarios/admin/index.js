@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { SaveRequestData } from 'src/helpers/helpRequestBackend';
 import { useForm } from 'src/hooks/useForm';
+import { useRouter } from 'next/router';
 import Controls from 'src/components/Controls';
 import Icon from 'src/components/icon/Icon';
 import ButtonsFilterComponent from 'src/components/form/button/ButtonsFilterComponent';
@@ -13,7 +14,9 @@ export default function ComentariosAdminPage() {
   const [estados, setEstados] = useState([]);
   const [publicaciones, setPublicaciones] = useState([])
   const [data, handleInputChange, resetData] = useForm(dataInitial)
-  const {setLoader} = useLoaderContext();
+  const { setLoader } = useLoaderContext();
+  const { push } = useRouter()
+
   const getPublicaciones = () => {
     setLoader(true)
     SaveRequestData({
@@ -70,7 +73,7 @@ export default function ComentariosAdminPage() {
             <Controls.ButtonComponent
               title="Nuevo"
               className="color-secondary"
-              onClick={() => navigate(PathConstants.publicaciones_nuevo)}
+              onClick={() => push(PathConstants.publicaciones_nuevo)}
             />
           </div>
           <div>
@@ -103,7 +106,7 @@ export default function ComentariosAdminPage() {
                           title="Editar"
                           icon={<Icon.Edit />}
                           onClick={() =>
-                            navigate(`${PathConstants.publicaciones_detail}${el.id_publicaciones}`)
+                            push(`${PathConstants.publicaciones_detail}${el.id_publicaciones}`)
                           }
                         />
                       </div>

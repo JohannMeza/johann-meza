@@ -1,6 +1,6 @@
 import { SERVICES_POST, UPLOAD_POST } from "../services/services.axios";
 import { AlertUtilMessage } from "../utils/AlertUtil";
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import { UploadFile } from "../utils/UploadFile";
 
 /**

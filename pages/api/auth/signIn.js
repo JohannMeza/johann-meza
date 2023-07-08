@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
 import { REQUEST_DATABASE } from "server/helpers/request.js"
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import { serialize } from "cookie";
 import MessageUtil from "server/util/MessageUtil"
 import jwt from "jsonwebtoken"

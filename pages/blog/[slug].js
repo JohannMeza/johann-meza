@@ -141,7 +141,7 @@ export async function getStaticPaths() {
       success: (resp) => {
         let categorias = resp.dataList || [];
         let publicaciones = categorias.map(el => (Object.values(el.publicaciones || []))).reduce((a, b) => a.concat(b))
-        paths = publicaciones.map(({slug}) => ({params: {slug}}))
+        paths = publicaciones.map(({slug}) => ({params: {key: slug}}))
       },
       error: (err) => {
         const { message, status } = err;
@@ -154,7 +154,7 @@ export async function getStaticPaths() {
     await getPublicaciones()
     return { paths, fallback: false }
   } catch (error) {
-    return { error: true, message: "Error en el servidor", detail: error || "Hubo un error al listar el blog", status: 500 }
+    return { paths: [], fallback: false }
   }
 }
 

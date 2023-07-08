@@ -1,7 +1,7 @@
 import fs from "fs";
 import MessageUtil from "server/util/MessageUtil"
 import formidable from "formidable";
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import { jwtVerify } from "jose";
 
 const CodificarBase64 = (file) => {

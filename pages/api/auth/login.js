@@ -1,5 +1,5 @@
 import { serialize } from "cookie";
-import EnvConstants from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import jwt from "jsonwebtoken";
 
 const AuthLoginController = async (req, res) => {

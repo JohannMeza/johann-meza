@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { SendRequestData, SignInRequestData } from '../helpers/helpRequestBackend';
 import { useRouter } from 'next/router';
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import useLoaderContext from '../hooks/useLoaderContext';
 import PathConstants from 'util/PathConstants';
 
