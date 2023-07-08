@@ -1,13 +1,11 @@
-import React from "react";
 import { useEffect } from "react";
 import { useAlert } from "react-alert";
-import { useNavigate, useParams } from "react-router-dom";
-import Controls from "../../../../components/Controls";
-import ButtonsSaveComponent from "../../../../components/layout/form/ButtonsSaveComponent";
 import { SaveRequestData } from "../../../../helpers/helpRequestBackend";
 import { useFormValidation } from "../../../../hooks/useFormValidation";
-import useLoaderContext from "../../../../hooks/useLoaderContext";
 import { ListConstants } from "../../../../util/ListConstants";
+import Controls from "../../../../components/Controls";
+import ButtonsSaveComponent from "../../../../components/layout/form/ButtonsSaveComponent";
+import useLoaderContext from "../../../../hooks/useLoaderContext";
 const dataInitial = { PERMISOS: "", ESTADO: true }
 
 export default function PermisosDetailPage() {
