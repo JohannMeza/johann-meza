@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
-      {/* <TooltipProvider>
+      <TooltipProvider>
         <LoaderContextProvider>
           <AlertProvider template={AlertTemplate} {...AlertStyle}>
             <AuthContextProvider>
@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
             </AuthContextProvider>
           </AlertProvider>
         </LoaderContextProvider>
-      </TooltipProvider> */}
+      </TooltipProvider>
     </>
   );
 }
