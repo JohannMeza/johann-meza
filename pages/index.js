@@ -1,413 +1,178 @@
 import { useFormValidation } from "src/hooks/useFormValidation";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { classNames } from "src/utils/ClassNames";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
+import frontStyles from "src/styles/Frontpage.module.css";
 import Controls from "src/components/Controls";
-import Icon from "src/components/icon/Icon.js";
+import IconAwesome from 'src/components/icon/IconAwesome'
 import Image from "next/image";
-
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Blog", href: "/blog", current: false },
-  { name: "Sobre mí", href: "/about", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+import Link from "next/link";
 
 export default function Home() {
-  const {data,  handleInputFormChange, errors} = useFormValidation();
-  const [isTop, setIsTop] = useState(true);
-  const {push} = useRouter()
+  const [technology, setTechnology] = useState('BackEnd')
+  const handleChangeTech = (tech) => setTechnology(tech)
+  
   return (
     <BodyComponent>
-      <div className="w-full bg-banner bg-cover bg-no-repeat">
-        <div className="flex items-center justify-start min-h-screen bg-fixed box-base">
-          <div className="flex items-start flex-col w-1/2">
-            <h1 className="title-banner font-Poppins text-yellow-500">
-              Hola!!!
-            </h1>
-            <hr className="w-full border-yellow-500 border-y-2 mt-4 mb-6" />
-            <p className="text-white text-paragraph-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-              voluptatem unde nemo ea consectetur sapiente facilis iusto
-              deleniti quam nostrum beatae, repellendus a assumenda magnam
-              quibusdam aliquid accusamus possimus totam?
-            </p>
-            <button className="button-base color-secondary mt-4">
-              CONTACTAME
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="min-w-screen my-24 bg-gray-200 flex items-center justify-center box-base">
-        <div className="w-full max-w-3xl">
-          <div className="-mx-2 md:flex">
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      10 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      PROYECTOS COMPLETADOS
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      7 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      CLIENTES SATISFECHOS
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      3 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      AÑOS DE EXPERIENCIA
-                    </p>
-                  </div>
-                </div>
-              </div>
+      <div className={frontStyles.mainContent}>
+        <div className="w-full bg-banner-opacity bg-cover bg-no-repeat border-[2px] border-white" style={{backgroundAttachment: "fixed"}}>
+          <div className="flex items-center justify-center min-h-screen bg-fixed box-base">
+            <div className="flex items-center flex-col gap-5 lg:w-1/2">
+              <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/me.png" width={130} height={60} />
+              <h1 className="text-title-2 font-Poppins font-semibold text-white">Hola, soy Johann</h1>
+              <p className="text-paragraph-1 font-Poppins text-white text-center">Soy un desarrollador Fullstack entusiasta por la creación de soluciones web innovadoras y funcionales. ¡Creando soluciones web que marcan la diferencia!</p>
+              <span className="flex gap-5 text-button-1">
+                <Link href="https://www.linkedin.com/in/johann-meza-salazar-33b5701b6/" passHref target="_blank">
+                  <Controls.ButtonIconComponent icon={IconAwesome.LINKEDIN} />
+                </Link>
+              </span>
             </div>
           </div>
         </div>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
-            </div>
 
-            <br />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-center">
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center  justify-between  rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance 1
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div className="box-base flex justify-center">
-        <div
-          className="flex items-stretch relative bg-banner-tech bg-no-repeat p-12"
-          style={{ width: "85%", height: "450px", backgroundSize: "contain" }}
-        >
-          <div className="flex justify-center flex-col items-start w-1/2">
-            <h2 className="title-banner text-white font-Poppins text-[60px]">
-              Node JS
-            </h2>
-            <p className="text-white font-OpenSans text-paragraph-2 font-normal mt-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-              quae porro commodi suscipit!
-            </p>
-          </div>
-          <div className="flex justify-center items-center w-1/2">
-            <div
-              className="absolute right-0 rounded-full border-[25px] border-[transparent]"
-              style={{ boxShadow: "0 0 0px 1.5px white" }}
-            >
-              <div
-                className="flex justify-center items-center bg-[#8AC400] w-[350px] h-[350px]"
-                style={{
-                  clipPath:
-                    "polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)",
-                }}
-              >
-                <Image
-                  src="/assets/imagenes/logo.png"
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
-            </div>
-
-            <br />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-center gap-8 h-[450px]">
-              <div className="hover:shadow-xl hover:text-secondary hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase font-Poppins font-semibold text-start text-text"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
+        <div className="min-w-screen flex items-center justify-start bg-gradient-blue-400 border-[2px] border-white relative overflow-hidden">
+          <Image src="/assets/svg/background-icon.svg" width={500} height={500} property alt="Icono" className="absolute -right-[5%] -bottom-[40%]" />
+          <div className="w-full flex items-center lg:px-12 relative z-10">
+            <div className="md:flex flex-wrap flex-grow justify-center shrink-0">
+              <div className="md:w-1/2 p-6">
+                <div className="rounded-lg shadow-sm border-2 border-white hover:border-secondary hover:text-secondary">
+                  <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                    <div className="px-3 pt-8 pb-10 text-center relative z-10">
+                      <span className="font-Poppins text-inherit font-semibold text-title-1 my-3">
+                        10 +
+                      </span>
+                      <p className="font-Poppins text-inherit font-semibold text-span-1">
+                        PROYECTOS COMPLETADOS
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col hover:text-secondary rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase font-Poppins font-semibold text-start text-text"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
+              <div className="md:w-1/2 p-6">
+                <div className="rounded-lg shadow-sm border-2 border-white hover:border-secondary hover:text-secondary">
+                  <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                    <div className="px-3 pt-8 pb-10 text-center relative z-10">
+                      <span className="font-Poppins text-inherit font-semibold text-title-1 my-3">
+                        7 +
+                      </span>
+                      <p className="font-Poppins text-inherit font-semibold text-span-1">
+                        CLIENTES SATISFECHOS
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col hover:text-secondary rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase text-text font-Poppins font-semibold text-start"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
+              <div className="md:w-1/2 p-6">
+                <div className="rounded-lg shadow-sm border-2 border-white hover:border-secondary hover:text-secondary">
+                  <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                    <div className="px-3 pt-8 pb-10 text-center relative z-10">
+                      <span className="font-Poppins text-inherit font-semibold text-title-1 my-3">
+                        3 +
+                      </span>
+                      <p className="font-Poppins text-inherit font-semibold text-span-1">
+                        AÑOS DE EXPERIENCIA
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
+            <div className="w-full h-full hide lg:flex lg:justify-center ">
+              <Image width="1000" height="1000" alt="Projects" src="/assets/imagenes/projects.png" className="w-3/4 min-w-[450px] max-w-[750px]" />
             </div>
+          </div>
+        </div>
 
-            <br />
-
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex flex-col gap-3 w-2/4">
-                <Controls.InputComponent
-                  label="Nombre"
-                  value={data.NOMBRE}
-                  placeholder="Ingresa tu nombre"
-                  onChange={handleInputFormChange}
-                  name="NOMBRE"
-                  error={errors.NOMBRE}
-                />
-                <Controls.InputComponent
-                  label="Email"
-                  name="EMAIL"
-                  value={data.EMAIL}
-                  onChange={handleInputFormChange}
-                  placeholder="Ingresa tu correo tu electrónico"
-                  error={errors.EMAIL}
-                />
-                <Controls.InputComponent
-                  label="Mensaje"
-                  name="MENSAJE"
-                  value={data.MENSAJE}
-                  onChange={handleInputFormChange}
-                  placeholder="Ingresa tu mensaje"
-                  error={errors.MENSAJE}
-                  textarea
-                />
-                <Controls.ButtonComponent title="ENVIAR" className="w-full" />
+        <div className="min-w-screen flex items-center justify-start bg-primary border-[2px] border-white relative overflow-hidden">
+          <Image src="/assets/svg/background-icon.svg" width={500} height={500} property alt="Icono" className="absolute -right-[5%] -bottom-[40%]" />
+          <div className="flex gap-5 items-center w-full h-2/3 px-12 relative z-10 flex-col lg:flex-row">
+            <section className="flex flex-col gap-8 lg:gap-3 text-center lg:text-start">
+              <h2 className="text-title-2 font-Poppins font-semibold text-white">Tecnologias en las que he trabajado</h2>
+              <div className="flex flex-wrap gap-3 items-end justify-center lg:justify-start">
+                <span className={classNames(technology === "BackEnd" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('BackEnd')}>BackEnd</span>
+                <span className={classNames(technology === "FrontEnd" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('FrontEnd')}>FrontEnd</span>
+                <span className={classNames(technology === "Servidores" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('Servidores')}>Servidores</span>
+                <span className={classNames(technology === "Base de Datos" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('Base de Datos')}>Base de Datos</span>
+                <span className={classNames(technology === "Diseño Gráfico" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('Diseño Gráfico')}>Diseño Gráfico</span>
+                <span className={classNames(technology === "Otros" && "text-title-3 font-bold", "text-paragraph-3 font-Poppins text-white")} onClick={() => handleChangeTech('Otros')}>Otros</span>
               </div>
+
+              {/* BACKEND */}
+              {
+                technology === "BackEnd" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/nodejs.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/laravel.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/php.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/net.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/typescript.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+
+              {/* FRONTEND */}
+              {
+                technology === "FrontEnd" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/html5.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/css.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/javascript.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/mui.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/tailwind.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+              
+              {/* SERVIDORES */}
+              {
+                technology === "Servidores" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/xampp.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+              
+              {/* BASE DE DATOS */}
+              {
+                technology === "Base de Datos" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/sql.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/mysql.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+
+              {/* DISEÑO GRAFICO */}
+              {
+                technology === "Diseño Gráfico" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/figma.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/adobe-photoshop.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/adobe-illustrator.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/adobe-xd.png' width={100} height={100} alt="tech" property />
+                  <Image src='/assets/tech/corel-draw.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+
+              {/* OTROS */}
+              {
+                technology === "Otros" &&
+                <div className={frontStyles.techContentImg}>
+                  <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="tech" property />
+                </div>
+              }
+            </section>
+            <div className="w-full h-full hide lg:flex lg:justify-end">
+              <Image width="1000" height="1000" alt="Projects" src="/assets/imagenes/tech.png" className="w-5/6" />
             </div>
           </div>
-        </section>
+        </div>
+
+        <div className="border-[2px] border-white"><FooterComponent fullScreen={true} /></div>
       </div>
-      <FooterComponent />
     </BodyComponent>
   );
 }

@@ -12,7 +12,8 @@ const IconAwesome = {
   CANCEL: <i className="fa-solid fa-ban"></i>,
   GENERATE: <i className="fa-regular fa-folder-open"></i>,
   REVIEW: <i className="fa-solid fa-magnifying-glass"></i>,
-  APPROVATE: <i className="fa-regular fa-thumbs-up"></i>
+  APPROVATE: <i className="fa-regular fa-thumbs-up"></i>,
+  LINKEDIN: <i class="fa-brands fa-linkedin"></i>
 }
 
 export default IconAwesome

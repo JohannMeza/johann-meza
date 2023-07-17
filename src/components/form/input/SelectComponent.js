@@ -53,7 +53,7 @@ export default function SelectComponent({
                 : "input-select-base"
             )}>
               <Combobox.Input className="w-full border-none pr-10 h-full" autoComplete="off" displayValue={({value, label}) => value ? label : ""} placeholder={list[0]?.label || "Seleccione"} onChange={(e) => handleInputChange(e)} name="search" />
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2 top-0 bottom-0">
                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
               </Combobox.Button>
             </div>
@@ -96,7 +96,7 @@ export default function SelectComponent({
                             {person.label}
                           </span>
                           {selected ? (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-secondary">
+                            <span className="absolute inset-y-0 left-0 top-0 bottom-0 flex items-center pl-3 text-secondary">
                               <CheckIcon
                                 className="h-5 w-5"
                                 aria-hidden="true"
@@ -177,7 +177,7 @@ export default function SelectComponent({
                           </span>
                           
                           {selected ? (
-                            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-secondary">
+                            <span className="absolute inset-y-0 left-0 flex top-0 bottom-0 items-center pl-3 text-secondary">
                               <CheckIcon
                                 className="h-5 w-5"
                                 aria-hidden="true"

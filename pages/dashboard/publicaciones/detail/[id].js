@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/monokai-sublime.css'
+import { useState, useEffect, useRef } from 'react';
 import { useQuill } from 'react-quilljs';
 import { useFormValidation } from 'src/hooks/useFormValidation';
-import { FileRequestData, SaveRequestData } from 'src/helpers/helpRequestBackend';
+import { FileRequestData, SaveRequestData, FormRequestData } from 'src/helpers/helpRequestBackend';
 import { useAlert } from 'react-alert';
 import { useRouter } from 'next/router';
 import { useListEstados } from 'src/hooks/useListEstados';
 import { EnvConstants } from 'util/EnvConstants';
+import { Editor } from '@monaco-editor/react';
+import { Toolbar, formats } from 'src/config/Toolbar';
+import Icon from "src/components/icon/Icon";
 import PathConstants from 'util/PathConstants';
-import Toolbar from 'src/config/Toolbar';
 import Controls from 'src/components/Controls';
 import useLoaderContext from 'src/hooks/useLoaderContext';
 import ButtonsSaveComponent from 'src/components/form/button/ButtonsSaveComponent';
@@ -54,45 +58,68 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
         ? "El campo Descripcion corta no debe exceder a 250 caracteres"
         : !fieldValues.DESCRIPCION_CORTA ? "El campo Descripcion corta es requerido" : "";;
     } 
-    
     setErrors({...temp});
     if (fieldValues === data) {
       return Object.values(temp).every((x) => x === '');
     }
   }
-
+  const [mode, setMode] = useState('text');
   const { data, handleInputFormChange, errors, setErrors, setData } = useFormValidation(dataInitial, true, validate)
-  const { quill, quillRef } = useQuill({modules: {toolbar: Toolbar}});
+  const { quill, quillRef } = useQuill({modules: {syntax: {
+    highlight: text => {
+      hljs.configure({languages: ['javascript', 'html', 'css']})
+      return hljs.highlightAuto(text).value
+    }
+  }, toolbar: Toolbar}, formats});
   const { setLoader } = useLoaderContext();
   const { push, query } = useRouter();
   const {user} = useAuthContext()
   const alert = useAlert();
   const estados = useListEstados('1,2,3')
-
-  const [categorias, setCategorias] = useState(arrCategorias)
-  const [etiquetas, setEtiquetas] = useState(arrEtiquetas)
+  const editorRef = useRef(null);
+  const [categorias] = useState(arrCategorias)
+  const [contentQuill, setContentQuill] = useState("");
+  const [etiquetas] = useState(arrEtiquetas)
   const [files, setFiles] = useFileUpload(true, (files) => {
     if (files.length === 0 && errors === true) setErrors(errors => { return { ...errors, PORTADA: `El campo Portada es requerido` } })
     else setErrors((errors) => delete errors.PORTADA)
   })
 
+  const handleToggleMode = () => {
+    setMode(() => {
+      if (mode === 'text') {
+        setContentQuill(quill.root.innerHTML)
+        return 'html'
+      } else {
+        quill.clipboard.dangerouslyPasteHTML(contentQuill)  
+        return 'text'
+      }
+    });
+  };
+
   const savePublicacion = () => {
     if (validate()) {
       let arrCategorias = [...data.ID_CATEGORIAS.split(',').map(el => { return { id_categorias: el } })]
       let arrEtiquetas = [...data.ID_ETIQUETAS.split(',').map(el => { return { id_etiquetas: el } })]
+      let publicacion = mode === 'text' ? quill.root.innerHTML : contentQuill
+
       if (arrCategorias[0].id_categorias === '') arrCategorias.splice(0, 1);
       if (arrEtiquetas[0].id_etiquetas === '') arrEtiquetas.splice(0, 1);
+
       setLoader(true);
-      
       if (data.PORTADA || files.length === 0) {
-        SaveRequestData({
+        FormRequestData({
           queryId: 29,
           body: {
             ...data,
-            id_publicaciones: query.id || 0,
+            ID_PUBLICACIONES: parseInt(query.id) || 0,
             ID_CATEGORIAS: JSON.stringify(arrCategorias),
             ID_ETIQUETAS: JSON.stringify(arrEtiquetas),
-            PUBLICACION: JSON.stringify(quill.getContents()),
+            PUBLICACION: JSON.stringify(publicacion),
+            // PUBLICACION: JSON.stringify(publicacion, (key, value) => {
+            //   if (typeof value === 'string') return value.replace(/'/g, '"');
+            //   return value;
+            // }),
             SLUG: data.SLUG.trim().toLowerCase(),
             ID_USER: user.ID_USUARIOS
           },
@@ -113,10 +140,10 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
           path: EnvConstants.REACT_APP_URL_UPLOAD_CLOUD,
           body: {
             ...data,
-            id_publicaciones: query.id || 0,
+            ID_PUBLICACIONES: parseInt(query.id) || 0,
             ID_CATEGORIAS: JSON.stringify(arrCategorias),
             ID_ETIQUETAS: JSON.stringify(arrEtiquetas),
-            PUBLICACION: JSON.stringify(quill.getContents()),
+            PUBLICACION: JSON.stringify(publicacion),
             SLUG: data.SLUG.trim().toLowerCase(),
             PORTADA: files[0].file,
             ID_USER: user.ID_USUARIOS
@@ -152,14 +179,29 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
       if (!errors.slug) {
         let objError = errors;
         delete objError.SLUG
-        setErrors({ ...objError })
+        setErrors((errors) => ({ ...errors, ...objError }))
       }
 
-      setData((data) => ({ ...data, ["SLUG"]: slug }))
+      validate({[name]: value, SLUG: slug })
+      setData((data) => ({ ...data, SLUG: slug, TITULO: value }))
     } 
   }
 
-  useEffect(() => { quill && quill.setContents(quillContent) }, [quill, quillContent])
+  const handleMount = (editor) => {
+    editorRef.current = editor
+                
+    setTimeout(() => {
+      const action = editor.getAction('editor.action.formatDocument');
+      action && action.run();
+    }, 100)  
+  }
+
+  useEffect(() => { 
+    if (quill) {
+      setContentQuill(quillContent);
+      quill.clipboard.dangerouslyPasteHTML(quillContent);
+    }
+  }, [quill, quillContent])
 
   return (
     <MainComponent>
@@ -172,10 +214,7 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
                 label="Titulo"
                 value={data}
                 name="TITULO"
-                onChange={(e) => {
-                  handleInputFormChange(e)
-                  handleChangeTitulo(e)
-                }}
+                onChange={handleChangeTitulo}
                 error={errors}
               />
               <Controls.SearchComponent
@@ -239,14 +278,35 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
 
       <div className="margin-base-top-card">
         <Controls.CardComponent zIndex={11} title="Contenido">
-          <div className="flex gap-2"></div>
-          <div>
-            <div ref={quillRef}></div>
+          <div className="flex gap-2">
+            <Controls.ButtonComponent 
+              icon={mode === 'text' ? <Icon.Code /> : <Icon.Document />} 
+              onClick={handleToggleMode} 
+              className="color-secondary"
+              title={mode === 'text' ? 'Ver HTML' : 'Ver Editor'}
+            />
           </div>
+          <>
+            <div className={mode === 'text' ? "show" : "hide"}>
+              <div ref={quillRef}></div> 
+            </div>
+
+            {mode !== 'text' && <Editor 
+              className={mode === 'text' ? "hide" : "show"}
+              height={mode === 'text' ? "0vh" : "80vh"} 
+              defaultLanguage='html' 
+              onMount={(editor) => handleMount(editor)}
+              value={contentQuill} 
+              onChange={(valor) => {
+                setContentQuill(valor)
+              }} 
+            />}
+          </>
         </Controls.CardComponent>
       </div>
-
-      <ButtonsSaveComponent handleBack={() => push(PathConstants.publicaciones_admin)} handleAction={savePublicacion} />
+      <div className='relative z-50'>
+        <ButtonsSaveComponent handleBack={() => push(PathConstants.publicaciones_admin)} handleAction={savePublicacion} />
+      </div>
     </MainComponent>
   )
 }
@@ -303,10 +363,16 @@ export async function getServerSideProps({ req, params }) {
   }
 
   try {
-    await searchPublicacion()
-    await listEtiquetas()
-    await listCategorias()
-    return { props: { quillContent, dataInitial, arrCategorias, arrEtiquetas } }
+    if (isNaN(id)) {
+      await listEtiquetas()
+      await listCategorias()
+      return { props: { quillContent, dataInitial, arrCategorias, arrEtiquetas } }
+    } else {
+      await searchPublicacion()
+      await listEtiquetas()
+      await listCategorias()
+      return { props: { quillContent, dataInitial, arrCategorias, arrEtiquetas } }
+    }
   } catch (error) {
     console.log(error)
   }

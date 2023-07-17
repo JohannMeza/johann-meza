@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useFormValidation } from "src/hooks/useFormValidation";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
 import { classNames } from "src/utils/ClassNames";
+import useAuthContext from "src/hooks/useAuthContext";
 import Controls from "src/components/Controls";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,25 +12,22 @@ import Link from "next/link";
 const navigation = [
   { name: "Home", href: "/", current: true },
   { name: "Blog", href: "/blog", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
 ];
 
 export default function HeaderComponent() {
-  const {data,  handleInputFormChange, errors} = useFormValidation();
   const [isTop, setIsTop] = useState(true);
   const {push} = useRouter()
-
+  const {user} = useAuthContext();
   useEffect(() => {
     const handleScroll = () => {
-      // if (window.scrollY === 0) setIsTop(true);
-      // else setIsTop(false);
+      if (window.scrollY === 0) setIsTop(true);
+      else setIsTop(false);
     };
 
-    // window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      // window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   });
 
@@ -63,22 +60,22 @@ export default function HeaderComponent() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-1 h-3/4 items-center justify-center sm:items-stretch sm:justify-between">
-                  <div className="flex flex-shrink-0 items-center">
+                <div className="flex flex-1 h-3/4 items-center justify-end sm:items-stretch sm:justify-between">
+                  <div className="h-full">
                     {isTop ? (
                       <>
                         <Image
                           className="block h-full w-auto lg:hidden"
                           width={100}
                           height={100}
-                          src="/assets/imagenes/logo.png"
+                          src="/assets/logotipo/logo-white.svg"
                           alt="Your Company"
                         />
                         <Image
                           className="hidden h-full w-auto lg:block"
                           width={100}
                           height={100}
-                          src="/assets/imagenes/logo.png"
+                          src="/assets/logotipo/logo-white.svg"
                           alt="Your Company"
                         />
                       </>
@@ -88,14 +85,14 @@ export default function HeaderComponent() {
                           className="block h-full w-auto lg:hidden"
                           width={100}
                           height={100}
-                          src="/assets/imagenes/logo.png"
+                          src="/assets/logotipo/logo.svg"
                           alt="Your Company"
                         />
                         <Image
                           className="hidden h-full w-auto lg:block"
                           width={100}
                           height={100}
-                          src="/assets/imagenes/logo.png"
+                          src="/assets/logotipo/logo.svg"
                           alt="Your Company"
                         />
                       </>
@@ -116,15 +113,28 @@ export default function HeaderComponent() {
                           {item.name}
                         </Link>
                       ))}
+                      {
+                        Object.entries(user) > 0 ?
+                        <>
+                          <Image 
+                            property
+                            width={50}
+                            height={50}
+                            src={user.IMAGEN}
+                            alt="Avatar"
+                            onClick={() => push("/dashboard/home/admin")}
+                            className="rounded-full w-10 h-10 cursor-pointer"
+                          />
+                        </>
+                        : 
+                        <Controls.ButtonComponent
+                          className="color-rose"
+                          onClick={() => push("/auth/login")}
+                          title="Iniciar Sesion"
+                        />
+                      }
                     </div>
                   </div>
-                </div>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <Controls.ButtonComponent
-                    className="color-rose"
-                    onClick={() => push("/auth/login")}
-                    title="Iniciar Sesion"
-                  />
                 </div>
               </div>
             </div>
@@ -147,6 +157,11 @@ export default function HeaderComponent() {
                     {item.name}
                   </Disclosure.Button>
                 ))}
+                  <Controls.ButtonComponent
+                    className="color-rose"
+                    onClick={() => push("/auth/login")}
+                    title="Iniciar Sesion"
+                  />
               </div>
             </Disclosure.Panel>
           </>

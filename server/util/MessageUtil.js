@@ -1,7 +1,7 @@
 /* eslint-disable no-throw-literal */
 const throwExcepction = (config) => {
   let { error, message, status } = config;
-  throw({ error, message, status, ...config })
+  return { error, message, status, ...config }
 }
 
 const throwExcepctionServer = (detail = null) => { return { message: "Error en el servidor", status: 500, error: true, detail } }

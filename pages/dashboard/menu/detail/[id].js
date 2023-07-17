@@ -121,7 +121,7 @@ export async function getServerSideProps({ req, params }) {
     })
   }
 
-  const listarMenusPadres = async () => {
+  const listarMenusPadres = async (id) => {
     await SaveRequestData({
       queryId: 5,
       body: { ID_MENU: id }, 
@@ -135,9 +135,14 @@ export async function getServerSideProps({ req, params }) {
   }
   
   try {
-    await listarMenusPadres()
-    await searchMenu()
-    return { props: { dataInitial, listMenuPadre } }
+    if (isNaN(id)) {
+      await listarMenusPadres(0)
+      return { props: { dataInitial, listMenuPadre } }
+    } else {
+      await listarMenusPadres(id)
+      await searchMenu()
+      return { props: { dataInitial, listMenuPadre } }
+    }
   } catch (error) {
     console.log(error)
   }

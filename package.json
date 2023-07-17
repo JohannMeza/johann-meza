@@ -11,6 +11,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",
+    "@monaco-editor/react": "^4.5.1",
+    "@zeit/next-css": "^1.0.1",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.37.3",
@@ -20,6 +22,7 @@
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.11",
     "formidable": "^3.5.0",
+    "highlight.js": "^11.8.0",
     "jose": "^4.14.4",
     "jsonwebtoken": "^9.0.0",
     "mime": "^3.0.0",

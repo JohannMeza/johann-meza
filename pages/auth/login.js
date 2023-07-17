@@ -56,13 +56,13 @@ export default function SignInPage() {
     <div className="flex min-h-screen items-center px-6 justify-center bg-banner" style={{ backgroundPosition: "center", backgroundSize: "cover", backgroundRepeat: "no-repeat" }}>
       <form autoComplete="off" onSubmit={auth} className="flex flex-col gap-4 w-full max-w-md h-full bg-[#ffffffc7] px-4 py-8 rounded-lg">
         <div>
-          <div className="w-[10rem] m-auto object-contain">
+          <div className="flex justify-center m-auto object-contain">
             <Image 
               priority
               className="w-auto" 
               width={100} 
               height={100} 
-              src="/assets/imagenes/logo.png"
+              src="/assets/logotipo/logo.svg"
               alt="Your Company" />
           </div>
 

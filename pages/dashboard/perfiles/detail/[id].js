@@ -91,8 +91,12 @@ export async function getServerSideProps({ req, params }) {
   }
 
   try {
-    await getPerfil()
-    return { props: { dataInitial } }
+    if (isNaN(id)) {
+      return { props: { dataInitial } }
+    } else {
+      await getPerfil()
+      return { props: { dataInitial } }
+    }
   } catch (error) {
     console.log(error)
   }

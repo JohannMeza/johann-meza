@@ -4,12 +4,16 @@ import formidable from "formidable";
 import { EnvConstants } from "util/EnvConstants";
 import { jwtVerify } from "jose";
 
-const CodificarBase64 = (file) => {
-  const bitmap = fs.readFileSync(file);
-  return new Buffer(bitmap).toString('base64');
+export const CodificarBase64 = (file) => {
+  try {
+    const bitmap = fs.readFileSync(file);
+    return new Buffer(bitmap).toString('base64');
+  } catch (error) {
+    return ""
+  }
 }
 
-const ValidarAuth = async (request) => {
+export const ValidarAuth = async (request) => {
   try {
     const jwt = request.cookies[EnvConstants.REACT_APP_TOKEN] || request.headers.cookies
     if (jwt === undefined) throw(MessageUtil.throwExcepctionServer('Token de usuario no valido'))
@@ -21,17 +25,13 @@ const ValidarAuth = async (request) => {
   }
 }
 
-const BodyParser = (req) => {
-  const form = formidable();
+export const BodyParser = (req) => {
+  const form = formidable({});
 
   return new Promise((resolve, reject) => {
-    return form.parse(req, (err, fields, files) => {
-      if (err) {
-        return reject(err);
-      }
-      return resolve({ fields, files });
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err);
+      resolve({ fields, files });
     });
   });
 };
-
-export { CodificarBase64, ValidarAuth, BodyParser }

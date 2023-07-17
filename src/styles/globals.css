@@ -5,7 +5,6 @@ input, textarea { border: none; display: inline-block; box-sizing: border-box; o
 .box-base { @apply mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 };
 .icon-principal { @apply w-6 };
 
-
 /* style base - no modificar  */
 body { @apply font-Roboto }
 .title-h1-base { @apply font-Roboto font-bold text-title-1 }
@@ -74,6 +73,9 @@ body { @apply font-Roboto }
 .pagination-base li:active { @apply scale-110 }
 .pagination-base li.selected { @apply bg-primary text-white }
 .pagination-base a { @apply flex justify-center items-center w-full h-full whitespace-nowrap }
+
+.scroll-base { background: red }
+.scroll-base-transparent::-webkit-scrollbar { display: none }
 
 .ReactModal__Overlay { @apply z-[1000000] !bg-[#00000083] }
 /* style base - no modificar  */

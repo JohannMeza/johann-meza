@@ -1,4 +1,54 @@
-/* BLOG */
+/* Body Main Component */
+.mainContent {
+  max-height: 100vh;
+  min-height: 100vh;
+  overflow: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.mainContent::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.mainContent::-webkit-scrollbar-button {
+  width: 0;
+}
+
+.mainContent::-webkit-scrollbar-thumb {
+  width: 0;
+}
+
+.mainContent > * {
+  max-height: 100vh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Page Index */
+.indexImage {
+  width: 80%;
+}
+
+.techContentImg {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media screen and (min-width: 1080px) {
+  .techContentImg { justify-content: start; }
+}
+
+.techContentImg img {
+  width: auto;
+  height: 45px;
+}
+
+/* Page Blog */
 .blogBanner {
   min-height: 50vh;
   position: relative;
@@ -34,3 +84,4 @@
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 25px;
 }
+

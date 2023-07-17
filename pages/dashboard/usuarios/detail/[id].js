@@ -155,11 +155,11 @@ export async function getServerSideProps({ req, params }) {
   }
   
   try {
-    if (parseInt(id)) {
-      await listPerfiles()
-      await searchUsuario()
+    if (isNaN(id)) {
       return { props: { dataInitial, perfiles } }
     } else {
+      await listPerfiles()
+      await searchUsuario()
       return { props: { dataInitial, perfiles } }
     }
   } catch (error) {

@@ -44,6 +44,8 @@ export const EnvConstants = {
   
   REACT_APP_URL_BASE_BACK            : "/api/options/back",
   REACT_APP_URL_BASE_FRONT           : "/api/options/front",
+  REACT_APP_URL_BASE_FORMDATA        : "/api/options/formdata",
+  REACT_APP_URL_BASE_IMAGE           : "/api/options/image",
   
   REACT_APP_URL_UPLOAD_CLOUD         : "/api/upload/cloud",
   REACT_APP_URL_UPLOAD_LOCAL         : "/api/upload/local",

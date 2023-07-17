@@ -11,7 +11,7 @@ export default function BlogPage({ listCategorias, listLastCategorias }) {
     <BodyComponent>
       <BlogBanner listCategorias={listLastCategorias} />
       <BlogContent listCategorias={listCategorias} />
-      <FooterComponent />
+      <div className="border-white"><FooterComponent /></div>
     </BodyComponent>
   );
 }
@@ -28,7 +28,7 @@ const BlogBanner = ({ listCategorias }) => {
         </h1>
       </div>
 
-      <section className="w-full grid gap-2 grid-cols-3 box-base absolute top-[80%]">
+      <section className="w-full grid gap-2 grid-cols-3 box-base absolute top-[70%]">
         {categorias.map((el, index) => (
           <FrontCardComponent
             key={index}
@@ -74,9 +74,9 @@ const BlogContent = ({ listCategorias }) => {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps({query}) {
+  console.log(query)
   let listCategorias = [], listLastCategorias = [];
-
   const getPublicaciones = async () => {
     await SendRequestData({
       queryId: 34,

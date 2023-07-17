@@ -107,6 +107,62 @@ export const FileRequestData = (config) => {
   }
 }
 
+export const FormRequestData = (config) => {
+  let { queryId, body, success, error, pagination, rowsPerPage, page } = config;
+
+  if (pagination) {
+    let params = UploadFile({queryId, body: { ...body, rowsPerPage, page, }})
+    return UPLOAD_POST(EnvConstants.REACT_APP_URL_BASE_FORMDATA, params) 
+    .then(resp => {
+      success(resp.data)
+    })
+    .catch((err) => {
+      let { response } = err;
+      let { status, message } = response.data
+      error(response.data)
+      AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+    })
+  } else {
+    let params = UploadFile({queryId, ...body})
+    return UPLOAD_POST(EnvConstants.REACT_APP_URL_BASE_FORMDATA, params)
+    .then(resp => success({...resp.data}))
+    .catch(err => {
+      console.error(err)
+      let { response } = err;
+      let { status, message } = response.data
+      if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+      error(response.data)
+    })
+  }
+}
+
+export const ImageRequestData = (props) => { 
+  let { queryId, body = {}, success, error, pagination, rowsPerPage, page, config } = props;
+  if (pagination) {
+    let params = {queryId, body: { ...body, rowsPerPage, page, }}
+    return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_IMAGE, params, config) 
+    .then(resp => {
+      success(resp.data)
+    })
+    .catch((err) => {
+      let { response } = err;
+      let { status, message } = response.data
+      error(response.data)
+      AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+    })
+  } else {
+    let params = {queryId, body}
+    return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_IMAGE, params, config)
+    .then(resp => success({...resp.data}))
+    .catch(err => {
+      let { response } = err;
+      let { status, message } = response.data
+      if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+      error(response.data)
+    })
+  } 
+}
+
 /**
  * 
  * @param {object} config 

@@ -93,8 +93,12 @@ export async function getServerSideProps({ req, params }) {
   }
 
   try {
-    await searchCategoria()
-    return { props: { dataInitial } }
+    if (isNaN(id)) {
+      return { props: { dataInitial } }
+    } else {
+      await searchCategoria()
+      return { props: { dataInitial } }
+    }
   } catch (error) {
     console.log(error)
   }
