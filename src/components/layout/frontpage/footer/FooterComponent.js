@@ -6,7 +6,7 @@ import { classNames } from "src/utils/ClassNames";
 export default function FooterComponent({ fullScreen }) {
   return (
     <footer className={classNames(fullScreen ? "h-screen" : "", "bg-text flex items-center py-10 relative border-[2px] overflow-hidden")}>
-      <Image src="/assets/svg/background-icon.svg" width={500} height={500} property alt="Icono" className="-right-[5%] -bottom-[40%] absolute" />
+      <Image src="/assets/svg/background-icon.svg" width={500} height={500} alt="Icono" className="-right-[5%] -bottom-[40%] absolute" />
       <div className="flex w-full lg:px-12 relative z-10">
         <div className="md:flex flex-wrap justify-start w-4/5">
           <div className="text-white flex flex-col md:w-1/2 p-6">

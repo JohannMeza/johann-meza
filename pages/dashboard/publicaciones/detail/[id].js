@@ -115,11 +115,11 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
             ID_PUBLICACIONES: parseInt(query.id) || 0,
             ID_CATEGORIAS: JSON.stringify(arrCategorias),
             ID_ETIQUETAS: JSON.stringify(arrEtiquetas),
-            PUBLICACION: JSON.stringify(publicacion),
-            // PUBLICACION: JSON.stringify(publicacion, (key, value) => {
-            //   if (typeof value === 'string') return value.replace(/'/g, '"');
-            //   return value;
-            // }),
+            // PUBLICACION: JSON.stringify(publicacion),
+            PUBLICACION: JSON.stringify(publicacion, (key, value) => {
+              if (typeof value === 'string') return value.replace(/'/g, '"');
+              return value;
+            }),
             SLUG: data.SLUG.trim().toLowerCase(),
             ID_USER: user.ID_USUARIOS
           },
@@ -129,6 +129,7 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
             !query.id && push(PathConstants.publicaciones_admin)
           },
           error: (err) => {
+            console.error(err)
             setLoader(false)
             const { message, status } = err;
             (status < 500) && alert.error(message)
@@ -143,7 +144,10 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
             ID_PUBLICACIONES: parseInt(query.id) || 0,
             ID_CATEGORIAS: JSON.stringify(arrCategorias),
             ID_ETIQUETAS: JSON.stringify(arrEtiquetas),
-            PUBLICACION: JSON.stringify(publicacion),
+            PUBLICACION: JSON.stringify(publicacion, (key, value) => {
+              if (typeof value === 'string') return value.replace(/'/g, '"');
+              return value;
+            }),
             SLUG: data.SLUG.trim().toLowerCase(),
             PORTADA: files[0].file,
             ID_USER: user.ID_USUARIOS
@@ -304,7 +308,7 @@ export default function PublicacionesDetailPage({ quillContent, dataInitial, arr
           </>
         </Controls.CardComponent>
       </div>
-      <div className='relative z-50'>
+      <div className='relative z-10'>
         <ButtonsSaveComponent handleBack={() => push(PathConstants.publicaciones_admin)} handleAction={savePublicacion} />
       </div>
     </MainComponent>
@@ -374,6 +378,6 @@ export async function getServerSideProps({ req, params }) {
       return { props: { quillContent, dataInitial, arrCategorias, arrEtiquetas } }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }

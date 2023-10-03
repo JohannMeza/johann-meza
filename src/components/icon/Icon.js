@@ -19,6 +19,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CodeBracketIcon,
+  ChatBubbleLeftRightIcon
 } from "@heroicons/react/24/outline";
 import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 
@@ -45,6 +46,7 @@ const Icon = {
   Camera: CameraIcon,
   Code: CodeBracketIcon,
   Text: CodeBracketIcon,
+  Chat: ChatBubbleLeftRightIcon,
 };
 
 export default Icon;

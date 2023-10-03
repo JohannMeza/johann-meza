@@ -9,10 +9,9 @@ const ProfileController = async (req, res) => {
     const result = await REQUEST_DATABASE(req.body);
     const data = { ...result.dataObject, DATA_PERSONAL: { ...result.dataObject.DATA_PERSONAL, IMAGEN: result.dataObject.DATA_PERSONAL.IMAGEN && "data:image/png;base64," + CodificarBase64(result.dataObject.DATA_PERSONAL.IMAGEN) }}
     if (result.error) throw({ ...result });
-    console.log(data)
     return res.status(201).json(typesErrors.returnData(data))
   } catch (err) {
-    console.log(err)
+    console.error(err)
     return res.status(err.status || 500).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }

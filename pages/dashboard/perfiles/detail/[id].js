@@ -98,7 +98,7 @@ export async function getServerSideProps({ req, params }) {
       return { props: { dataInitial } }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 }

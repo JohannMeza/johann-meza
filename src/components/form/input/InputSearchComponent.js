@@ -16,6 +16,7 @@ export default function InputSearchComponent({
   autocomplete = "off",
   onChange,
   onClickIcon = () => {},
+  handleEnter = () => {},
   className = "",
 }) {
     const handleChange = (ev) => {
@@ -53,6 +54,9 @@ export default function InputSearchComponent({
       }
     }
   }
+
+  const handlePressEnter = (e) => e.key === 'Enter' && handleEnter(value[name])
+
   return (
     <div style={{ width: "100%" }}>
       <label
@@ -75,6 +79,7 @@ export default function InputSearchComponent({
             name={name}
             onInput={handleInput}
             onKeyPress={handlePress}
+            onKeyDown={handlePressEnter}
             onChange={handleChange} 
             autoComplete={autocomplete}
             className={classNames(
@@ -94,8 +99,8 @@ export default function InputSearchComponent({
                 <button
                   type="button"
                   className={classNames("button-icon-base", className)}
+                  onClick={() => onClickIcon(value[name])}
                   style={style}
-                  onClick={onClickIcon}
                 >
                   {<Icon.Search />}
                 </button>

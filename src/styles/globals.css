@@ -12,7 +12,6 @@ body { @apply font-Roboto }
 .title-h3-base { @apply font-Roboto font-bold text-title-3 }
 .title-base { @apply font-Roboto font-bold }
 
-.rojo { @apply bg-red-500 }
 .loader-base { @apply flex items-center justify-center flex-col fixed z-[10000000000] w-full h-full bg-loader top-0 transition ease-linear }
 
 .color-primary { @apply !bg-primary text-white hover:grayscale-[.1] active:grayscale-[.15] }
@@ -78,6 +77,7 @@ body { @apply font-Roboto }
 .scroll-base-transparent::-webkit-scrollbar { display: none }
 
 .ReactModal__Overlay { @apply z-[1000000] !bg-[#00000083] }
+.ql-toolbar { @apply sticky top-0 w-full z-40 bg-white }
 /* style base - no modificar  */
 
 .color-ref { background: red } 

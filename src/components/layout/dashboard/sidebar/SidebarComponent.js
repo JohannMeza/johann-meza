@@ -46,7 +46,7 @@ export default function SidebarComponent({menu}) {
               {user.IMAGEN && <Image
                 priority
                 src={user.IMAGEN}
-                className="rounded-full w-10"
+                className="rounded-full w-10 h-10"
                 width={100}
                 height={100}
                 alt="Avatar"

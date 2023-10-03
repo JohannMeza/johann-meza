@@ -10,15 +10,116 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Blog", href: "/blog", current: false },
+  { name: "Home", href: "/", current: true, animation: false },
+  { name: "Blog", href: "/blog", current: false, animation: true },
+  { name: "Proyectos", href: "/proyectos", current: false, animation: false },
 ];
 
 export default function HeaderComponent() {
   const [isTop, setIsTop] = useState(true);
-  const {push} = useRouter()
-  const {user} = useAuthContext();
+  const { push, pathname } = useRouter()
+  const value = useRouter();
+  const { user } = useAuthContext();
+  const isAnimation = navigation.some((el) => pathname.startsWith(el.href) && el.animation);
+  
+  const styleHeader = {
+    bgHeader: (() => {
+      if (pathname === "/") return "w-screen fixed";
+      if (isTop && isAnimation) return "bg-none w-screen fixed";
+      if (isTop && !isAnimation) return "bg-white w-screen fixed shadow-md";
+      else return "w-screen fixed bg-white shadow-md";
+    })(),
+    heightHeader: isTop ? "h-20" : "h-16",
+    colorLink: (() => {
+      if (pathname === "/") return "text-white";
+      if (isTop && isAnimation) return "text-white";
+      if (isTop && !isAnimation) return "text-secondary";
+      else return "text-secondary";
+    })(),
+    imageLogo: (() => {
+      if (pathname === "/") {
+        return (
+          <>
+            <Image
+              className="block h-full w-auto lg:hidden"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo-white.svg"
+              alt="Your Company"
+            />
+            <Image
+              className="hidden h-full w-auto lg:block"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo-white.svg"
+              alt="Your Company"
+            />
+          </>
+        )
+      } else if (isTop && isAnimation) {
+        return (
+          <>
+            <Image
+              className="block h-full w-auto lg:hidden"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo-white.svg"
+              alt="Your Company"
+            />
+            <Image
+              className="hidden h-full w-auto lg:block"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo-white.svg"
+              alt="Your Company"
+            />
+          </>
+        )
+      } else if (isTop && !isAnimation) {
+        return (
+          <>
+            <Image
+              className="block h-full w-auto lg:hidden"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo.svg"
+              alt="Your Company"
+            />
+            <Image
+              className="hidden h-full w-auto lg:block"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo.svg"
+              alt="Your Company"
+            />
+          </>
+        )
+      } else {
+        return (
+          <>
+            <Image
+              className="block h-full w-auto lg:hidden"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo.svg"
+              alt="Your Company"
+            />
+            <Image
+              className="hidden h-full w-auto lg:block"
+              width={100}
+              height={100}
+              src="/assets/logotipo/logo.svg"
+              alt="Your Company"
+            />
+          </>
+        )
+      }
+    })()
+  }
+
   useEffect(() => {
+    if (!isAnimation) return;
+
     const handleScroll = () => {
       if (window.scrollY === 0) setIsTop(true);
       else setIsTop(false);
@@ -35,7 +136,7 @@ export default function HeaderComponent() {
     <Disclosure
         as="nav"
         className={classNames(
-          isTop ? "bg-none w-screen fixed" : "bg-white w-screen fixed",
+          styleHeader.bgHeader,
           "ease-in-out duration-500 z-50",
           "top-0"
         )}
@@ -45,7 +146,7 @@ export default function HeaderComponent() {
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
               <div
                 className={classNames(
-                  isTop ? "h-20" : "h-16",
+                  styleHeader.heightHeader,
                   "relative flex items-center justify-between"
                 )}
               >
@@ -62,41 +163,7 @@ export default function HeaderComponent() {
                 </div>
                 <div className="flex flex-1 h-3/4 items-center justify-end sm:items-stretch sm:justify-between">
                   <div className="h-full">
-                    {isTop ? (
-                      <>
-                        <Image
-                          className="block h-full w-auto lg:hidden"
-                          width={100}
-                          height={100}
-                          src="/assets/logotipo/logo-white.svg"
-                          alt="Your Company"
-                        />
-                        <Image
-                          className="hidden h-full w-auto lg:block"
-                          width={100}
-                          height={100}
-                          src="/assets/logotipo/logo-white.svg"
-                          alt="Your Company"
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <Image
-                          className="block h-full w-auto lg:hidden"
-                          width={100}
-                          height={100}
-                          src="/assets/logotipo/logo.svg"
-                          alt="Your Company"
-                        />
-                        <Image
-                          className="hidden h-full w-auto lg:block"
-                          width={100}
-                          height={100}
-                          src="/assets/logotipo/logo.svg"
-                          alt="Your Company"
-                        />
-                      </>
-                    )}
+                    { styleHeader.imageLogo }
                   </div>
                   <div className="hidden sm:ml-6 sm:flex items-center">
                     <div className="flex space-x-4">
@@ -105,7 +172,7 @@ export default function HeaderComponent() {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            isTop ? "text-white" : "text-secondary",
+                            styleHeader.colorLink,
                             "font-Poppins font-semibold text-gray-300 hover:bg-gray-700 hover:underline px-3 py-2 rounded-md text-sm"
                           )}
                           aria-current={item.current ? "page" : undefined}
@@ -114,10 +181,9 @@ export default function HeaderComponent() {
                         </Link>
                       ))}
                       {
-                        Object.entries(user) > 0 ?
+                        Object.entries(user).length > 0 ?
                         <>
                           <Image 
-                            property
                             width={50}
                             height={50}
                             src={user.IMAGEN}

@@ -18,7 +18,7 @@ export default function Dashboard () {
       await axios.post('/api/logout');
       push("/login")
     } catch (error) {
-      console.log(error)
+      console.error(error)
       push("/login")
     }
   }

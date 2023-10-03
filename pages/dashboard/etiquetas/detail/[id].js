@@ -49,7 +49,7 @@ export default function EtiquetasDetailPage({ dataInitial }) {
     setLoader(true) 
     SaveRequestData({
       queryId: 24,
-      body: { ...data, id_etiquetas: query.id}, 
+      body: { ...data, id_etiquetas: parseInt(query.id) || null}, 
       success: (resp) => {
         setLoader(false)
         push(PathConstants.etiquetas_admin)

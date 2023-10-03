@@ -7,7 +7,7 @@ const OptionsFrontController = async (req, res) => {
     if (result.error) throw({ ...result });
     return res.status(201).json(result)
   } catch (err) {
-    console.log(err)
+    console.error(err)
     return res.status(err.status || 500).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }

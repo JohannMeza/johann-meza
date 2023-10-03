@@ -135,6 +135,6 @@ export async function getServerSideProps({ req, params }) {
       return { props: { menus, dataInitial } }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }

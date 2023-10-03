@@ -51,6 +51,7 @@ export const EnvConstants = {
   REACT_APP_URL_UPLOAD_LOCAL         : "/api/upload/local",
 
   REACT_APP_URL_CUSTOMIZE_PROFILE    : "/api/customize/profile",
+  REACT_APP_URL_CUSTOMIZE_TECHNOLOGY : "/api/customize/technology",
 
   REACT_APP_URL_AUTH_SIGN_IN         : "/api/auth/signIn",
   REACT_APP_URL_AUTH_SIGN_UP         : "/api/auth/signUp",

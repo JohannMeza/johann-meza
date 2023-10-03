@@ -144,7 +144,7 @@ export async function getServerSideProps({ req, params }) {
       return { props: { dataInitial, listMenuPadre } }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
   return { props: {  } }

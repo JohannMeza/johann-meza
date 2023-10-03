@@ -163,6 +163,6 @@ export async function getServerSideProps({ req, params }) {
       return { props: { dataInitial, perfiles } }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }

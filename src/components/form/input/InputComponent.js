@@ -6,6 +6,8 @@ export default function InputComponent({
   label,
   style,
   icon,
+  min,
+  max,
   textarea,
   name = "empty",
   value = {empty: ""},
@@ -84,6 +86,8 @@ export default function InputComponent({
               disabled={disabled}
               onChange={onChange}
               name={name}
+              min={min}
+              max={max}
               autoComplete={autocomplete}
               className={classNames(
                 "input-base",

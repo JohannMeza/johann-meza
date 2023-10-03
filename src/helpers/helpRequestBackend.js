@@ -29,7 +29,7 @@ export const SaveRequestData = (props) => {
     return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_BACK, params, config)
     .then(resp => success({...resp.data}))
     .catch(err => {
-      console.log(err)
+      console.error(err)
       let { response } = err;
       let { status, message } = response.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -155,6 +155,7 @@ export const ImageRequestData = (props) => {
     return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_IMAGE, params, config)
     .then(resp => success({...resp.data}))
     .catch(err => {
+      console.error(err)
       let { response } = err;
       let { status, message } = response.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
