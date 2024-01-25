@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios"
-import MainComponent from '../src/components/layout/dashboard/main/MainComponent'
+import MainComponent from '../../src/components/layout/dashboard/main/MainComponent'
 
 export default function Dashboard () {
   const [user, setUser] = useState({email: "", username: ""})

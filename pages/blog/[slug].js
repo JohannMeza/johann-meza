@@ -23,6 +23,7 @@ import useLoaderContext from 'src/hooks/useLoaderContext';
 import frontStyles from "src/styles/Frontpage.module.css";
 import 'highlight.js/styles/monokai-sublime.css'
 import 'quill/dist/quill.snow.css';
+import { useRouter } from "next/router";
 
 const ButtonStyleLeft = {
   transition: '.5s opacity ease',
@@ -46,6 +47,7 @@ const ButtonStyleRight = {
 
 const dataInitial = { COMENTARIO: '' }
 const dataInitialRespuestas = { }
+
 export default function PublicacionesPage({ dataPublicacion, listPublicacionesRelacionadas, quillContent }) {
   const validate = (fieldValues = data) =>  {
     let temp = {...errors};
@@ -68,6 +70,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
   const [comentarios, setComentarios] = useState([])
   const boxPublicaciones = useRef(null)
   const alert = useAlert();
+  const { push } = useRouter()
   const { quill, quillRef } = useQuill({readOnly: true, modules: {syntax: {
     highlight: text => {
       hljs.configure({languages: ['javascript', 'html', 'css']})
@@ -238,6 +241,10 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     setComentarios(dataPublicacion.COMENTARIOS)
   }, [dataPublicacion, listPublicacionesRelacionadas])
 
+  useEffect(() => {
+    return () => setTimeout(() => (window.location.hash) && push('#comments'), 1000)
+  }, [])
+
   return (
     <>
       <BannerComponent title={dataPublicacion.TITULO} />
@@ -288,14 +295,14 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
               </div>
               <article className="!h-auto" ref={quillRef}></article>
               <div className="grid gap-5 mt-10">
-                <div>
+                <div id="comments">
                   <h2 className='title-base text-title-3'>Añadir nuevo comentario</h2>
                   <div className="grid gap-3">
                     <Controls.InputComponent textarea name="COMENTARIO" value={data} error={errors} onChange={handleInputFormChange} />
                     <Controls.ButtonComponent title="COMENTAR" onClick={saveComentario} />
                   </div>
                 </div>
-                      
+
                 <div>
                   <h2 className='title-base text-title-3'>Comentarios</h2>
 
@@ -534,10 +541,9 @@ export async function getStaticPaths() {
   const getPublicaciones = async () => {
     await SendRequestData({
       queryId: 34,
-      body: {id_categorias: 1},
+      body: { ID_ETIQUETAS: '' },
       success: (resp) => {
-        let categorias = resp.dataList || [];
-        let publicaciones = categorias.map(el => (Object.values(el.publicaciones || []))).reduce((a, b) => a.concat(b))
+        let publicaciones = resp.dataList || [];
         paths = publicaciones.map(({slug}) => ({params: {slug}}))
       },
       error: (err) => {
@@ -557,6 +563,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   let SLUG = params.slug;
+  
   let dataPublicacion = [], listPublicacionesRelacionadas = [], quillContent = {};
   
   const getPublicacionesRelacionadas = async () => {

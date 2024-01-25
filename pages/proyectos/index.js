@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { SendRequestData, SaveRequestData } from "src/helpers/helpRequestBackend";
 import { useForm } from "src/hooks/useForm";
@@ -12,8 +12,14 @@ import Controls from "src/components/Controls";
 import debounce from 'lodash.debounce';
 import Image from "next/image";
 import IconAwesome from 'src/components/icon/IconAwesome'
+import frontStyles from "src/styles/Frontpage.module.css";
+import usePagination from 'src/hooks/usePagination';
+import ReactPaginate from "react-paginate";
 
 export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto }) {
+  const { handleChangePaginate, paginate } = usePagination(0, 3);
+  const pageCount = Math.ceil(paginate.total_rows / paginate.limitRowsPage);
+
   const [data, handleInputChange] = useForm({ SEARCH_TECH: "",  SEARCH: "", TIPO_PROYECTO: '0' });
   const [listTecnologias, setListTecnologias] = useState(arrListTecnologias);
   const [listProyectos, setListProyectos] = useState([]);
@@ -21,8 +27,15 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   const [isSearch, setIsSearch] = useState(false);
   const { setLoader } = useLoaderContext();
   const {isAuthenticated} = useAuthContext();
-  const { push } = useRouter();
+  const { push, pathname } = useRouter();
   const alert = useAlert();
+  const navigation = useRef(null);
+
+  const handleChangePagination = (event) => {
+    onAction(undefined, { ...paginate, page: event.selected });    
+    push(`${pathname}#first-post`)
+  }
+
 
   const searchProyectos = () => {
     const options = {
@@ -33,10 +46,13 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
         ID_TECNOLOGIAS: Object.keys(checkTecnologias).join(','), 
         ID_ESTADO: 4 
       },
+      pagination: { page: 0, limitRowsPage: 3},
       success: (resp) => {
         setLoader(false);
         setListProyectos(resp.dataList)
         setIsSearch(true)
+        handleChangePaginate(resp.dataObject)
+        navigation.current.state.selected = 0;
       },
       error: (err) => {
         const { message, status } = err;
@@ -67,17 +83,38 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
 
   return (
     <BodyComponent>      
-      <div className="p-4 mt-[80px]">
-        <div className="grid grid-cols-[20%,1fr] gap-5">
-          <div className="flex flex-col gap-3">
-            <div>
-              <p className="text-title-2 font-bold text-primary">Filtrar</p>
-            </div>
-            <hr />
-            <div>
-              <div>
-                <p className="text-title-3 font-bold text-text">Tipo de proyecto</p>
+      <div className={frontStyles.blogBanner}>
+        <h1 className="text-title-2 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
+          Proyectos
+        </h1>
+      </div>
+      <div className="flex justify-center" id="first-post">
+        <div className="grid grid-cols-[25%1fr] w-[90%] gap-8 my-10">
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="w-full bg-primary p-2 rounded-md">
+                    <span className="text-title-3 font-semibold text-white">Búsquedas</span>
+                  </div>
+                  <div className="h-1 w-full bg-primary rounded-md"></div>
+                </div>
               </div>
+
+              <div className="flex flex-col">
+                <Controls.InputComponent placeholder="Buscar..." name="SEARCH" onChange={(e) => { handleInputChange(e); setIsSearch(false); }} />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="w-full bg-primary p-2 rounded-md">
+                    <span className="text-title-3 font-semibold text-white">Tipo de proyecto</span>
+                  </div>
+                  <div className="h-1 w-full bg-primary rounded-md"></div>
+                </div>
+              </div>
+
               <div className="flex flex-col gap-4 mt-2">
                 {
                   listEstadosProyecto.map((el, index) => (
@@ -101,10 +138,14 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                 }
               </div>
             </div>
-            <hr />
-            <div>
-              <div>
-                <p className="text-title-3 font-bold text-text">Tecnologias</p>
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="w-full bg-primary p-2 rounded-md">
+                    <span className="text-title-3 font-semibold text-white">Tecnologías</span>
+                  </div>
+                  <div className="h-1 w-full bg-primary rounded-md"></div>
+                </div>
               </div>
               <Controls.InputSearchComponent
                 handleEnter={(value) => handleSearchTech(value)}
@@ -139,13 +180,12 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
             </div>
           </div>
           <div>
-            <Controls.InputComponent placeholder="Buscar..." name="SEARCH" onChange={(e) => { handleInputChange(e); setIsSearch(false); }} />
-            <p className="text-title-3 font-bold text-gradient-gris-300 my-2">
+            <p className="text-title-3 font-bold text-gradient-gris-300">
               {listProyectos?.length || 0} resultados
               { (isSearch && data.SEARCH) && ` para "${data.SEARCH}"` }
             </p> 
             <hr />
-            <div className="mt-4 flex flex-col gap-3 h-full">
+            <div className="my-4 flex flex-col gap-3">
               {
                 listProyectos.length > 0 ? listProyectos.map((el, index) => (
                   <div key={index} className="flex gap-3 hover:shadow-md transition-shadow duration-700">
@@ -175,6 +215,21 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                   <h2 className="text-title-2 font-bold">Sin resultados</h2>
                 </div>
               }
+            </div>
+            <div className="mt-8 flex justify-center">
+              <ReactPaginate
+                ref={navigation}
+                className="pagination-base"
+                breakLabel="..."
+                nextLabel="&#8702;"
+                onPageChange={(event) => handleChangePagination(event)}
+                pageRangeDisplayed={0}
+                marginPagesDisplayed={2}
+                pageCount={pageCount}
+                selectedPageRel={1}
+                previousLabel="&#8701;"
+                renderOnZeroPageCount={null}
+              />
             </div>
           </div>
         </div>

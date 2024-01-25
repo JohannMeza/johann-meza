@@ -1,12 +1,12 @@
 @tailwind base;
 @tailwind components;
 
+html { --scroll-behavior: smooth!important; scroll-behavior: smooth!important; }
 input, textarea { border: none; display: inline-block; box-sizing: border-box; outline: none; background: none; }
 .box-base { @apply mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 };
 .icon-principal { @apply w-6 };
-
 /* style base - no modificar  */
-body { @apply font-Roboto }
+body {  @apply font-Roboto }
 .title-h1-base { @apply font-Roboto font-bold text-title-1 }
 .title-h2-base { @apply font-Roboto font-bold text-title-2 }
 .title-h3-base { @apply font-Roboto font-bold text-title-3 }
@@ -46,6 +46,11 @@ body { @apply font-Roboto }
 .scroll-base::-webkit-scrollbar-track-piece { @apply bg-gradient-gris-200 }
 
 .boxshadow-card { filter: drop-shadow(0px 24px 10px rgba(0, 0, 0, 0.01)) drop-shadow(0px 14px 8px rgba(0, 0, 0, 0.05)) drop-shadow(0px 6px 6px rgba(0, 0, 0, 0.09)) drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.1)) }
+.boxshadow-hover:hover { box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.15); }
+.boxshadow-base { box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.10), 0px 2px 3px 0px rgba(0, 0, 0, 0.10), 0px 6px 6px 0px rgba(0, 0, 0, 0.09), 0px 14px 8px 0px rgba(0, 0, 0, 0.05), 0px 24px 10px 0px rgba(0, 0, 0, 0.01), 0px 38px 11px 0px rgba(0, 0, 0, 0.00); }
+
+.boxborder-base { border: 0.5px solid #D2D2D2; }
+
 .margin-base-top-card { @apply mt-4 }
 
 .table-base { @apply min-w-full text-center }

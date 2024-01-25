@@ -10,9 +10,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-  { name: "Home", href: "/", current: true, animation: false },
+  { name: "Home", href: "/", current: true, animation: true },
   { name: "Blog", href: "/blog", current: false, animation: true },
   { name: "Proyectos", href: "/proyectos", current: false, animation: false },
+  { name: "Login", href: "/auth/login", current: false, animation: false },
 ];
 
 export default function HeaderComponent() {
@@ -24,39 +25,18 @@ export default function HeaderComponent() {
   
   const styleHeader = {
     bgHeader: (() => {
-      if (pathname === "/") return "w-screen fixed";
       if (isTop && isAnimation) return "bg-none w-screen fixed";
       if (isTop && !isAnimation) return "bg-white w-screen fixed shadow-md";
       else return "w-screen fixed bg-white shadow-md";
     })(),
     heightHeader: isTop ? "h-20" : "h-16",
     colorLink: (() => {
-      if (pathname === "/") return "text-white";
       if (isTop && isAnimation) return "text-white";
       if (isTop && !isAnimation) return "text-secondary";
       else return "text-secondary";
     })(),
     imageLogo: (() => {
-      if (pathname === "/") {
-        return (
-          <>
-            <Image
-              className="block h-full w-auto lg:hidden"
-              width={100}
-              height={100}
-              src="/assets/logotipo/logo-white.svg"
-              alt="Your Company"
-            />
-            <Image
-              className="hidden h-full w-auto lg:block"
-              width={100}
-              height={100}
-              src="/assets/logotipo/logo-white.svg"
-              alt="Your Company"
-            />
-          </>
-        )
-      } else if (isTop && isAnimation) {
+      if (isTop && isAnimation) {
         return (
           <>
             <Image
@@ -161,7 +141,8 @@ export default function HeaderComponent() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-1 h-3/4 items-center justify-end sm:items-stretch sm:justify-between">
+
+                <div className="flex flex-1 h-3/4 items-center justify-between">
                   <div className="h-full">
                     { styleHeader.imageLogo }
                   </div>
@@ -181,7 +162,7 @@ export default function HeaderComponent() {
                         </Link>
                       ))}
                       {
-                        Object.entries(user).length > 0 ?
+                        Object.entries(user).length > 0 &&
                         <>
                           <Image 
                             width={50}
@@ -192,14 +173,11 @@ export default function HeaderComponent() {
                             className="rounded-full w-10 h-10 cursor-pointer"
                           />
                         </>
-                        : 
-                        <Controls.ButtonComponent
-                          className="color-rose"
-                          onClick={() => push("/auth/login")}
-                          title="Iniciar Sesion"
-                        />
                       }
                     </div>
+                  </div>
+                  <div>
+                    Light
                   </div>
                 </div>
               </div>

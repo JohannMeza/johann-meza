@@ -1,10 +1,10 @@
 /* Body Main Component */
 .mainContent {
-  max-height: 100vh;
+  /* max-height: 100vh;
   min-height: 100vh;
   overflow: auto;
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; */
 }
 
 .mainContent::-webkit-scrollbar {
@@ -21,10 +21,30 @@
 }
 
 .mainContent > * {
-  max-height: 100vh;
-  scroll-snap-align: start;
-  overflow: hidden;
-  min-height: 100vh;
+  /* max-height: 100vh; */
+  /* scroll-snap-align: start; */
+  /* overflow: hidden; */
+  /* min-height: 100vh; */
+}
+
+
+/* Mis Servicio */
+.mainContentServicesCard {
+  transition: transform .5s ease;
+}
+
+.mainContentServicesCard:hover {
+  transform: translate(0, -30px);
+}
+
+.mainContentServicesCard > img {
+  filter: grayscale(1);
+  transition: filter .5s ease, transform .5s ease;
+}
+
+.mainContentServicesCard:hover > img {
+  filter: grayscale(0);
+  transform: scale(1.1);
 }
 
 /* Page Index */
@@ -48,20 +68,21 @@
   height: 45px;
 }
 
+
+
 /* Page Blog */
 .blogBanner {
   min-height: 40vh;
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding-top: 4vw;
+  align-items: flex-start;
+  padding: 4vw 72px 0 72px;
   flex-direction: column;
-  background: linear-gradient(
-    90deg,
-    rgba(136, 1, 111, 0.9) 0%,
-    rgba(22, 15, 111, 0.9) 100%
-  );
+  background: linear-gradient(90deg,rgba(136, 1, 111, 0.9) 0%,rgba(22, 15, 111, 0.9) 100%), url(../../public/assets/imagenes/blogBanner.jpg);
+  background-position: 0px -400px;
+  background-size: 100%;
+  background-attachment: fixed;
 }
 
 .blogBannerWithoutText {
@@ -81,9 +102,10 @@
 
 .blogPublicaciones {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  /* grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); */
 }
 
 /* Page Publicacion */

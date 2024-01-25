@@ -176,6 +176,7 @@ module.exports = {
         'gradient': 'linear-gradient(90deg,rgba(136, 1, 111, 0.9) 0%,rgba(22, 15, 111, 0.9) 100%)',
         'banner': 'url(/assets/imagenes/banner.png)',
         'banner-opacity': 'linear-gradient(90deg,rgba(136, 1, 111, 0.9) 0%,rgba(22, 15, 111, 0.9) 100%), url(/assets/imagenes/banner.png)',
+        'banner-blog-opacity': 'linear-gradient(90deg,rgba(136, 1, 111, 0.9) 0%,rgba(22, 15, 111, 0.9) 100%), url(/assets/imagenes/blogBanner.png)',
       }),
       backgroundColor: theme => ({
         'loader': 'rgba(22, 15, 111, 0.8)',

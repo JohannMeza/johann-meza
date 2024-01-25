@@ -22,11 +22,10 @@ const REQUEST_DATABASE = async (params) => {
   const connection = client();
   await connection.connect()
   try {
-    let { queryId, body, ID_USUARIOS } = params;
+    let { queryId, body, ID_USUARIOS, pagination } = params;
     let resultQuery = await requestFindQuery(queryId, connection);
     let { SQL_QUERY } = resultQuery
-    let parameters = JSON.stringify({ ...body, ID_USUARIOS: ID_USUARIOS || body.ID_USUARIOS });
-    
+    let parameters = JSON.stringify({ ...body, ...pagination, ID_USUARIOS: ID_USUARIOS || body.ID_USUARIOS });
     if (resultQuery.error) throw(resultQuery)
     if (!SQL_QUERY) throw(typesErrors.throwExcepctionServer())
     const data = await connection.query(`SELECT "PUBLIC"."${SQL_QUERY}"(CAST('${parameters}' AS JSON))`).then(result => typeof result.rows[0][SQL_QUERY] === "string" ? JSON.parse(result.rows[0][SQL_QUERY]) : result.rows[0][SQL_QUERY]).catch(error => error.stack)

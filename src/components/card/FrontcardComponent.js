@@ -1,19 +1,23 @@
-import React from "react";
 import { classNames } from "../../utils/ClassNames";
-import Controls from "../Controls";
 import Image from "next/image";
 import Icon from "../icon/Icon";
+import DateUtil from 'src/utils/DateUtil';
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function FrontCardComponent({
-  className = "",
-  title,
-  navigate = () => {},
-  img = "/",
+  fechaCreacion = "Sin Fecha",
   descripcionCorta = "",
+  cantComments = 0,
+  className = "",
+  slug = "",
+  img = "/",
+  title,
 }) {
+  const { push } = useRouter();
   const styleImage = {
     width: "100%",
-    minHeight: "220px",
+    minHeight: "420px",
     position: "relative",
   };
 
@@ -30,7 +34,7 @@ export default function FrontCardComponent({
     <article
       className={classNames(
         className,
-        "rounded-lg hover:shadow-xl overflow-hidden hover:text-secondary relative w-full max-w-md h-full"
+        "rounded-lg overflow-hidden relative w-full h-full"
       )}
     >
       <div className="flex flex-col bg-white h-full">
@@ -48,12 +52,11 @@ export default function FrontCardComponent({
           )}
         </div>
 
-        <div className="flex flex-col gap-3 justify-between px-8 py-8 h-full">
-          <div>
-            <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mb-4 text-start">{title}</h4>
-            <p className="text-justify text-paragraph-2 font-OpenSans text-text">{descripcionCorta}</p>
-          </div>
-          <Controls.ButtonComponent title="Ver Publicación" onClick={navigate} />
+        <div className="flex flex-col items-start gap-1 py-8 h-full">
+          <h4 onClick={() => push(slug)} className="cursor-pointer text-title-3 font-Poppins text-gray-900 text-lg font-bold text-start">{title}</h4>
+          <Link href={`${slug}#comments`} className="text-span-1 cursor-pointer">{DateUtil().FormatDate(fechaCreacion)} / {cantComments} comentarios</Link>
+          <p className="text-justify text-paragraph-2 font-OpenSans text-text">{descripcionCorta}</p>
+          <span onClick={() => push(slug)} className="cursor-pointer font-bold text-secondary">Leer más</span>
         </div>
       </div>
     </article>
