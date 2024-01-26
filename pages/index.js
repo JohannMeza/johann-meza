@@ -20,7 +20,7 @@ const ServicesInformation = [
     description: "Desarrollo de aplicaciones web a medida, adaptadas a las necesidades específicas de mis clientes.",
     image: "/assets/iconos/developer.png",
     bonnus: ["Calidad", "Personalización", "Seguridad", "Escalabilidad"],
-    alt: "tech"
+    alt: "tech",
   },
   {
     title: "Sitios web personalizados",
