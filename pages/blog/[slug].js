@@ -242,10 +242,12 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     // boxPublicaciones.current.scrollLeft = 0;
     setCountMove(0);
     setComentarios(dataPublicacion.COMENTARIOS)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion, listPublicacionesRelacionadas])
 
   useEffect(() => {
     return () => setTimeout(() => (window.location.hash) && push('#comments'), 1000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

@@ -33,7 +33,8 @@ export default function EtiquetasAdminPage() {
       }
     })
   }
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { listEtiquetas() }, [])
   
   return (

@@ -72,8 +72,10 @@ export default function AuthContextProvider ({children}) {
     user,
     setUser,
     access
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [isAuthenticated, login, user])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => access(), [])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

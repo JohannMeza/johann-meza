@@ -109,6 +109,7 @@ export default function HeaderComponent() {
       window.removeEventListener("scroll", handleScroll);
       handleScroll();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

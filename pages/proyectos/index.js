@@ -78,6 +78,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.SEARCH]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => searchProyectos(), [data.TIPO_PROYECTO, checkTecnologias])
 
   return (

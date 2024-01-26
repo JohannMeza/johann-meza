@@ -102,11 +102,13 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
     if (data.SEARCH.trim() !== '') debouncedSearchApi(data.SEARCH);
     else searchPublicaciones();
     return () => debouncedSearchApi.cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.SEARCH]);
 
   useEffect(() => {
     setPublicaciones(listPublicaciones);
     handleChangePaginate(dataPaginate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listPublicaciones, dataPaginate]);
 
   return (

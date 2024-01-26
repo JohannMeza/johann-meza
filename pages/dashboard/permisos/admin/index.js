@@ -37,6 +37,7 @@ export default function PermisosAdminPage() {
 
   useEffect(() => {
     listPermisos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

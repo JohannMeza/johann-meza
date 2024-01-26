@@ -239,12 +239,14 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     window.scroll({top: 0});
   }, [quill, quillContent])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => getIsUsuarioLike(), [user])
   
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
     setCountMove(0);
     setComentarios(dataPublicacion.COMENTARIOS);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion])
 
   return (

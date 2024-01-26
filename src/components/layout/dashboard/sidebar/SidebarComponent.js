@@ -34,6 +34,7 @@ export default function SidebarComponent({menu}) {
     })
   }
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { (Object.entries(user).length) && getMenus() }, [user?.ID_PERFILES])
 
   return (

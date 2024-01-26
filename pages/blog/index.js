@@ -99,12 +99,14 @@ export default function BlogPage({ listPublicaciones, listEtiquetas, listCategor
     if (data.SEARCH.trim() !== '') debouncedSearchApi(data.SEARCH);
     else searchPublicaciones();
     return () => debouncedSearchApi.cancel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.SEARCH]);
 
   useEffect(() => {
     setPublicaciones(listPublicaciones);
     handleChangePaginate(dataPaginate);
     (navigation) && (navigation.current.state.selected = pageSelected);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listPublicaciones, dataPaginate]);
 
   return (

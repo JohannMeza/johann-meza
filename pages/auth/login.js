@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useFormValidation } from "/src/hooks/useFormValidation";
-import { useAlert } from "react-alert";
-import { SignInRequestData } from "/src/helpers/helpRequestBackend";
 import { useRouter } from "next/router";
 import PathConstants from "util/PathConstants";
 import useAuthContext from "src/hooks/useAuthContext";
@@ -13,9 +11,8 @@ import Image from "next/image";
 const dataInitial = { EMAIL: "", PASS: "", REMENBER: false };
 
 export default function SignInPage() {
-  const {isAuthenticated, setUser} = useAuthContext();
+  const {isAuthenticated} = useAuthContext();
   const {push} = useRouter();
-  const alert = useAlert();
 
   const validate = (fieldValues = data) => {
     let temp = { ...errors };
@@ -40,7 +37,6 @@ export default function SignInPage() {
 
   const {data, errors, setErrors, handleInputFormChange} = useFormValidation(dataInitial, true, validate);
   const [statePass, setStatePass] = useState(false);
-  const {setLoader} = useLoaderContext();
   const {login} = useAuthContext();
 
   const auth = (e) => {
@@ -50,6 +46,7 @@ export default function SignInPage() {
 
   useEffect(() => {
     isAuthenticated && push(PathConstants.home_admin)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
