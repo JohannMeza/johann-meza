@@ -41,6 +41,7 @@ const AuthLoginController = async (req, res) => {
 
     return res.status(401).json({error: 'invalid email or password'});
   } catch (error) {
+    console.error(error);
     return res.status(500).json({error: 'error in the server'});
   }
 }

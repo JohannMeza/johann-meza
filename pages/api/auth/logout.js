@@ -23,6 +23,7 @@ const AuthLogoutController = async (req, res) => {
     res.setHeader('Set-Cookie', serialized)
     return res.status(200).json('logout successfully')
   } catch (error) {
+    console.error(error);
     return res.status(401).json({error: 'invalid token'})
   }
 }

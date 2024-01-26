@@ -33,7 +33,6 @@ const AuthAccessController = async (req, res) => {
 
       if (!passDecode) throw ({ error: true, message: 'La contraseña es incorrecta', status: 401 })
       if (result.error) throw({ ...result });
-      console.log(res);
       return res.status(201).json({...data, message: "Te has logueado con éxito"})
     }
   } catch (err) {
@@ -47,8 +46,7 @@ const AuthAccessController = async (req, res) => {
       })
       res.setHeader('Set-Cookie', serialized)
     }
-    console.log(res);
-
+    console.error(err);
     return res.status(err.status || 401).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }

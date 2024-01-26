@@ -26,6 +26,7 @@ const AuthSignUpController = async (req, res) => {
     
     return res.status(201).json(result)
   } catch (err) {
+    console.error(err);
     return res.status(err.status || 500).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }
