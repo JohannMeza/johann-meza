@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { SendRequestData, SaveRequestData } from "src/helpers/helpRequestBackend";
 import { useForm } from "src/hooks/useForm";
@@ -27,17 +27,11 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   const [isSearch, setIsSearch] = useState(false);
   const { setLoader } = useLoaderContext();
   const {isAuthenticated} = useAuthContext();
-  const { push, pathname } = useRouter();
+  const { push } = useRouter();
   const alert = useAlert();
   const navigation = useRef(null);
 
-  const handleChangePagination = (event) => {
-    onAction(undefined, { ...paginate, page: event.selected });    
-    push(`${pathname}#first-post`)
-  }
-
-
-  const searchProyectos = () => {
+  const searchProyectos = (pagination = paginate) => {
     const options = {
       queryId: 61,
       body: { 
@@ -46,13 +40,13 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
         ID_TECNOLOGIAS: Object.keys(checkTecnologias).join(','), 
         ID_ESTADO: 4 
       },
-      pagination: { page: 0, limitRowsPage: 3},
+      pagination,
       success: (resp) => {
         setLoader(false);
         setListProyectos(resp.dataList)
         setIsSearch(true)
         handleChangePaginate(resp.dataObject)
-        navigation.current.state.selected = 0;
+        navigation.current.state.selected = pagination.page;
       },
       error: (err) => {
         const { message, status } = err;
@@ -66,7 +60,12 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
 
   const handleSearchTech = (textSearch) => setListTecnologias((listTech) => textSearch ? listTech.filter(el => el.label.match(new RegExp(textSearch, 'ig'))) : arrListTecnologias)
 
-  const debouncedSearchApi = debounce(searchProyectos, 500);
+  const debouncedSearchApi = debounce(() => searchProyectos(), 500);
+
+  const handleChangePagination = (event) => {
+    handleChangePaginate({ ...paginate, page: event.selected });
+    searchProyectos({ ...paginate, page: event.selected });
+  }
 
   useEffect(() => {
     if (data.SEARCH.trim() !== '') {
@@ -222,11 +221,11 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                 className="pagination-base"
                 breakLabel="..."
                 nextLabel="&#8702;"
-                onPageChange={(event) => handleChangePagination(event)}
+                onPageChange={handleChangePagination}
                 pageRangeDisplayed={0}
                 marginPagesDisplayed={2}
                 pageCount={pageCount}
-                selectedPageRel={1}
+                selectedPageRel={2}
                 previousLabel="&#8701;"
                 renderOnZeroPageCount={null}
               />

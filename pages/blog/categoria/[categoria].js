@@ -4,7 +4,7 @@ import { SendRequestData } from "src/helpers/helpRequestBackend";
 import { useForm } from "src/hooks/useForm";
 import { useAlert } from "react-alert";
 import { classNames } from "../../../src/utils/ClassNames";
-import FrontCardComponent from "src/components/card/FrontcardComponent";
+import { CardHorizontalComponent } from "src/components/card/FrontcardComponent";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import frontStyles from "src/styles/Frontpage.module.css";
@@ -250,7 +250,7 @@ const BlogContent = ({ listPublicaciones, onAction, paginate, navigation }) => {
         {
           listPublicaciones.map((publicacion, index) => (
             <section key={index} className={frontStyles.blogPublicaciones}>
-              <FrontCardComponent
+              <CardHorizontalComponent
                 className="m-auto"
                 title={publicacion.titulo}
                 descripcionCorta={publicacion.descripcion_corta}

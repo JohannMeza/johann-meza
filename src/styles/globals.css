@@ -90,4 +90,6 @@ body {  @apply font-Roboto }
 .show { display: block }
 .hide { display: none }
 
+/* Swipper - Pagination */
+
 @tailwind utilities;

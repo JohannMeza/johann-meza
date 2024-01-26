@@ -4,7 +4,7 @@ import { SendRequestData } from "src/helpers/helpRequestBackend";
 import { useForm } from "src/hooks/useForm";
 import { useAlert } from "react-alert";
 import { classNames } from "src/utils/ClassNames";
-import FrontCardComponent from "src/components/card/FrontcardComponent";
+import { CardHorizontalComponent } from "src/components/card/FrontcardComponent";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import frontStyles from "src/styles/Frontpage.module.css";
@@ -207,7 +207,7 @@ export default function BlogPage({ listPublicaciones, listEtiquetas, listCategor
               <div className="flex flex-col gap-3">
                 {
                   listLastPublicaciones.map((el, index) => (
-                    <div onClick={() => push(`/blog/${el.slug}`)} className="flex gap-2" key={index}>
+                    <div onClick={() => push(`/blog/${el.slug}`)} className="flex gap-2 cursor-pointer" key={index}>
                       <Image
                         src={el.portada}
                         alt={el.titulo}
@@ -215,7 +215,7 @@ export default function BlogPage({ listPublicaciones, listEtiquetas, listCategor
                         height={50}
                         style={{ minWidth: 80, objectFit: "cover", borderRadius: "10px" }}
                       />
-                      <p className="cursor-pointer text-paragraph-2 font-bold">{el.titulo}</p>
+                      <p className="text-paragraph-2 font-bold">{el.titulo}</p>
                     </div>
                   ))
                 }
@@ -256,7 +256,7 @@ const BlogContent = ({ listPublicaciones, onAction, paginate, navigation }) => {
         {
           listPublicaciones.map((publicacion, index) => (
             <section key={index} className={frontStyles.blogPublicaciones}>
-              <FrontCardComponent
+              <CardHorizontalComponent
                 className="m-auto"
                 title={publicacion.titulo}
                 descripcionCorta={publicacion.descripcion_corta}
@@ -341,7 +341,6 @@ export async function getServerSideProps({ query }) {
       },
     });
   };
-  console.log("entro")
 
   try {
     await getPublicaciones();

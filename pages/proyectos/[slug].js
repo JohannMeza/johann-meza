@@ -18,6 +18,7 @@ import IconAwesome from 'src/components/icon/IconAwesome'
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import useLoaderContext from 'src/hooks/useLoaderContext';
 import frontStyles from "src/styles/Frontpage.module.css";
+import BannerComponent from 'src/components/layout/frontpage/header/BannerComponent';
 import 'highlight.js/styles/monokai-sublime.css'
 import 'quill/dist/quill.snow.css';
 
@@ -248,10 +249,15 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
 
   return (
     <>
+      <div className={frontStyles.blogBanner}>
+        <span className="text-title-2 text-white font-Poppins">Proyecto: </span>
+        <h1 className="text-title-1 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
+          {dataPublicacion.PROYECTO}
+        </h1>
+      </div>
       <BodyComponent>
-        <div className='box-base mt-[130px]'>
+        <div className='box-base mt-10'>
           <div className="grid grid-cols-[70%] justify-center gap-5">
-            <h1 className="text-title-1 font-bold">{dataPublicacion.PROYECTO}</h1>
             <div>
               {
                 dataPublicacion.PORTADA &&

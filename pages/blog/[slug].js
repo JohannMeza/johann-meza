@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { SendRequestData, ImageRequestData, SaveRequestData } from "src/helpers/helpRequestBackend";
 import { useQuill } from 'react-quilljs';
 import { formats } from 'src/config/Toolbar';
@@ -6,8 +6,10 @@ import { useFormValidation } from "src/hooks/useFormValidation";
 import { AlertUtilMessage } from "src/utils/AlertUtil";
 import { useAlert } from "react-alert";
 import { classNames } from "src/utils/ClassNames";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { FormatDateConstants } from "src/constants/FormatDateConstants";
-import React from "react";
+import { Pagination, Autoplay } from 'swiper/modules';
+import { useRouter } from "next/router";
 import hljs from 'highlight.js';
 import DateUtil from 'src/utils/DateUtil';
 import BannerComponent from 'src/components/layout/frontpage/header/BannerComponent';
@@ -23,7 +25,8 @@ import useLoaderContext from 'src/hooks/useLoaderContext';
 import frontStyles from "src/styles/Frontpage.module.css";
 import 'highlight.js/styles/monokai-sublime.css'
 import 'quill/dist/quill.snow.css';
-import { useRouter } from "next/router";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const ButtonStyleLeft = {
   transition: '.5s opacity ease',
@@ -236,7 +239,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
   
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
-    boxPublicaciones.current.scrollLeft = 0;
+    // boxPublicaciones.current.scrollLeft = 0;
     setCountMove(0);
     setComentarios(dataPublicacion.COMENTARIOS)
   }, [dataPublicacion, listPublicacionesRelacionadas])
@@ -247,7 +250,11 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
 
   return (
     <>
-      <BannerComponent title={dataPublicacion.TITULO} />
+      <div className={frontStyles.blogBanner}>
+        <h1 className="text-title-1 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
+          {dataPublicacion.TITULO}
+        </h1>
+      </div>
       <BodyComponent>
         <br />
         <div className='box-base'>
@@ -314,7 +321,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                   ) : (
                     <div className="flex flex-col gap-4">
                       {comentarios.map((comentario, index) => (
-                        <React.Fragment key={index}>
+                        <Fragment key={index}>
                           <div
                             key={index}
                             className={classNames(frontStyles.publicacionComentarios, 'bg-gradient-gris-200')}
@@ -480,7 +487,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                               </div>
                             </div>
                           )}
-                        </React.Fragment>
+                        </Fragment>
                       ))}
                     </div>
                   )}
@@ -488,25 +495,34 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
               </div>
             </div>
             <div className="relative">
-              <div className="border p-4 sticky top-20">
-                <h2 className='title-base mb-3 text-paragraph-1'>Publicaciones Relacionadas</h2>
-                <div ref={boxPublicaciones} className='relative flex gap-6 overflow-x-scroll w-full scroll scroll-base-transparent' style={{ scrollSnapType: "x mandatory", scrollBehavior: "smooth" }}>
+              <div className="p-4 sticky top-20">
+                <div className="flex flex-col gap-2">
+                  <div className="w-full bg-primary p-2 rounded-md">
+                    <span className="text-title-3 font-semibold text-white">Publicaciones recientes</span>
+                  </div>
+                  <div className="h-1 w-full bg-primary rounded-md"></div>
+                </div>
+                
+                <Swiper
+                  slidesPerView={1}
+                  spaceBetween={30}
+                  pagination={{ clickable: true }}
+                  modules={[Autoplay, Pagination]}
+                  autoplay={{
+                    delay: 15000,
+                    disableOnInteraction: false,
+                  }}
+                >
                   {
                     listPublicacionesRelacionadas.length ? 
                     listPublicacionesRelacionadas.map((el, index) => (
-                      <PublicacionRelacionada key={index} data={el} />
+                      <SwiperSlide key={el.id_publicaciones}>
+                        <PublicacionRelacionada key={index} data={el} />
+                      </SwiperSlide>
                     ))
                     : <span className="block text-center">Sin resultados 😲</span>
                   }
-                </div>
-
-                <span style={ButtonStyleLeft} className='opacity-0 hover:opacity-100'>
-                  <Controls.ButtonIconComponent onClick={() => moverScroll(false)} icon={<Icon.ChevronLeftIcon />} />
-                </span>
-
-                <span style={ButtonStyleRight} className='opacity-0 hover:opacity-100'>
-                  <Controls.ButtonIconComponent onClick={() => moverScroll(true)} icon={<Icon.ChevronRightIcon />} />
-                </span>
+                </Swiper>
               </div>
             </div>
           </div>
@@ -520,7 +536,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
 
 const PublicacionRelacionada = ({ data }) => {
   return (
-    <div className="flex-shrink-0 snap-start w-full">
+    <div className="flex-shrink-0 snap-start py-5 w-full">
       <div className='flex flex-col top-12 gap-3 whitespace-pre-wrap'>
         <Image src={data.portada} width={550} height={250} alt={data.titulo} className='w-full h-32 rounded-md object-cover' />
         <div>

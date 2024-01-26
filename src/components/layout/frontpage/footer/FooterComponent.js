@@ -2,10 +2,14 @@ import { classNames } from "src/utils/ClassNames";
 import IconAwesome from 'src/components/icon/IconAwesome'
 
 const ButtonsNetwroks = [
-  { ICON: IconAwesome.MAIL, NAME: "Email" },
-  { ICON: IconAwesome.PDF, NAME: "CV" },
-  { ICON: IconAwesome.GITHUB, NAME: "GitHub" },
-  { ICON: IconAwesome.GITLAB, NAME: "GitLab" },
+  { ICON: IconAwesome.PDF, NAME: "CV", URL: {
+    href: "/assets/cv/Johann Meza.pdf",
+    download: "Johann Meza.pdf"
+    }
+  },
+  { ICON: IconAwesome.GITHUB, NAME: "GitHub", URL: { href: "https://github.com/JohannMeza" } },
+  { ICON: IconAwesome.GITLAB, NAME: "GitLab", URL: { href: "https://gitlab.com/JohannMeza" } },
+  { ICON: IconAwesome.LINKEDIN, NAME: "Linkedin", URL: { href: "https://www.linkedin.com/in/johann-meza-salazar-33b5701b6/" } },
 ]
 
 export default function FooterComponent({ fullScreen }) {
@@ -15,7 +19,7 @@ export default function FooterComponent({ fullScreen }) {
         <div className="md:flex flex-wrap justify-center w-full gap-8">
           {
             ButtonsNetwroks.map((el, index) => (
-              <ButtonNetwork key={index} icon={el.ICON} name={el.NAME} />
+              <ButtonNetwork key={index} icon={el.ICON} name={el.NAME} url={el.URL} />
             ))
           }
         </div>
@@ -24,15 +28,15 @@ export default function FooterComponent({ fullScreen }) {
   );
 }
 
-const ButtonNetwork = ({ icon, name }) => {
+const ButtonNetwork = ({ icon, name, url }) => {
   return (
-    <div className="flex flex-col items-center gap-3">
+    <a {...url} target="_blank" className="flex flex-col items-center gap-3">
       <div 
         className="w-16 h-16 bg-white cursor-pointer text-title-1 flex justify-center items-center rounded-full"
       >
         {icon}
       </div>
       <span className="text-title-3 font-medium text-white">{name}</span>
-    </div>
+    </a>
   );
 };

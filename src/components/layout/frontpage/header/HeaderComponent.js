@@ -12,14 +12,12 @@ import Link from "next/link";
 const navigation = [
   { name: "Home", href: "/", current: true, animation: true },
   { name: "Blog", href: "/blog", current: false, animation: true },
-  { name: "Proyectos", href: "/proyectos", current: false, animation: false },
-  { name: "Login", href: "/auth/login", current: false, animation: false },
+  { name: "Proyectos", href: "/proyectos", current: false, animation: true },
 ];
 
 export default function HeaderComponent() {
   const [isTop, setIsTop] = useState(true);
   const { push, pathname } = useRouter()
-  const value = useRouter();
   const { user } = useAuthContext();
   const isAnimation = navigation.some((el) => pathname.startsWith(el.href) && el.animation);
   
@@ -106,11 +104,12 @@ export default function HeaderComponent() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
-    };
-  });
+      handleScroll();
+    }
+  }, []);
 
   return (
     <Disclosure
@@ -127,7 +126,7 @@ export default function HeaderComponent() {
               <div
                 className={classNames(
                   styleHeader.heightHeader,
-                  "relative flex items-center justify-between"
+                  "relative flex items-center justify-between transition-[height] duration-1000"
                 )}
               >
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -161,23 +160,32 @@ export default function HeaderComponent() {
                           {item.name}
                         </Link>
                       ))}
-                      {
-                        Object.entries(user).length > 0 &&
-                        <>
-                          <Image 
-                            width={50}
-                            height={50}
-                            src={user.IMAGEN}
-                            alt="Avatar"
-                            onClick={() => push("/dashboard/home/admin")}
-                            className="rounded-full w-10 h-10 cursor-pointer"
-                          />
-                        </>
-                      }
+
+                      <Link
+                        href="/auth/login"
+                        className={classNames(
+                          styleHeader.colorLink,
+                          "font-Poppins font-semibold text-gray-300 hover:bg-gray-700 hover:underline px-3 py-2 rounded-md text-sm"
+                        )}
+                      >
+                        {Object.entries(user).length ? "Dashboard" : "Login"}
+                      </Link>
+                      
+                      <div>
+                        {
+                          Object.entries(user).length > 0 &&
+                          <>
+                            <Image 
+                              width={50}
+                              height={50}
+                              src={user.IMAGEN}
+                              alt="Avatar"
+                              className="rounded-full w-10 h-10"
+                            />
+                          </>
+                        }
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    Light
                   </div>
                 </div>
               </div>

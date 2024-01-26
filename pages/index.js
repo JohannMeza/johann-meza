@@ -1,13 +1,18 @@
 import { useState } from "react";
+import { classNames } from "../src/utils/ClassNames";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import { SendRequestData } from "src/helpers/helpRequestBackend";
+import { CardVerticalComponent } from "src/components/card/FrontcardComponent";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
-import FrontCardComponent from "src/components/card/FrontcardComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import frontStyles from "src/styles/Frontpage.module.css";
 import Controls from "src/components/Controls";
 import IconAwesome from 'src/components/icon/IconAwesome'
 import Image from "next/image";
 import Link from "next/link";
-import { classNames } from "../src/utils/ClassNames";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const ServicesInformation = [
   {
@@ -33,17 +38,16 @@ const ServicesInformation = [
   },
 ]
 
-export default function Home() {
+export default function Home({ listProyectosRecientes, listPublicaciones }) {
   const [technology, setTechnology] = useState('BackEnd')
   const handleChangeTech = (tech) => setTechnology(tech)
-  
   return (
     <BodyComponent>
       <div className={frontStyles.mainContent}>
         <div className="w-full bg-banner-opacity bg-cover bg-no-repeat" style={{backgroundAttachment: "fixed"}}>
           <div className="flex items-center justify-center min-h-screen bg-fixed box-base">
             <div className="flex items-center flex-col gap-5 lg:w-1/2">
-              <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/me.png" width={130} height={60} />
+              <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/profile.png" width={130} height={60} />
               <h1 className="text-title-2 font-Poppins font-semibold text-white">Hola, soy Johann</h1>
               <p className="text-paragraph-1 font-Poppins text-white text-center">Soy desarrollador Fullstack entusiasta por la creación de soluciones web innovadoras y funcionales. ¡Creando soluciones web que marcan la diferencia!</p>
               <span className="flex gap-5 text-button-1">
@@ -76,59 +80,231 @@ export default function Home() {
         <div className="flex flex-col items-center w-full my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Tecnologias</h2>
   
-          <div className="grid grid-cols-2 flex-wrap gap-4 mt-3">
+          <div className="grid w-[80%] grid-cols-2 flex-wrap gap-4 mt-3">
             <div className="flex flex-col boxshadow-card items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Front-End</h3>
-              <div className={frontStyles.techContentImg}>
-                <Image src='/assets/tech/nodejs.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/laravel.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/php.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/net.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/typescript.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="tech" />
-              </div>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/nodejs.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/laravel.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/php.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/net.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/typescript.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
 
             <div className="flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Back-End</h3>
-              <div className={frontStyles.techContentImg}>
-                <Image src='/assets/tech/html5.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/css.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/javascript.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/mui.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/tailwind.png' width={100} height={100} alt="tech" />
-              </div>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/html5.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/css.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/javascript.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/mui.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/tailwind.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
             
             <div className="flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Servidores</h3>
-              <div className={frontStyles.techContentImg}>
-                <Image src='/assets/tech/xampp.png' width={100} height={100} alt="tech" />
-              </div>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                centeredSlides={true}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/xampp.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
             
             <div className="flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Base de Datos</h3>
-              <div className={frontStyles.techContentImg}>
-                <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/sql.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/mysql.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="tech" />
-              </div>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/sql.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/mysql.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
 
-            <div className="w-full col-span-2 flex flex-col items-center gap-5 boxborder-base p-8">
+            <div className="flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Diseño Gráfico</h3>
-              <div className={frontStyles.techContentImg}>
-                <Image src='/assets/tech/figma.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/adobe-photoshop.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/adobe-illustrator.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/adobe-xd.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/corel-draw.png' width={100} height={100} alt="tech" />
-                <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="tech" />
-              </div>
+              <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/figma.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/adobe-photoshop.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/adobe-illustrator.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/adobe-xd.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/corel-draw.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="tech" />
+                    <span>Node js</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
           </div>
         </div>
@@ -138,43 +314,49 @@ export default function Home() {
           
           <div className="grid grid-cols-3 w-4/5 gap-8 mt-3">
             {/* PROYECTOS */}
-            <FrontCardComponent
-              className="m-auto"
-              title={"Titulo"}
-              descripcionCorta={"Descripcion"}
-              img={""}
-            />
-            <FrontCardComponent
-              className="m-auto"
-              title={"Titulo"}
-              descripcionCorta={"Descripcion"}
-              img={""}
-            />
-            <FrontCardComponent
-              className="m-auto"
-              title={"Titulo"}
-              descripcionCorta={"Descripcion"}
-              img={""}
-            />
+            {
+              listProyectosRecientes.map((el) => (
+                <CardVerticalComponent
+                  key={el.ID_PROYECTOS}
+                  className="m-auto"
+                  title={el.PROYECTO}
+                  descripcionCorta={el.DESCRIPCION_CORTA}
+                  img={el.IMAGEN}
+                  slug={`/proyectos/${el.SLUG}`}
+                />
+              ))
+            }
           </div>
         </div>
 
         <div className="flex flex-col items-center my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Quizas te pueda interesar</h2>
           
-          <div className="grid grid-cols-2 w-4/5 gap-8 bg-gradient rounded-lg px-8 py-16 mt-3">
-            <FrontCardComponent
-              className="m-auto w-2/3"
-              title={"Titulo"}
-              descripcionCorta={"Descripcion"}
-              img={""}
-            />
-            <FrontCardComponent
-              className="m-auto w-2/3"
-              title={"Titulo"}
-              descripcionCorta={"Descripcion"}
-              img={""}
-            />
+          <div className="w-4/5 bg-gradient rounded-lg px-8 py-16 mt-3">
+            <Swiper
+              slidesPerView={2}
+              spaceBetween={30}
+              pagination={{ clickable: true }}
+              modules={[Autoplay, Pagination]}
+              className={frontStyles.lastPublicaciones}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+            >
+              {
+                listPublicaciones.map(el => (
+                  <SwiperSlide key={el.id_publicaciones}>
+                    <CardVerticalComponent
+                      title={el.titulo}
+                      descripcionCorta={el.descripcion_corta}
+                      img={el.portada}
+                      slug={`/blog/${el.slug}`}
+                    />
+                  </SwiperSlide>
+                ))
+              }
+            </Swiper>
           </div>
         </div>
         
@@ -206,4 +388,42 @@ const CardServicesComponent = ({ title, description, alt, bonnus, image }) => {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps = async () => {
+  let listProyectosRecientes = []
+  let listPublicaciones = [];
+  
+  const getProyectosRecientes = async () => {
+    await SendRequestData({
+      queryId: 70,
+      body: { },
+      success: (resp) => listProyectosRecientes = resp.dataList || [],
+      error: (err) => {
+        const { message, status } = err;
+        status < 500 && alert.error(message);
+      },
+    });
+  }
+
+  const getLastPublicaciones = async () => {
+    await SendRequestData({
+      queryId: 71,
+      body: { id_categorias: 1 },
+      success: (resp) => (listPublicaciones = resp.dataList || []),
+      error: (err) => {
+        const { message, status } = err;
+        status < 500 && alert.error(message);
+      },
+    });
+  };
+
+  try {
+    await getProyectosRecientes()
+    await getLastPublicaciones()
+    return { props: { listProyectosRecientes, listPublicaciones } }
+  } catch (err) {
+    console.error(err)
+    return { props: { comentarios: [] } }
+  }
 }
