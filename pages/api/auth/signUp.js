@@ -2,8 +2,16 @@
 import { REQUEST_DATABASE } from "server/helpers/request";
 import MessageUtil from  "server/util/MessageUtil"
 import bcrypt  from "bcrypt"
+import NextCors from "nextjs-cors";
 
 const AuthSignUpController = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+  
   try {
     const { PASSWORD } = req.body.body;
     let passEncode;

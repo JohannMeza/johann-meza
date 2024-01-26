@@ -6,8 +6,16 @@ import { serialize } from "cookie";
 import MessageUtil from "server/util/MessageUtil"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import NextCors from "nextjs-cors";
 
 const AuthSignInController = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+  
   try {
     const { EMAIL, PASS } = req.body.body;
     const { queryId } = req.body;

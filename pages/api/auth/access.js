@@ -5,8 +5,16 @@ import { verify } from "jsonwebtoken"
 import { CodificarBase64 } from "server/util/FunctionUtil"
 import { serialize } from "cookie";
 import MessageUtil from "server/util/MessageUtil"
+import NextCors from 'nextjs-cors';
 
 const AuthAccessController = async (req, res) => {
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+ });
+  
   const TOKEN = req.cookies[EnvConstants.REACT_APP_TOKEN];
 
   try {
@@ -25,7 +33,7 @@ const AuthAccessController = async (req, res) => {
 
       if (!passDecode) throw ({ error: true, message: 'La contraseña es incorrecta', status: 401 })
       if (result.error) throw({ ...result });
-
+      console.log(res);
       return res.status(201).json({...data, message: "Te has logueado con éxito"})
     }
   } catch (err) {
@@ -39,6 +47,8 @@ const AuthAccessController = async (req, res) => {
       })
       res.setHeader('Set-Cookie', serialized)
     }
+    console.log(res);
+
     return res.status(err.status || 401).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }
