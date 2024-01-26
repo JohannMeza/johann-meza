@@ -19,6 +19,7 @@ export const SaveRequestData = (props) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
       let { status, message } = response?.data
       error(response?.data)
@@ -31,6 +32,8 @@ export const SaveRequestData = (props) => {
     .catch(err => {
       console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -65,6 +68,8 @@ export const SendRequestData = (props) => {
     .then(resp => success({...resp?.data}))
     .catch(err => {
       let { response } = err;
+      if (!response) return error([]);
+      
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -88,7 +93,10 @@ export const FileRequestData = (config) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -100,6 +108,8 @@ export const FileRequestData = (config) => {
     .catch(err => {
       console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -117,7 +127,10 @@ export const FormRequestData = (config) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -129,6 +142,8 @@ export const FormRequestData = (config) => {
     .catch(err => {
       console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -145,7 +160,10 @@ export const ImageRequestData = (props) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+      
       let { status, message } = response?.data
       error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -157,6 +175,8 @@ export const ImageRequestData = (props) => {
     .catch(err => {
       console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -180,7 +200,10 @@ export const SignInRequestData = (config) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -190,7 +213,10 @@ export const SignInRequestData = (config) => {
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_IN, params)
     .then(resp => success({...resp?.data}))
     .catch(err => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
@@ -214,7 +240,9 @@ export const SignUpRequestData = (config) => {
       success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
       let { status, message } = response?.data
       error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
@@ -224,7 +252,10 @@ export const SignUpRequestData = (config) => {
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_UP, params)
     .then(resp => success({...resp?.data}))
     .catch(err => {
+      console.error(err)
       let { response } = err;
+      if (!response) return error([]);
+
       let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
       error(response?.data)
