@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import { SendRequestData, ImageRequestData, SaveRequestData } from "src/helpers/helpRequestBackend";
+import {  ImageRequestData, SaveRequestData } from "src/helpers/helpRequestBackend";
 import { useQuill } from 'react-quilljs';
 import { formats } from 'src/config/Toolbar';
 import { useFormValidation } from "src/hooks/useFormValidation";
@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FormatDateConstants } from "src/constants/FormatDateConstants";
 import { Pagination, Autoplay } from 'swiper/modules';
 import { useRouter } from "next/router";
+import { REQUEST_DATABASE } from "server/helpers/request";
 import hljs from 'highlight.js';
 import DateUtil from 'src/utils/DateUtil';
 import BannerComponent from 'src/components/layout/frontpage/header/BannerComponent';
@@ -27,26 +28,6 @@ import 'highlight.js/styles/monokai-sublime.css'
 import 'quill/dist/quill.snow.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
-const ButtonStyleLeft = {
-  transition: '.5s opacity ease',
-  position: 'absolute',
-  zIndex: '50',
-  left: '0',
-  top: '0',
-  bottom: '0 ',
-  display: 'flex',
-};
-
-const ButtonStyleRight = {
-  transition: '.5s opacity ease',
-  position: 'absolute',
-  zIndex: '50',
-  right: '0',
-  top: '0',
-  bottom: '0',
-  display: 'flex',
-}
 
 const dataInitial = { COMENTARIO: '' }
 const dataInitialRespuestas = { }
@@ -71,7 +52,6 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
   const { user } = useAuthContext();
   const [, setCountMove] = useState(0)
   const [comentarios, setComentarios] = useState([])
-  const boxPublicaciones = useRef(null)
   const alert = useAlert();
   const { push } = useRouter()
   const { quill, quillRef } = useQuill({readOnly: true, modules: {syntax: {
@@ -81,18 +61,6 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     }
   }, toolbar: false}, formats});
 
-  const moverScroll = (isMove) => {
-    let cantidadPublicacion = listPublicacionesRelacionadas.length - 1;
-    setCountMove((countMove) => {
-      let valueCount = (isMove) 
-        ? ((countMove < cantidadPublicacion) ? countMove + 1 : 0)
-        : (countMove > 0 ? countMove - 1 : cantidadPublicacion)
-
-      let movePx = boxPublicaciones.current.offsetWidth * valueCount
-      boxPublicaciones.current.scrollLeft = movePx
-      return valueCount
-    })
-  }
   const saveComentario = (idComentarioResponder, idComentarioPadre) => {
     if (idComentarioResponder) {
       if (!dataRespuestas[idComentarioResponder]) {
@@ -105,7 +73,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
 
         setErrorsRespuestas({...respuestas})
       }
-      if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+      if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
 
       setLoader(true)
       SaveRequestData({
@@ -119,11 +87,11 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
         success: (resp) => {
           setLoader(false)
 
-          const comentariosFiltrados = comentarios.map(el => {
+          const comentariosFiltrados = comentarios?.map(el => {
             if (el.ID_COMENTARIOS_PUBLICACIONES === idComentarioResponder) return {
               ...el,
               FLG_RESPONDER: false,
-              RESPUESTAS: el.RESPUESTAS.map(res => ({ ...res, FLG_RESPONDER: false }))
+              RESPUESTAS: el.RESPUESTAS?.map(res => ({ ...res, FLG_RESPONDER: false }))
             }
             return el
           });
@@ -140,7 +108,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
       })
     } else {
       if (validate()) {
-        if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+        if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
         setLoader(true)
         SaveRequestData({
           queryId: 46,
@@ -168,6 +136,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
       success: (resp) => {
         setLoader(false)
         setComentarios(resp.dataList)
+        console.log(resp.dataList)
       }, 
       error: (err) => {
         setLoader(false)
@@ -176,15 +145,16 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
       }
     })
   }
-  const handleClickResponder = (idComentarioPadre, idComentarioRespuesta) => {
-    if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
 
-    const comentariosFiltrados = comentarios.map(el => {
+  const handleClickResponder = (idComentarioPadre, idComentarioRespuesta) => {
+    if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+
+    const comentariosFiltrados = comentarios?.map(el => {
       if (el.ID_COMENTARIOS_PUBLICACIONES === idComentarioPadre) return {
         ...el,
         FLG_RESPONDER: idComentarioRespuesta === 0,
         RESPUESTAS: idComentarioRespuesta !== 0
-          ? el.RESPUESTAS.map(res => res.ID_COMENTARIOS_PUBLICACIONES === idComentarioRespuesta
+          ? el.RESPUESTAS?.map(res => res.ID_COMENTARIOS_PUBLICACIONES === idComentarioRespuesta
             ? { ...res, FLG_RESPONDER: true }
             : res )
           : el.RESPUESTAS
@@ -200,11 +170,11 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     let comentariosFiltrados = []
 
     if (idComentarioPadre) {
-      comentariosFiltrados = comentarios.map(el => {
+      comentariosFiltrados = comentarios?.map(el => {
         if (el.ID_COMENTARIOS_PUBLICACIONES === idComentarioPadre) return {
           ...el,
           FLG_RESPONDER: false,
-          RESPUESTAS: el.RESPUESTAS.map(res => {
+          RESPUESTAS: el.RESPUESTAS?.map(res => {
             if (res.ID_COMENTARIOS_PUBLICACIONES === idComentario) return {
               ...res,
               FLG_RESPONDER: false,
@@ -215,11 +185,11 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
         return el
       });
     } else {
-      comentariosFiltrados = comentarios.map(el => {
+      comentariosFiltrados = comentarios?.map(el => {
         if (el.ID_COMENTARIOS_PUBLICACIONES === idComentario) return {
           ...el,
           FLG_RESPONDER: false,
-          RESPUESTAS: el.RESPUESTAS.map(res => ({ ...res, FLG_RESPONDER: false }))
+          RESPUESTAS: el.RESPUESTAS?.map(res => ({ ...res, FLG_RESPONDER: false }))
         }
         return el
       });
@@ -239,9 +209,8 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
   
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
-    // boxPublicaciones.current.scrollLeft = 0;
     setCountMove(0);
-    setComentarios(dataPublicacion.COMENTARIOS)
+    getComentarios();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion, listPublicacionesRelacionadas])
 
@@ -315,14 +284,14 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                 <div>
                   <h2 className='title-base text-title-3'>Comentarios</h2>
 
-                  {comentarios.length === 0 ? (
+                  {comentarios?.length === 0 ? (
                     <p className="text-center my-8 block">
                       Todavía no se agregaron comentarios, <br /> se la primera
                       persona en comentar
                     </p>
                   ) : (
                     <div className="flex flex-col gap-4">
-                      {comentarios.map((comentario, index) => (
+                      {comentarios?.map((comentario, index) => (
                         <Fragment key={index}>
                           <div
                             key={index}
@@ -397,14 +366,14 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                             )}
                           </div>
 
-                          {comentario.RESPUESTAS.length > 0 && (
+                          {comentario.RESPUESTAS?.length > 0 && (
                             <div className={classNames('pl-8')}>
                               <h2 className="title-base text-title-3">
                                 Respuestas
                               </h2>
 
                               <div className="flex flex-col gap-4">
-                                {comentario.RESPUESTAS.map(
+                                {comentario.RESPUESTAS?.map(
                                   (respuesta, index) => (
                                     <div
                                       key={index}
@@ -516,8 +485,8 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                   }}
                 >
                   {
-                    listPublicacionesRelacionadas.length ? 
-                    listPublicacionesRelacionadas.map((el, index) => (
+                    listPublicacionesRelacionadas?.length ? 
+                    listPublicacionesRelacionadas?.map((el, index) => (
                       <SwiperSlide key={el.id_publicaciones}>
                         <PublicacionRelacionada key={index} data={el} />
                       </SwiperSlide>
@@ -555,20 +524,17 @@ const PublicacionRelacionada = ({ data }) => {
 
 export async function getStaticPaths() {
   let paths = []
-
-  const getPublicaciones = async () => {
-    await SendRequestData({
-      queryId: 34,
+  
+  const getPublicaciones = async () => {    
+    let params = { 
+      queryId: 34, 
       body: { ID_ETIQUETAS: '' },
-      success: (resp) => {
-        let publicaciones = resp.dataList || [];
-        paths = publicaciones.map(({slug}) => ({params: {slug}}))
-      },
-      error: (err) => {
-        const { message, status } = err;
-        status < 500 && alert.error(message);
-      },
-    });
+      ID_USUARIOS: 1, 
+      pagination: {}
+    };
+
+    const { dataList } = await REQUEST_DATABASE(params);
+    paths = dataList?.map(({slug}) => ({ params: {slug} }))
   };
   
   try {
@@ -582,35 +548,29 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   let SLUG = params.slug;
   
-  let dataPublicacion = [], listPublicacionesRelacionadas = [], quillContent = {};
+  let dataPublicacion = {}, listPublicacionesRelacionadas = [], quillContent = {};
   
   const getPublicacionesRelacionadas = async () => {
-    await SendRequestData({
-      queryId: 38,
+    let params = { 
+      queryId: 38, 
       body: { SLUG },
-      success: (resp) => {
-        listPublicacionesRelacionadas = resp.dataList
-      },
-      error: (err) => {
-        const { message, status } = err;
-        status < 500 && alert.error(message);
-      },
-    });
+      ID_USUARIOS: 1, 
+      pagination: {}
+    };
+    const resp = await REQUEST_DATABASE(params);
+    listPublicacionesRelacionadas = resp.dataList
   }
 
   const getPublicacion = async () => {
-    await ImageRequestData({
-      queryId: 36,
+    let params = { 
+      queryId: 36, 
       body: { SLUG },
-      success: (resp) => {
-        dataPublicacion = resp.dataObject
-        quillContent = JSON.parse(resp.dataObject.PUBLICACION)
-      },
-      error: (err) => {
-        const { message, status } = err;
-        status < 500 && alert.error(message);
-      },
-    });
+      ID_USUARIOS: 1, 
+      pagination: {}
+    };
+    const resp = await REQUEST_DATABASE(params);
+    dataPublicacion = resp.dataObject
+    quillContent = JSON.parse(resp.dataObject.PUBLICACION)
   }
 
   try {

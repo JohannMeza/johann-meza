@@ -7,6 +7,7 @@ import { AlertUtilMessage } from "src/utils/AlertUtil";
 import { useAlert } from "react-alert";
 import { classNames } from "src/utils/ClassNames";
 import { FormatDateConstants } from "src/constants/FormatDateConstants";
+import { REQUEST_DATABASE } from "server/helpers/request";
 import React from "react";
 import hljs from 'highlight.js';
 import DateUtil from 'src/utils/DateUtil';
@@ -67,7 +68,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
 
         setErrorsRespuestas({...respuestas})
       }
-      if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+      if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
 
       setLoader(true)
       SaveRequestData({
@@ -81,11 +82,11 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
         success: (resp) => {
           setLoader(false)
 
-          const comentariosFiltrados = comentarios.map(el => {
+          const comentariosFiltrados = comentarios?.map(el => {
             if (el.ID_COMENTARIOS_PROYECTOS === idComentarioResponder) return {
               ...el,
               FLG_RESPONDER: false,
-              RESPUESTAS: el.RESPUESTAS.map(res => ({ ...res, FLG_RESPONDER: false }))
+              RESPUESTAS: el.RESPUESTAS?.map(res => ({ ...res, FLG_RESPONDER: false }))
             }
             return el
           });
@@ -102,7 +103,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
       })
     } else {
       if (validate()) {
-        if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+        if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
         setLoader(true)
         SaveRequestData({
           queryId: 63,
@@ -180,13 +181,13 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   }
 
   const handleClickResponder = (idComentarioPadre, idComentarioRespuesta) => {
-    if (!Object.entries(user).length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
-    const comentariosFiltrados = comentarios.map(el => {
+    if (!Object.entries(user)?.length) return AlertUtilMessage({ title: 'No puedes comentar', text: 'Para poder comentar tienes que iniciar sesion o registrarte', type: 'info' })
+    const comentariosFiltrados = comentarios?.map(el => {
       if (el.ID_COMENTARIOS_PROYECTOS === idComentarioPadre) return {
         ...el,
         FLG_RESPONDER: idComentarioRespuesta === 0,
         RESPUESTAS: idComentarioRespuesta !== 0
-          ? el.RESPUESTAS.map(res => res.ID_COMENTARIOS_PROYECTOS === idComentarioRespuesta
+          ? el.RESPUESTAS?.map(res => res.ID_COMENTARIOS_PROYECTOS === idComentarioRespuesta
             ? { ...res, FLG_RESPONDER: true }
             : res )
           : el.RESPUESTAS
@@ -202,11 +203,11 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     let comentariosFiltrados = []
 
     if (idComentarioPadre) {
-      comentariosFiltrados = comentarios.map(el => {
+      comentariosFiltrados = comentarios?.map(el => {
         if (el.ID_COMENTARIOS_PROYECTOS === idComentarioPadre) return {
           ...el,
           FLG_RESPONDER: false,
-          RESPUESTAS: el.RESPUESTAS.map(res => {
+          RESPUESTAS: el.RESPUESTAS?.map(res => {
             if (res.ID_COMENTARIOS_PROYECTOS === idComentario) return {
               ...res,
               FLG_RESPONDER: false,
@@ -217,11 +218,11 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
         return el
       });
     } else {
-      comentariosFiltrados = comentarios.map(el => {
+      comentariosFiltrados = comentarios?.map(el => {
         if (el.ID_COMENTARIOS_PROYECTOS === idComentario) return {
           ...el,
           FLG_RESPONDER: false,
-          RESPUESTAS: el.RESPUESTAS.map(res => ({ ...res, FLG_RESPONDER: false }))
+          RESPUESTAS: el.RESPUESTAS?.map(res => ({ ...res, FLG_RESPONDER: false }))
         }
         return el
       });
@@ -245,7 +246,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
     setCountMove(0);
-    setComentarios(dataPublicacion.COMENTARIOS);
+    getComentarios()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion])
 
@@ -314,7 +315,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                 <h2 className='title-base text-title-3'>Tecnologias Utilizadas</h2>
                 <div className="flex gap-3">
                   {
-                    dataPublicacion.TECNOLOGIAS.map((el, index) => (
+                    dataPublicacion.TECNOLOGIAS?.map((el, index) => (
                       <Image 
                         key={index} 
                         src={el.IMAGEN} 
@@ -343,14 +344,14 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                 <div>
                   <h2 className='title-base text-title-3'>Comentarios</h2>
 
-                  {comentarios.length === 0 ? (
+                  {comentarios?.length === 0 ? (
                     <p className="text-center my-8 block">
                       Todavía no se agregaron comentarios, <br /> se la primera
                       persona en comentar
                     </p>
                   ) : (
                     <div className="flex flex-col gap-4">
-                      {comentarios.map((comentario, index) => (
+                      {comentarios?.map((comentario, index) => (
                         <React.Fragment key={index}>
                           <div
                             key={index}
@@ -425,14 +426,14 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                             )}
                           </div>
 
-                          {comentario.RESPUESTAS.length > 0 && (
+                          {comentario.RESPUESTAS?.length > 0 && (
                             <div className={classNames('pl-8')}>
                               <h2 className="title-base text-title-3">
                                 Respuestas
                               </h2>
 
                               <div className="flex flex-col gap-4">
-                                {comentario.RESPUESTAS.map(
+                                {comentario.RESPUESTAS?.map(
                                   (respuesta, index) => (
                                     <div
                                       key={index}
@@ -537,22 +538,20 @@ export async function getStaticPaths() {
   let paths = []
 
   const getPublicaciones = async () => {
-    await SendRequestData({
-      queryId: 61,
-      body: {
+    let params = { 
+      queryId: 61, 
+      body: { 
         PROYECTO: '',
         ID_ESTADO_PROYECTO: '0',
         ID_TECNOLOGIAS: '',
         ID_ESTADO: 4 
       },
-      success: (resp) => {
-        paths = resp.dataList.map(({SLUG}) => ({params: { slug: SLUG }}))
-      },
-      error: (err) => {
-        const { message, status } = err;
-        status < 500 && alert.error(message);
-      },
-    });
+      ID_USUARIOS: 1, 
+      pagination: {}
+    };
+
+    const { dataList } = await REQUEST_DATABASE(params);
+    paths = dataList?.map(({SLUG}) => ({ params: { slug: SLUG } }))
   };
   
   try {
@@ -568,18 +567,15 @@ export async function getStaticProps({ params }) {
   let dataPublicacion = [], quillContent = {};
 
   const getPublicacion = async () => {
-    await ImageRequestData({
-      queryId: 62,
+    let params = { 
+      queryId: 62, 
       body: { SLUG },
-      success: (resp) => {
-        dataPublicacion = resp.dataObject
-        quillContent = resp.dataObject.DESCRIPCION_LARGA
-      },
-      error: (err) => {
-        const { message, status } = err;
-        status < 500 && alert.error(message);
-      },
-    });
+      ID_USUARIOS: 1, 
+      pagination: {}
+    };
+    const resp = await REQUEST_DATABASE(params);
+    dataPublicacion = resp.dataObject
+    quillContent = resp.dataObject.DESCRIPCION_LARGA
   }
 
   try {
