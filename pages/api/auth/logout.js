@@ -1,15 +1,9 @@
 import { EnvConstants } from "util/EnvConstants";
 import { serialize } from "cookie";
-import NextCors from "nextjs-cors";
+import { EnabledCors } from "server/util/FunctionUtil"
 
 const AuthLogoutController = async (req, res) => {
-  await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-  
+  await EnabledCors(req, res);  
   const TOKEN = req.cookies[EnvConstants.REACT_APP_TOKEN];
   if (!TOKEN) return res.status(401).json({error: 'No token'})
   try {

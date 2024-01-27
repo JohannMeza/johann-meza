@@ -1,12 +1,12 @@
 /* eslint-disable no-throw-literal */
 import { REQUEST_DATABASE } from "server/helpers/request"
 import { ValidarAuth, BodyParser } from "server/util/FunctionUtil"
-import { UploadFile } from "server/util/UploadUtil";
-
+import { EnabledCors } from "server/util/FunctionUtil"
 import MessageUtil from "server/util/MessageUtil"
 export const config = { api: { bodyParser: false } };
 
 const FormdataController = async (req, res) => {
+  await EnabledCors(req, res);
   try {
     const user = await ValidarAuth(req)
     const options = await BodyParser(req);

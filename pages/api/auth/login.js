@@ -1,16 +1,11 @@
 import { serialize } from "cookie";
 import { EnvConstants } from "util/EnvConstants";
+import { EnabledCors } from "server/util/FunctionUtil";
 import jwt from "jsonwebtoken";
-import NextCors from "nextjs-cors";
 
 const AuthLoginController = async (req, res) => {
-  await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-  
+  await EnabledCors(req, res);
+
   try {
     const { email, password } = req.body;
     const {myTokenName} = req.cookies;

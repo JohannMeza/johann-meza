@@ -1,9 +1,11 @@
 import { REQUEST_DATABASE } from "server/helpers/request"
 import { ValidarAuth, CodificarBase64 } from "server/util/FunctionUtil"
+import { EnabledCors } from "server/util/FunctionUtil"
 import MessageUtil from "server/util/MessageUtil"
 import typesErrors from "server/util/MessageUtil.js";
 
 const ProfileController = async (req, res) => {
+  await EnabledCors(req, res);
   try {
     await ValidarAuth(req)
     const result = await REQUEST_DATABASE(req.body);

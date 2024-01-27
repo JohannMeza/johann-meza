@@ -1,7 +1,9 @@
 const { REQUEST_DATABASE } = require("server/helpers/request")
+import { EnabledCors } from "server/util/FunctionUtil"
 const MessageUtil = require("server/util/MessageUtil")
 
 const OptionsFrontController = async (req, res) => {
+  await EnabledCors(req, res);
   try {
     const result = await REQUEST_DATABASE(req.body);
     if (result.error) throw({ ...result });

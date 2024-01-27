@@ -1,9 +1,11 @@
 import { REQUEST_DATABASE } from "server/helpers/request"
-import { ValidarAuth, CodificarBase64 } from "server/util/FunctionUtil"
+import { CodificarBase64 } from "server/util/FunctionUtil"
+import { EnabledCors } from "server/util/FunctionUtil"
 import MessageUtil from "server/util/MessageUtil"
 import typesErrors from "server/util/MessageUtil.js";
 
 const ImageController = async (req, res) => {
+  await EnabledCors(req, res);
   try {
     const result = await REQUEST_DATABASE(req.body);
     const ObtenerPropImagen = (dataResponse) => {
