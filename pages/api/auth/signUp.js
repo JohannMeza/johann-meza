@@ -1,17 +1,11 @@
 /* eslint-disable no-throw-literal */
 import { REQUEST_DATABASE } from "server/helpers/request";
-import MessageUtil from  "server/util/MessageUtil"
+import { EnabledCors } from "server/util/FunctionUtil"
 import bcrypt  from "bcrypt"
-import NextCors from "nextjs-cors";
+import MessageUtil from  "server/util/MessageUtil"
 
 const AuthSignUpController = async (req, res) => {
-  await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
-  
+  await EnabledCors(req, res);
   try {
     const { PASSWORD } = req.body.body;
     let passEncode;

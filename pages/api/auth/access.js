@@ -4,18 +4,12 @@ import { EnvConstants } from "util/EnvConstants"
 import { verify } from "jsonwebtoken"
 import { CodificarBase64 } from "server/util/FunctionUtil"
 import { serialize } from "cookie";
+import { EnabledCors } from "server/util/FunctionUtil"
 import MessageUtil from "server/util/MessageUtil"
-import NextCors from 'nextjs-cors';
 
 const AuthAccessController = async (req, res) => {
-  await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
- });
-  
-  const TOKEN = req.cookies[EnvConstants.REACT_APP_TOKEN];
+  await EnabledCors(req, res);
+  const TOKEN = req.cookies[EnvConstants.REACT_APP_TOKEN];  
 
   try {
     if (!TOKEN) throw ({ error: false, message: 'Unauthorized', status: 401 })

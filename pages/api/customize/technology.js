@@ -2,11 +2,13 @@
 import { REQUEST_DATABASE } from "server/helpers/request"
 import { UploadFile } from "server/util/UploadUtil";
 import { ValidarAuth } from "server/util/FunctionUtil"
+import { EnabledCors } from "server/util/FunctionUtil"
 import MessageUtil from "server/util/MessageUtil"
 
 export const config = { api: { bodyParser: false } };
 
 export const TechnologyController = async (req, res) => {
+  await EnabledCors(req, res);
   await ValidarAuth(req)
   const options = await UploadFile(req, true, null, "/public/assets/tech");
   let pathname = options.files?.IMAGEN[0]?.filepath;
