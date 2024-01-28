@@ -28,7 +28,6 @@ export default function BreakpointContextProvider ({ children }) {
       mediaQuery.addListener(updateBreakpoint);
     });
 
-    console.log(currentBreakpoint);
     setBreakpoint(currentBreakpoint);
   }
 
