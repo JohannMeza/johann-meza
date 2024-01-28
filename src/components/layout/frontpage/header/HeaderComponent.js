@@ -176,13 +176,13 @@ export default function HeaderComponent() {
                       {
                         Object.entries(user).length > 0 &&
                         <>
-                          <Image 
+                          {user?.IMAGEN && <Image 
                             width={50}
                             height={50}
                             src={user.IMAGEN}
                             alt="Avatar"
                             className="rounded-full w-10 h-10"
-                          />
+                          />}
                         </>
                       }
                     </div>

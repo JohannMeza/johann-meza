@@ -206,7 +206,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                       <div className="flex flex-col gap-2">
                         <div className="flex items-end gap-3">
                           <h2 style={{ lineHeight: 1 }} className="text-title-3 font-bold text-primary cursor-pointer" onClick={() => push(`/proyectos/${el.SLUG}`)}>{el.PROYECTO}</h2>
-                          <span className="text-span-1">{DateUtil().FormatDate(el.FECHA_CREACION)}</span>
+                          {/* <span className="text-span-1">{DateUtil().FormatDate(el.FECHA_CREACION)}</span> */}
                         </div>
                         <span className="text-span-1 font-bold">{el.TECNOLOGIAS}</span>
                         <p className="text-paragraph-2">{el.DESCRIPCION_CORTA}</p>

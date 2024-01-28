@@ -60,8 +60,11 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
           <div className="flex items-center justify-center min-h-screen bg-fixed box-base">
             <div className="flex items-center flex-col gap-5 w-4/5 lg:w-1/2">
               <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/profile.png" width={130} height={60} />
-              <div className={frontStyles.mainContentTitle}>
-                <h1 className="text-title-2 font-Poppins font-semibold text-white">Full Stack Developer</h1>
+              <div className="w-full flex flex-col gap-2 justify-stretch items-center">
+                <h1 className="text-title-3 font-Poppins font-semibold text-white">Johann Meza</h1>
+                <div className={frontStyles.mainContentTitle}>
+                  <h1 className="text-title-2 text-center font-Poppins font-semibold text-white">Full Stack Developer</h1>
+                </div>
               </div>
               <p className="text-paragraph-1 font-Poppins text-white text-center">React JS | TypeScript | API RESTful | GraphQL | SQL | PostgreSQL | MongoDB | .Net | Node JS | 8+</p>
             </div>
@@ -105,38 +108,32 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               >
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/nodejs.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/html5.png' width={100} height={100} alt="HTML5" />
+                    <span>HTML5</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/laravel.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/css.png' width={100} height={100} alt="CSS3" />
+                    <span>CSS3</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/php.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/javascript.png' width={100} height={100} alt="JavaScript" />
+                    <span>JavaScript</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/net.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="React JS" />
+                    <span>React JS</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/typescript.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="Vue JS" />
+                    <span>Vue JS</span>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -157,44 +154,32 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               >
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/html5.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/php.png' width={100} height={100} alt="PHP" />
+                    <span>PHP</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/css.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/laravel.png' width={100} height={100} alt="Laravel" />
+                    <span>Laravel</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/javascript.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/typescript.png' width={100} height={100} alt="TypeScript" />
+                    <span>TypeScript</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="Next JS" />
+                    <span>Next JS</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/mui.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/tailwind.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/net.png' width={100} height={100} alt="Net" />
+                    <span>.Net</span>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -205,8 +190,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               <Swiper
                 slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
-                centeredSlides={true}
-                pagination={{ clickable: true }}
+                centerInsufficientSlides={true}
                 modules={[Autoplay, Pagination]}
                 className={frontStyles.techContentImg}
                 autoplay={{
@@ -216,8 +200,8 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               >
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/xampp.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/xampp.png' width={100} height={100} alt="Xampp" />
+                    <span>Xampp</span>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -239,36 +223,43 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               >
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="Mongo DB" />
+                    <span>Mongo DB</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/sql.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/sql.png' width={100} height={100} alt="SQL" />
+                    <span>SQL</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/mysql.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/mysql.png' width={100} height={100} alt="MySql" />
+                    <span>MySql</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="PostgreSQL" />
+                    <span>PostgreSQL</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/dynamo.png' width={100} height={100} alt="DynamoDB" />
+                    <span>DynamoDB</span>
                   </div>
                 </SwiperSlide>
               </Swiper>
             </div>
 
             <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
-              <h3 className="text-title-3 font-Poppins font-semibold">Diseño Gráfico</h3>
+              <h3 className="text-title-3 font-Poppins font-semibold">Integraciones</h3>
               <Swiper
                 slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
+                centerInsufficientSlides={true}
                 pagination={{ clickable: true }}
                 modules={[Autoplay, Pagination]}
                 className={frontStyles.techContentImg}
@@ -279,38 +270,48 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               >
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/figma.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/stripe.png' width={100} height={100} alt="tech" />
+                    <span>Stripe</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/adobe-photoshop.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/niubiz.png' width={130} height={100} alt="Niubiz" />
+                    <span>Niubiz</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/adobe-illustrator.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/facele.png' width={100} height={100} alt="tech" />
+                    <span>Facele</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Otros</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                centerInsufficientSlides={true}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/figma.png' width={100} height={100} alt="Figma" />
+                    <span>Figma</span>
                   </div>
                 </SwiperSlide>
                 <SwiperSlide>
                   <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/adobe-xd.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/corel-draw.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
-                    <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="tech" />
-                    <span>Node js</span>
+                    <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="WordPress" />
+                    <span>WordPress</span>
                   </div>
                 </SwiperSlide>
               </Swiper>
@@ -331,7 +332,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
                   title={el.PROYECTO}
                   descripcionCorta={el.DESCRIPCION_CORTA}
                   cantComments={el.CANTIDAD_COMENTARIOS}
-                  fechaCreacion={el.FECHA_CREACION}
+                  // fechaCreacion={el.FECHA_CREACION}
                   img={el.IMAGEN}
                   slug={`/proyectos/${el.SLUG}`}
                 />
