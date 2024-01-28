@@ -15,11 +15,10 @@ import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import useAuthContext from "src/hooks/useAuthContext";
 import Image from "next/image";
 import Controls from "src/components/Controls";
-import IconAwesome from 'src/components/icon/IconAwesome'
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import useLoaderContext from 'src/hooks/useLoaderContext';
 import frontStyles from "src/styles/Frontpage.module.css";
-import BannerComponent from 'src/components/layout/frontpage/header/BannerComponent';
+import Icon from 'src/components/icon/Icon'
 import 'highlight.js/styles/monokai-sublime.css'
 import 'quill/dist/quill.snow.css';
 
@@ -236,22 +235,22 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     setErrorsRespuestas(errores)
   }
 
-  const getImagesUserAndTech = (ID_PROYECTOS) => {
-    setLoader(true)
-    ImageRequestData({
-      queryId: 72,
-      body: { ID_PROYECTOS: ID_PROYECTOS },
-      success: (resp) => {
-        setLoader(false)
-        setImages(resp.dataObject)
-      },
-      error: (err) => {
-        setLoader(false)
-        const { message, status } = err;
-        (status < 500) && alert.error(message)
-      }
-    })
-  }
+  // const getImagesUserAndTech = (ID_PROYECTOS) => {
+  //   setLoader(true)
+  //   ImageRequestData({
+  //     queryId: 72,
+  //     body: { ID_PROYECTOS: ID_PROYECTOS },
+  //     success: (resp) => {
+  //       setLoader(false)
+  //       setImages(resp.dataObject)
+  //     },
+  //     error: (err) => {
+  //       setLoader(false)
+  //       const { message, status } = err;
+  //       (status < 500) && alert.error(message)
+  //     }
+  //   })
+  // }
   
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent)
@@ -265,7 +264,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
     setCountMove(0);
     getComentarios()
-    getImagesUserAndTech(dataPublicacion?.ID_PROYECTOS)
+    // getImagesUserAndTech(dataPublicacion?.ID_PROYECTOS)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion])
 
@@ -282,10 +281,10 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
           <div className="grid grid-cols-1 lg:grid-cols-[70%] justify-center gap-5">
             <div>
               {
-                images?.IMAGEN &&
+                dataPublicacion?.PORTADA &&
                 <Image 
                   priority
-                  src={images?.IMAGEN} 
+                  src={dataPublicacion?.PORTADA} 
                   alt={dataPublicacion?.PROYECTO} 
                   width={950} 
                   height={450} 
@@ -294,9 +293,12 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
               }
               <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
                 <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
-                  {
+                  {/* {
                     dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion?.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
-                  }
+                  } */}
+                  <div className="bg-gradient-gris-300 p-3 w-[75px] h-[75px] rounded-full">
+                    <Icon.User className="text-white" />
+                  </div>
                   <div className='flex flex-col justify-center'>
                     <span className=''>Publicado por:</span>         
                     <span className='text-paragraph-1 font-bold'>{ dataPublicacion?.AUTOR }</span>
@@ -304,9 +306,9 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                   </div>
                 </div>
                 <div className='flex flex-col lg:text-right font-semibold text-paragraph-3 gap-2 lg:gap-0'>
-                  <span>{ DateUtil().FormatDate(dataPublicacion?.FECHA_PUBLICACION) }</span>
-                  <span>{dataPublicacion?.UBICACION}</span>
-                  <div className='flex gap-1 lg:flex-row-reverse'>
+                  {/* <span>{ DateUtil().FormatDate(dataPublicacion?.FECHA_PUBLICACION) }</span>
+                  <span>{dataPublicacion?.UBICACION}</span> */}
+                  {/* <div className='flex gap-1 lg:flex-row-reverse'>
                     {
                       dataPublicacion?.NETWORKS?.map((el, index) => (
                         el.NETWORK === 'facebook'
@@ -318,7 +320,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                               : null
                       ))
                     }
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <article className="!h-auto" ref={quillRef}></article>
@@ -326,21 +328,26 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                 <h2 className='title-base text-title-3'>Tecnologias Utilizadas</h2>
                 <div className="flex gap-3">
                   {
-                    images?.TECNOLOGIAS?.map((el, index) => (
-                      <div key={index} className="flex flex-col items-center gap-2 p-4">
-                        <Image 
-                          src={el.IMAGEN} 
-                          alt={el.TECNOLOGIA} 
-                          title={el.TECNOLOGIA} 
-                          width={30} 
-                          height={30} 
-                          style={{
-                            width: 'auto',
-                            height: '50px',
-                          }}
-                        />
-                        <span className="text-paragraph-3 font-bold">{el.TECNOLOGIA}</span>
-                      </div>
+                    dataPublicacion?.TECNOLOGIAS?.map((el, index) => (
+                      <>
+                        {
+                          el.FILENAME && 
+                          <div key={index} className="flex flex-col items-center gap-2 p-4">
+                            <Image 
+                              src={`/assets/tech/${el.FILENAME}.${el.FILETYPE}`} 
+                              alt={el.FILENAME} 
+                              title={el.TECNOLOGIA} 
+                              width={30} 
+                              height={30} 
+                              style={{
+                                width: 'auto',
+                                height: '50px',
+                              }}
+                            />
+                            <span className="text-paragraph-3 font-bold">{el.TECNOLOGIA}</span>
+                          </div>
+                        }
+                      </>
                     ))
                   }
                 </div>

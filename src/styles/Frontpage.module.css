@@ -97,6 +97,7 @@
 .techContentImg img {
   width: auto;
   height: 45px;
+  object-fit: contain;
 }
 
 

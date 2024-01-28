@@ -40,7 +40,7 @@ export default function TecnologiasDetailPage({ dataInitial, listEntornos }) {
   const saveOrUpdateEntornos = () => {
     let arrEntornos = [...data.ID_ENTORNOS.split(',').map(el => { return { id_entornos: el } })];
     if (arrEntornos[0].id_entornos === '') arrEntornos.splice(0, 1);
-
+    
     if (data.IMAGEN || files.length === 0) {
       setLoader(true) 
       SaveRequestData({
@@ -76,6 +76,7 @@ export default function TecnologiasDetailPage({ dataInitial, listEntornos }) {
       })
     }
   }
+
   return (
     <MainComponent>
       <div>
@@ -97,6 +98,7 @@ export default function TecnologiasDetailPage({ dataInitial, listEntornos }) {
                 value={data}
                 error={errors}
                 onChange={handleInputFormChange}
+                zIndex={30}
               />
               <Controls.SelectComponent
                 list={estados}
@@ -105,6 +107,23 @@ export default function TecnologiasDetailPage({ dataInitial, listEntornos }) {
                 label="Estado"
                 error={errors}
                 onChange={handleInputFormChange}
+                zIndex={20}
+              />
+              <Controls.InputComponent
+                name="FILENAME"
+                value={data}
+                label="Nombre de Archivo"
+                error={errors}
+                onChange={handleInputFormChange}
+              />
+              <Controls.SelectComponent
+                list={ListConstants.LIST_TIPO_IMAGENES}
+                name="FILETYPE"
+                value={data}
+                label="Tipo de Imagen"
+                error={errors}
+                onChange={handleInputFormChange}
+                zIndex={10}
               />
               <Controls.FileComponent
                 label="Logotipo"
@@ -125,7 +144,7 @@ export default function TecnologiasDetailPage({ dataInitial, listEntornos }) {
 
 export const getServerSideProps = async ({ req, params }) => {
   const { id } = params 
-  let dataInitial = { TECNOLOGIA: "", ID_ENTORNOS: "", ID_ESTADO: 4, IMAGEN: '' }
+  let dataInitial = { TECNOLOGIA: "", ID_ENTORNOS: "", ID_ESTADO: 4, IMAGEN: '', FILENAME: '', FILETYPE: null }
   let dataInitialEntornos = { ID_ENTORNOS: "", ID_ESTADO: 4 }
   let listEntornos = []
 

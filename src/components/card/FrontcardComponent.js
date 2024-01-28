@@ -64,7 +64,7 @@ export const CardHorizontalComponent = ({
 }
 
 export const CardVerticalComponent = ({
-  fechaCreacion = "Sin Fecha",
+  fechaCreacion = null,
   descripcionCorta = "",
   cantComments = 0,
   className = "",
@@ -112,7 +112,7 @@ export const CardVerticalComponent = ({
 
         <div className="flex flex-col items-start gap-1 py-8 px-4 h-full">
           <h4 onClick={() => push(slug)} className="cursor-pointer text-title-3 font-Poppins text-gray-900 text-lg font-bold text-start">{title}</h4>
-          <Link href={`${slug}#comments`} className="text-span-1 cursor-pointer">{DateUtil().FormatDate(fechaCreacion)} / {cantComments} comentarios</Link>
+          <Link href={`${slug}#comments`} className="text-span-1 cursor-pointer">{fechaCreacion && `${DateUtil().FormatDate(fechaCreacion)} /`} {cantComments} comentarios</Link>
           <p className="text-justify text-paragraph-2 font-OpenSans text-text">{descripcionCorta}</p>
           <span onClick={() => push(slug)} className="cursor-pointer font-bold text-secondary">Leer más</span>
         </div>
