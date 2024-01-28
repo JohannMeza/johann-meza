@@ -1,11 +1,4 @@
 /* Body Main Component */
-.mainContent {
-  /* max-height: 100vh;
-  min-height: 100vh;
-  overflow: auto;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth; */
-}
 
 .mainContent::-webkit-scrollbar {
   width: 0;
@@ -20,13 +13,31 @@
   width: 0;
 }
 
-.mainContent > * {
-  /* max-height: 100vh; */
-  /* scroll-snap-align: start; */
-  /* overflow: hidden; */
-  /* min-height: 100vh; */
+/* Banner */
+.mainContentTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
+.mainContentTitle:after, .mainContentTitle:before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: white;
+}
+
+.mainContentTitle > h1 {
+  text-wrap: wrap;
+}
+
+@media screen and (min-width: 568px) {
+  .mainContentTitle > h1 {
+    text-wrap: nowrap;
+  }
+}
 
 /* Mis Servicio */
 .mainContentServicesCard {
@@ -103,6 +114,12 @@
   background-position: 0px -400px;
   background-size: 100%;
   background-attachment: fixed;
+}
+
+@media screen and (max-width: 580px) {
+  .blogBanner {
+    padding: 4vw 30px 0 30px;
+  }
 }
 
 .blogBannerWithoutText {

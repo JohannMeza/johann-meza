@@ -3,6 +3,7 @@ import MessageUtil from "server/util/MessageUtil"
 import formidable from "formidable";
 import { EnvConstants } from "util/EnvConstants";
 import { jwtVerify } from "jose";
+import NextCors from "nextjs-cors";
 
 export const CodificarBase64 = (file) => {
   try {
@@ -35,3 +36,11 @@ export const BodyParser = (req) => {
     });
   });
 };
+
+export const EnabledCors = async (req, res) => {
+  await NextCors(req, res, {
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200
+ });
+}

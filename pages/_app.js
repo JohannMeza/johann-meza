@@ -6,6 +6,7 @@ import { AlertTemplate, AlertStyle } from "../src/config/AlertConfig";
 import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import LoaderContextProvider from "/src/context/LoaderContext";
+import BreakpointContextProvider from "/src/context/BreakpointContext";
 import AuthContextProvider from "/src/context/AuthContext";
 import MenuContextProvider from "../src/context/MenuContext";
 import "filepond/dist/filepond.min.css";
@@ -25,15 +26,17 @@ function MyApp({ Component, pageProps }) {
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
       
       <TooltipProvider>
-        <LoaderContextProvider>
-          <AlertProvider template={AlertTemplate} {...AlertStyle}>
-            <AuthContextProvider>
-              <MenuContextProvider>
-                <Component {...pageProps} />
-              </MenuContextProvider>
-            </AuthContextProvider>
-          </AlertProvider>
-        </LoaderContextProvider>
+        <BreakpointContextProvider>
+          <LoaderContextProvider>
+            <AlertProvider template={AlertTemplate} {...AlertStyle}>
+              <AuthContextProvider>
+                <MenuContextProvider>
+                  <Component {...pageProps} />
+                </MenuContextProvider>
+              </AuthContextProvider>
+            </AlertProvider>
+          </LoaderContextProvider>
+        </BreakpointContextProvider>
       </TooltipProvider>
     </>
   );

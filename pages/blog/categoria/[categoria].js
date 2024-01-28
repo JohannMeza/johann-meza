@@ -5,6 +5,7 @@ import { useForm } from "src/hooks/useForm";
 import { useAlert } from "react-alert";
 import { classNames } from "../../../src/utils/ClassNames";
 import { CardHorizontalComponent } from "src/components/card/FrontcardComponent";
+import useBreakpoint from "src/hooks/useBreakpoint";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import frontStyles from "src/styles/Frontpage.module.css";
@@ -17,14 +18,22 @@ import usePagination from 'src/hooks/usePagination';
 
 export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCategorias, categoriaSelect, listLastPublicaciones, dataPaginate }) {
   const { handleChangePaginate, paginate } = usePagination(0, 3);
-
   const [data, handleInputChange] = useForm({ SEARCH: "" });
   const [publicaciones, setPublicaciones] = useState([]);
   const { setLoader } = useLoaderContext();
   const { push, query } = useRouter()
+  const { breakpoint } = useBreakpoint()
   const [etiquetasSelect, setEtiquetasSelect] = useState([])
   const alert = useAlert();
   const navigation = useRef(null);
+
+  const styleMediaquery = (() => {
+    if (breakpoint.sm) return { gridRow: 'span 1 / 1' };
+    else if (breakpoint.md) return { gridRow: 'span 1 / 1' };
+    else if (breakpoint.lg) return { gridRow: 'span 1' };
+    else if (breakpoint.xl) return { gridRow: 'span 1' };
+    return { gridRow: 'span 1' }
+  });
 
   const getPublicaciones = async (listaEtiquetas = etiquetasSelect, pag = { ...paginate, page: 0 }) => {
     let checkListEtiquetas = listaEtiquetas.map(el => ({ [el]: true })).reduce((result, currentObject) => {
@@ -96,6 +105,13 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
     })
   }
 
+  const handleRedirectCategoria = (slug) => {
+    setLoader(true);
+    slug 
+      ? push(`/blog/categoria/${slug}`) 
+      : push(`/blog`)
+  }
+
   const debouncedSearchApi = debounce(searchPublicaciones, 500);
 
   useEffect(() => {
@@ -107,7 +123,8 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
 
   useEffect(() => {
     setPublicaciones(listPublicaciones);
-    handleChangePaginate(dataPaginate)
+    handleChangePaginate(dataPaginate);
+    setLoader(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listPublicaciones, dataPaginate]);
 
@@ -119,7 +136,7 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
         </h1>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-[75%1fr] w-[90%] gap-8 my-10">
+        <div className="grid lg:grid-cols-[75%1fr] w-[90%] gap-8 my-10">
           {
             publicaciones &&
             <BlogContent
@@ -129,7 +146,7 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
               navigation={navigation}
             />
           }
-          <div className="flex flex-col gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 content-start gap-10" style={styleMediaquery()}>
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
                 <div className="w-full bg-primary p-2 rounded-md">
@@ -183,6 +200,15 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
               </div>
               <div>
                 <ul className="flex gap-3 flex-wrap">
+                  <li   
+                    className={
+                      classNames("text-span-1 py-1 px-2 transition-colors duration-500 cursor-pointer font-semibold rounded-sm border", 
+                      !categoriaSelect.ID_CATEGORIAS ? "border-primary text-white bg-primary hover:text-white hover:bg-primary" : "border-primary text-primary bg-white hover:text-white hover:bg-primary")
+                    }
+                    onClick={() => handleRedirectCategoria()}
+                  >
+                    Todos
+                  </li>
                   {
                     listCategorias.map((el, index) => (
                       <li   
@@ -191,7 +217,7 @@ export default function CategoriaPage({ listPublicaciones, listEtiquetas, listCa
                           classNames("text-span-1 py-1 px-2 transition-colors duration-500 cursor-pointer font-semibold rounded-sm border", 
                           el.id_categorias === categoriaSelect.ID_CATEGORIAS ? "border-primary text-white bg-primary hover:text-white hover:bg-primary" : "border-primary text-primary bg-white hover:text-white hover:bg-primary")
                         }
-                        onClick={() => push(`/blog/categoria/${el.slug}`)}
+                        onClick={() => handleRedirectCategoria(el.slug)}
                       >
                         {el.categoria}
                       </li>
@@ -240,7 +266,7 @@ const BlogContent = ({ listPublicaciones, onAction, paginate, navigation }) => {
   
   return (
     <div className="box-base w-full">
-      <div className="">
+      <div className="flex flex-col gap-5">
         {
           listPublicaciones.length === 0 &&
           <div className="flex flex-col items-center justify-center h-2/3">
@@ -251,7 +277,7 @@ const BlogContent = ({ listPublicaciones, onAction, paginate, navigation }) => {
 
         {
           listPublicaciones.map((publicacion, index) => (
-            <section key={index} className={frontStyles.blogPublicaciones}>
+            <section key={index} className={`${frontStyles.blogPublicaciones} bg-white boxshadow-hover transition-shadow duration-500`}>
               <CardHorizontalComponent
                 className="m-auto"
                 title={publicacion.titulo}
@@ -264,13 +290,13 @@ const BlogContent = ({ listPublicaciones, onAction, paginate, navigation }) => {
           ))
         }
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-5">
         <ReactPaginate
           ref={navigation}
           className="pagination-base"
           breakLabel="..."
           nextLabel="&#8702;"
-          onPageChange={(event) => onAction(undefined, { ...paginate, page: event.selected })}
+          onPageChange={(event) => handleChangePagination(event)}
           pageRangeDisplayed={0}
           marginPagesDisplayed={2}
           pageCount={pageCount}

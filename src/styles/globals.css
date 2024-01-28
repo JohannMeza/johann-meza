@@ -6,7 +6,7 @@ input, textarea { border: none; display: inline-block; box-sizing: border-box; o
 .box-base { @apply mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 };
 .icon-principal { @apply w-6 };
 /* style base - no modificar  */
-body {  @apply font-Roboto }
+body { background: #fefefe; @apply font-Roboto }
 .title-h1-base { @apply font-Roboto font-bold text-title-1 }
 .title-h2-base { @apply font-Roboto font-bold text-title-2 }
 .title-h3-base { @apply font-Roboto font-bold text-title-3 }
@@ -91,5 +91,12 @@ body {  @apply font-Roboto }
 .hide { display: none }
 
 /* Swipper - Pagination */
+/* Qull - Read */
+.ql-container.ql-snow.ql-disabled {
+  border: none !important;
+}
+.ql-container.ql-snow.ql-disabled > .ql-editor {
+  padding: 0
+}
 
 @tailwind utilities;

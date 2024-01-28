@@ -4,6 +4,7 @@ import { SendRequestData, SaveRequestData } from "src/helpers/helpRequestBackend
 import { useForm } from "src/hooks/useForm";
 import { useAlert } from "react-alert";
 import { classNames } from "src/utils/ClassNames";
+import DateUtil from 'src/utils/DateUtil';
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import useAuthContext from "src/hooks/useAuthContext";
@@ -18,6 +19,7 @@ import ReactPaginate from "react-paginate";
 
 export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto }) {
   const { handleChangePaginate, paginate } = usePagination(0, 3);
+  const bannerRef = useRef();
   const pageCount = Math.ceil(paginate.total_rows / paginate.limitRowsPage);
 
   const [data, handleInputChange] = useForm({ SEARCH_TECH: "",  SEARCH: "", TIPO_PROYECTO: '0' });
@@ -65,6 +67,10 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   const handleChangePagination = (event) => {
     handleChangePaginate({ ...paginate, page: event.selected });
     searchProyectos({ ...paginate, page: event.selected });
+    window.scrollTo({
+      top: bannerRef.current.offsetHeight - 64, // alto del banner + alto del header
+      behavior: 'smooth'
+    });
   }
 
   useEffect(() => {
@@ -83,13 +89,13 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
 
   return (
     <BodyComponent>      
-      <div className={frontStyles.blogBanner}>
+      <div ref={bannerRef} className={frontStyles.blogBanner}>
         <h1 className="text-title-2 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
           Proyectos
         </h1>
       </div>
-      <div className="flex justify-center" id="first-post">
-        <div className="grid grid-cols-[25%1fr] w-[90%] gap-8 my-10">
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[25%1fr] w-[90%] gap-8 my-10">
           <div className="flex flex-col gap-10">
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-2">
@@ -188,7 +194,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
             <div className="my-4 flex flex-col gap-3">
               {
                 listProyectos.length > 0 ? listProyectos.map((el, index) => (
-                  <div key={index} className="flex gap-3 hover:shadow-md transition-shadow duration-700">
+                  <div key={index} className="flex flex-col lg:flex-row gap-3 hover:shadow-md transition-shadow duration-700">
                     <Image 
                       src={el.IMAGEN ?? ''}
                       width={200} 
@@ -198,7 +204,11 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                     />
                     <section className="flex flex-col justify-between p-4">
                       <div className="flex flex-col gap-2">
-                        <h2 className="text-title-3 font-bold text-primary cursor-pointer" onClick={() => push(`/proyectos/${el.SLUG}`)}>{el.PROYECTO}</h2>
+                        <div className="flex items-end gap-3">
+                          <h2 style={{ lineHeight: 1 }} className="text-title-3 font-bold text-primary cursor-pointer" onClick={() => push(`/proyectos/${el.SLUG}`)}>{el.PROYECTO}</h2>
+                          <span className="text-span-1">{DateUtil().FormatDate(el.FECHA_CREACION)}</span>
+                        </div>
+                        <span className="text-span-1 font-bold">{el.TECNOLOGIAS}</span>
                         <p className="text-paragraph-2">{el.DESCRIPCION_CORTA}</p>
                       </div>
                       <div className="flex gap-2 items-center mt-2">

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 import { EnvConstants } from "util/EnvConstants";
 import PathConstants from "util/PathConstants";
-export async function middleware(request) {
+
+export async function middleware(request, response) {
   const jwt = request.cookies.get(EnvConstants.REACT_APP_TOKEN)
 
   if (request.nextUrl.pathname.includes('/dashboard')) {
