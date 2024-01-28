@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { classNames } from "../src/utils/ClassNames";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { SendRequestData } from "src/helpers/helpRequestBackend";
 import { CardVerticalComponent } from "src/components/card/FrontcardComponent";
+import useBreakpoint from "src/hooks/useBreakpoint";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
 import frontStyles from "src/styles/Frontpage.module.css";
-import Controls from "src/components/Controls";
-import IconAwesome from 'src/components/icon/IconAwesome'
 import Image from "next/image";
-import Link from "next/link";
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -39,29 +36,41 @@ const ServicesInformation = [
 ]
 
 export default function Home({ listProyectosRecientes, listPublicaciones }) {
-  const [technology, setTechnology] = useState('BackEnd')
-  const handleChangeTech = (tech) => setTechnology(tech)
+  const { breakpoint } = useBreakpoint()
+  const slidesPerViewTech = (() => {
+    if (breakpoint.sm) return 1;
+    else if (breakpoint.md) return 3;
+    else if (breakpoint.lg) return 4;
+    else if (breakpoint.xl) return 4;
+    return 1
+  });
+
+  const slidesPerViewPublish = (() => {
+    if (breakpoint.sm) return 1;
+    else if (breakpoint.md) return 2;
+    else if (breakpoint.lg) return 2;
+    else if (breakpoint.xl) return 2;
+    return 1
+  });
+
   return (
     <BodyComponent>
       <div className={frontStyles.mainContent}>
         <div className="w-full bg-banner-opacity bg-cover bg-no-repeat" style={{backgroundAttachment: "fixed"}}>
           <div className="flex items-center justify-center min-h-screen bg-fixed box-base">
-            <div className="flex items-center flex-col gap-5 lg:w-1/2">
+            <div className="flex items-center flex-col gap-5 w-4/5 lg:w-1/2">
               <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/profile.png" width={130} height={60} />
-              <h1 className="text-title-2 font-Poppins font-semibold text-white">Hola, soy Johann</h1>
-              <p className="text-paragraph-1 font-Poppins text-white text-center">Soy desarrollador Fullstack entusiasta por la creación de soluciones web innovadoras y funcionales. ¡Creando soluciones web que marcan la diferencia!</p>
-              <span className="flex gap-5 text-button-1">
-                <Link href="https://www.linkedin.com/in/johann-meza-salazar-33b5701b6/" passHref target="_blank">
-                  <Controls.ButtonIconComponent icon={IconAwesome.LINKEDIN} />
-                </Link>
-              </span>
+              <div className={frontStyles.mainContentTitle}>
+                <h1 className="text-title-2 font-Poppins font-semibold text-white">Full Stack Developer</h1>
+              </div>
+              <p className="text-paragraph-1 font-Poppins text-white text-center">React JS | TypeScript | API RESTful | GraphQL | SQL | PostgreSQL | MongoDB | .Net | Node JS | 8+</p>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col items-center my-16">
           <h2 className="text-title-2 text-center font-Poppins font-semibold py-8">Mis Servicios</h2>
-          <div className="w-4/5 grid grid-cols-3 gap-8 mt-3">
+          <div className="w-4/5 grid lg:grid-cols-3 gap-8 mt-3">
             {
               ServicesInformation.map(({ title, description, alt, image, bonnus }, index) => (
                 <CardServicesComponent 
@@ -80,11 +89,11 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
         <div className="flex flex-col items-center w-full my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Tecnologias</h2>
   
-          <div className="grid w-[80%] grid-cols-2 flex-wrap gap-4 mt-3">
-            <div className="flex flex-col boxshadow-card items-center gap-5 boxborder-base p-8">
+          <div className="grid w-[80%] grid-cols-1 lg:grid-cols-2 flex-wrap gap-4 mt-3">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Front-End</h3>
               <Swiper
-                slidesPerView={4}
+                slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
                 pagination={{ clickable: true }}
                 modules={[Autoplay, Pagination]}
@@ -133,10 +142,10 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               </Swiper>
             </div>
 
-            <div className="flex flex-col items-center gap-5 boxborder-base p-8">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Back-End</h3>
               <Swiper
-                slidesPerView={4}
+                slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
                 pagination={{ clickable: true }}
                 modules={[Autoplay, Pagination]}
@@ -191,10 +200,10 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               </Swiper>
             </div>
             
-            <div className="flex flex-col items-center gap-5 boxborder-base p-8">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Servidores</h3>
               <Swiper
-                slidesPerView={4}
+                slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
                 centeredSlides={true}
                 pagination={{ clickable: true }}
@@ -214,10 +223,10 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               </Swiper>
             </div>
             
-            <div className="flex flex-col items-center gap-5 boxborder-base p-8">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Base de Datos</h3>
               <Swiper
-                slidesPerView={4}
+                slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
                 
                 pagination={{ clickable: true }}
@@ -255,10 +264,10 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               </Swiper>
             </div>
 
-            <div className="flex flex-col items-center gap-5 boxborder-base p-8">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
               <h3 className="text-title-3 font-Poppins font-semibold">Diseño Gráfico</h3>
               <Swiper
-                slidesPerView={4}
+                slidesPerView={slidesPerViewTech()}
                 spaceBetween={30}
                 pagination={{ clickable: true }}
                 modules={[Autoplay, Pagination]}
@@ -312,15 +321,17 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
         <div className="flex flex-col items-center my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Proyectos en el que he trabajado</h2>
           
-          <div className="grid grid-cols-3 w-4/5 gap-8 mt-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-4/5 gap-8 mt-3">
             {/* PROYECTOS */}
             {
               listProyectosRecientes.map((el) => (
                 <CardVerticalComponent
                   key={el.ID_PROYECTOS}
-                  className="m-auto"
+                  className="m-auto boxshadow-hover transition-shadow duration-500"
                   title={el.PROYECTO}
                   descripcionCorta={el.DESCRIPCION_CORTA}
+                  cantComments={el.CANTIDAD_COMENTARIOS}
+                  fechaCreacion={el.FECHA_CREACION}
                   img={el.IMAGEN}
                   slug={`/proyectos/${el.SLUG}`}
                 />
@@ -332,9 +343,9 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
         <div className="flex flex-col items-center my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Quizas te pueda interesar</h2>
           
-          <div className="w-4/5 bg-gradient rounded-lg px-8 py-16 mt-3">
+          <div className="w-full md:w-4/5 bg-gradient rounded-lg px-4 py-8 md:px-8 md:py-16 mt-3">
             <Swiper
-              slidesPerView={2}
+              slidesPerView={slidesPerViewPublish()}
               spaceBetween={30}
               pagination={{ clickable: true }}
               modules={[Autoplay, Pagination]}
@@ -350,6 +361,8 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
                     <CardVerticalComponent
                       title={el.titulo}
                       descripcionCorta={el.descripcion_corta}
+                      fechaCreacion={el.fecha_creacion}
+                      cantComments={el.cantidad_comentarios}
                       img={el.portada}
                       slug={`/blog/${el.slug}`}
                     />
@@ -370,7 +383,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
 
 const CardServicesComponent = ({ title, description, alt, bonnus, image }) => {
   return (
-    <div className={classNames("p-8 boxshadow-base boxshadow-hover flex flex-col items-center gap-4", frontStyles.mainContentServicesCard)}>
+    <div className={classNames("p-4 lg:p-8 bg-white boxshadow-base boxshadow-hover flex flex-col items-center gap-4", frontStyles.mainContentServicesCard)}>
       <Image src={image} width={100} height={100} alt={alt} />
       <div>
         <h3 className="text-title-3 text-primary font-semibold">{title}</h3>

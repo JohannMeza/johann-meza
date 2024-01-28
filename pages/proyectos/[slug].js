@@ -42,10 +42,11 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   
   const {data, handleInputFormChange, errors, setErrors} = useFormValidation(dataInitial, true, validate)
   const {data: dataRespuestas, handleInputFormChange: handleChangeRespuestas, errors: errorsRespuestas, setErrors: setErrorsRespuestas, setData: setDataRespuetas} = useFormValidation(dataInitialRespuestas, true, validate)
+  const [images, setImages] = useState();
   const { setLoader } = useLoaderContext();
   const { user, isAuthenticated } = useAuthContext();
   const [, setCountMove] = useState(0)
-  const [comentarios, setComentarios] = useState(dataPublicacion.COMENTARIOS)
+  const [comentarios, setComentarios] = useState()
   const [cantidadLikes, setCantidadLikes] = useState(dataPublicacion.CANTIDAD_LIKES)
   const alert = useAlert();
   const [isUsuarioLike, setIsUsuarioLike] = useState(false)
@@ -234,6 +235,23 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     setDataRespuetas(respuestas)
     setErrorsRespuestas(errores)
   }
+
+  const getImagesUserAndTech = (ID_PROYECTOS) => {
+    setLoader(true)
+    ImageRequestData({
+      queryId: 72,
+      body: { ID_PROYECTOS: ID_PROYECTOS },
+      success: (resp) => {
+        setLoader(false)
+        setImages(resp.dataObject)
+      },
+      error: (err) => {
+        setLoader(false)
+        const { message, status } = err;
+        (status < 500) && alert.error(message)
+      }
+    })
+  }
   
   useEffect(() => {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent)
@@ -247,6 +265,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
     setCountMove(0);
     getComentarios()
+    getImagesUserAndTech(dataPublicacion.ID_PROYECTOS)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion])
 
@@ -254,27 +273,27 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     <>
       <div className={frontStyles.blogBanner}>
         <span className="text-title-2 text-white font-Poppins">Proyecto: </span>
-        <h1 className="text-title-1 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
+        <h1 className="text-title-1 lg:text-[62px] lg:text-center text-white font-Poppins font-extrabold">
           {dataPublicacion.PROYECTO}
         </h1>
       </div>
       <BodyComponent>
         <div className='box-base mt-10'>
-          <div className="grid grid-cols-[70%] justify-center gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-[70%] justify-center gap-5">
             <div>
               {
-                dataPublicacion.PORTADA &&
+                images?.IMAGEN &&
                 <Image 
                   priority
-                  src={dataPublicacion.PORTADA} 
-                  alt={dataPublicacion.TITULO} 
+                  src={images?.IMAGEN} 
+                  alt={dataPublicacion.PROYECTO} 
                   width={950} 
                   height={450} 
                   className='w-full h-[350px] object-cover rounded-[10px]' 
                 />
               }
-              <div className='flex justify-between my-4'>
-                <div className='flex gap-4 items-center'>
+              <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
+                <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
                   {
                     dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
                   }
@@ -284,10 +303,10 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                     <span className='text-paragraph-3 font-bold'>{ dataPublicacion.PERFIL }</span>
                   </div>
                 </div>
-                <div className='flex items-end flex-col text-right font-semibold text-paragraph-3'>
+                <div className='flex flex-col lg:text-right font-semibold text-paragraph-3 gap-2 lg:gap-0'>
                   <span>{ DateUtil().FormatDate(dataPublicacion.FECHA_PUBLICACION) }</span>
                   <span>{dataPublicacion.UBICACION}</span>
-                  <div className='flex gap-1 flex-row-reverse'>
+                  <div className='flex gap-1 lg:flex-row-reverse'>
                     {
                       dataPublicacion?.NETWORKS?.map((el, index) => (
                         el.NETWORK === 'facebook'
@@ -300,14 +319,6 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                       ))
                     }
                   </div>
-                  <div className="flex gap-2 items-center">
-                    <span className="flex gap-3 cursor-pointer">
-                      <span className="flex gap-2" onClick={saveLikeByUser}><i>{IconAwesome[isUsuarioLike ? 'LIKE_SOLID' : 'LIKE_REGULAR']
-                        }</i> { cantidadLikes }
-                      </span>
-                      <span className="flex gap-2"><i>{IconAwesome.COMMENT}</i> { dataPublicacion.CANTIDAD_COMENTARIOS }</span>
-                    </span>
-                  </div>
                 </div>
               </div>
               <article className="!h-auto" ref={quillRef}></article>
@@ -315,19 +326,21 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                 <h2 className='title-base text-title-3'>Tecnologias Utilizadas</h2>
                 <div className="flex gap-3">
                   {
-                    dataPublicacion.TECNOLOGIAS?.map((el, index) => (
-                      <Image 
-                        key={index} 
-                        src={el.IMAGEN} 
-                        alt={el.TECNOLOGIA} 
-                        title={el.TECNOLOGIA} 
-                        width={30} 
-                        height={30} 
-                        style={{
-                          width: 'auto',
-                          height: '50px',
-                        }}
-                      />
+                    images?.TECNOLOGIAS?.map((el, index) => (
+                      <div key={index} className="flex flex-col items-center gap-2 p-4">
+                        <Image 
+                          src={el.IMAGEN} 
+                          alt={el.TECNOLOGIA} 
+                          title={el.TECNOLOGIA} 
+                          width={30} 
+                          height={30} 
+                          style={{
+                            width: 'auto',
+                            height: '50px',
+                          }}
+                        />
+                        <span className="text-paragraph-3 font-bold">{el.TECNOLOGIA}</span>
+                      </div>
                     ))
                   }
                 </div>

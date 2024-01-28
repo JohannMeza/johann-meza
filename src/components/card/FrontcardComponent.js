@@ -52,7 +52,7 @@ export const CardHorizontalComponent = ({
           )}
         </div>
 
-        <div className="flex flex-col items-start gap-1 py-8 h-full">
+        <div className="flex flex-col items-start gap-1 py-8 px-4 h-full">
           <h4 onClick={() => push(slug)} className="cursor-pointer text-title-3 font-Poppins text-gray-900 text-lg font-bold text-start">{title}</h4>
           <Link href={`${slug}#comments`} className="text-span-1 cursor-pointer">{DateUtil().FormatDate(fechaCreacion)} / {cantComments} comentarios</Link>
           <p className="text-justify text-paragraph-2 font-OpenSans text-text">{descripcionCorta}</p>

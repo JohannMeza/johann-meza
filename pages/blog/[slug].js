@@ -136,7 +136,6 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
       success: (resp) => {
         setLoader(false)
         setComentarios(resp.dataList)
-        console.log(resp.dataList)
       }, 
       error: (err) => {
         setLoader(false)
@@ -222,14 +221,14 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
   return (
     <>
       <div className={frontStyles.blogBanner}>
-        <h1 className="text-title-1 lg:text-[62px] text-center text-white font-Poppins font-extrabold">
+        <h1 className="text-title-1 lg:text-[62px] lg:text-center text-white font-Poppins font-extrabold">
           {dataPublicacion.TITULO}
         </h1>
       </div>
       <BodyComponent>
         <br />
         <div className='box-base'>
-          <div className="grid grid-cols-[1fr,30%] gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr,30%] gap-5">
             <div>
               {
                 dataPublicacion.PORTADA &&
@@ -242,8 +241,8 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                   className='w-full h-[350px] object-cover rounded-[10px]' 
                 />
               }
-              <div className='flex justify-between my-4'>
-                <div className='flex gap-4 items-center'>
+              <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
+                <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
                   {
                     dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
                   }
@@ -253,10 +252,10 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                     <span className='text-paragraph-3 font-bold'>{ dataPublicacion.PERFIL }</span>
                   </div>
                 </div>
-                <div className='flex flex-col text-right font-semibold text-paragraph-3'>
+                <div className='flex flex-col lg:text-right font-semibold text-paragraph-3 gap-2 lg:gap-0'>
                   <span>{ DateUtil().FormatDate(dataPublicacion.FECHA_PUBLICACION) }</span>
                   <span>{dataPublicacion.UBICACION}</span>
-                  <div className='flex gap-1 flex-row-reverse'>
+                  <div className='flex gap-1 lg:flex-row-reverse'>
                     {
                       dataPublicacion?.NETWORKS?.map((el, index) => (
                         el.NETWORK === 'facebook'
@@ -272,201 +271,201 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
                 </div>
               </div>
               <article className="!h-auto" ref={quillRef}></article>
-              <div className="grid gap-5 mt-10">
-                <div id="comments">
-                  <h2 className='title-base text-title-3'>Añadir nuevo comentario</h2>
-                  <div className="grid gap-3">
-                    <Controls.InputComponent textarea name="COMENTARIO" value={data} error={errors} onChange={handleInputFormChange} />
-                    <Controls.ButtonComponent title="COMENTAR" onClick={saveComentario} />
-                  </div>
-                </div>
-
-                <div>
-                  <h2 className='title-base text-title-3'>Comentarios</h2>
-
-                  {comentarios?.length === 0 ? (
-                    <p className="text-center my-8 block">
-                      Todavía no se agregaron comentarios, <br /> se la primera
-                      persona en comentar
-                    </p>
-                  ) : (
-                    <div className="flex flex-col gap-4">
-                      {comentarios?.map((comentario, index) => (
-                        <Fragment key={index}>
-                          <div
-                            key={index}
-                            className={classNames(frontStyles.publicacionComentarios, 'bg-gradient-gris-200')}
-                          >
-                            <div className="flex gap-4">
-                              <div>
-                                <Image
-                                  src={comentario.IMAGEN}
-                                  className="rounded-full"
-                                  style={{ height: "50px", width: "50px" }}
-                                  width={100}
-                                  height={100}
-                                  alt=""
-                                  priority
-                                />
-                              </div>
-                              <div className="w-full flex justify-between">
-                                <div>
-                                  <h3 className="title-base text-paragraph-2">
-                                    {comentario.USUARIO} <span className="text-span-1 text-gradient-blue-400">{DateUtil().StringToMoment(comentario.FECHA_CREACION, FormatDateConstants.FECHA_HORA)}</span>
-                                  </h3>
-                                  <p>{comentario.PERFIL}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <p className="mt-2">{comentario.COMENTARIO}</p>
-                            {comentario.FLG_RESPONDER ? (
-                              <div className="grid gap-3">
-                                <Controls.InputComponent
-                                  textarea
-                                  name={comentario.ID_COMENTARIOS_PUBLICACIONES}
-                                  value={dataRespuestas}
-                                  error={errorsRespuestas}
-                                  onChange={handleChangeRespuestas}
-                                />
-                                <div className="flex gap-3">
-                                  <Controls.ButtonComponent
-                                    title="COMENTAR"
-                                    onClick={() =>
-                                      saveComentario(
-                                        comentario.ID_COMENTARIOS_PUBLICACIONES,
-                                        comentario.ID_COMENTARIOS_PUBLICACIONES
-                                      )
-                                    }
-                                  />
-                                  <Controls.ButtonComponent
-                                    title="CANCELAR"
-                                    className="color-secondary"
-                                    onClick={() =>
-                                      handleClickCancelar(
-                                        comentario.ID_COMENTARIOS_PUBLICACIONES
-                                      )
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            ) : (
-                              <Controls.ButtonComponent
-                                title="Responder"
-                                className={classNames(
-                                  frontStyles.publicacionButtonResponse,
-                                  "animation-opacity duration-500"
-                                )}
-                                onClick={() =>
-                                  handleClickResponder(
-                                    comentario.ID_COMENTARIOS_PUBLICACIONES,
-                                    0
-                                  )
-                                }
-                              />
-                            )}
-                          </div>
-
-                          {comentario.RESPUESTAS?.length > 0 && (
-                            <div className={classNames('pl-8')}>
-                              <h2 className="title-base text-title-3">
-                                Respuestas
-                              </h2>
-
-                              <div className="flex flex-col gap-4">
-                                {comentario.RESPUESTAS?.map(
-                                  (respuesta, index) => (
-                                    <div
-                                      key={index}
-                                      className={classNames(frontStyles.publicacionComentarios, 'bg-gradient-gris-200')}
-                                    >
-                                      <div className="flex gap-4">
-                                        <div>
-                                          <Image
-                                            src={respuesta.IMAGEN}
-                                            className="rounded-full"
-                                            style={{
-                                              height: "50px",
-                                              width: "50px",
-                                            }}
-                                            width={100}
-                                            height={100}
-                                            alt=""
-                                            priority
-                                          />
-                                        </div>
-                                        <div className="w-full flex justify-between">
-                                          <div>
-                                            <h3 className="title-base text-paragraph-2">
-                                              {respuesta.USUARIO} <span className="text-span-1 text-gradient-blue-400">{DateUtil().StringToMoment(respuesta.FECHA_CREACION, FormatDateConstants.FECHA_HORA)}</span>
-                                            </h3>
-                                            <p>{respuesta.PERFIL}</p>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <p className="mt-2"><span className="text-gradient-blue-400">{respuesta.USUARIO_RESPONDIDO}</span> {respuesta.COMENTARIO}</p>
-                                      {respuesta.FLG_RESPONDER ? (
-                                        <div className="grid gap-3">
-                                          <Controls.InputComponent
-                                            textarea
-                                            name={
-                                              respuesta.ID_COMENTARIOS_PUBLICACIONES
-                                            }
-                                            value={dataRespuestas}
-                                            error={errorsRespuestas}
-                                            onChange={handleChangeRespuestas}
-                                          />
-                                          <div className="flex gap-3">
-                                            <Controls.ButtonComponent
-                                              title="COMENTAR"
-                                              onClick={() =>
-                                                saveComentario(
-                                                  respuesta.ID_COMENTARIOS_PUBLICACIONES,
-                                                  respuesta.ID_COMENTARIOS_PADRE
-                                                )
-                                              }
-                                            />
-                                            <Controls.ButtonComponent
-                                              title="CANCELAR"
-                                              className="color-secondary"
-                                              onClick={() =>
-                                                handleClickCancelar(
-                                                  respuesta.ID_COMENTARIOS_PUBLICACIONES,
-                                                  respuesta.ID_COMENTARIOS_PADRE
-                                                )
-                                              }
-                                            />
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <Controls.ButtonComponent
-                                          title="Responder"
-                                          className={classNames(
-                                            frontStyles.publicacionButtonResponse,
-                                            "animation-opacity duration-500"
-                                          )}
-                                          onClick={() =>
-                                            handleClickResponder(
-                                              respuesta.ID_COMENTARIOS_PADRE,
-                                              respuesta.ID_COMENTARIOS_PUBLICACIONES
-                                            )
-                                          }
-                                        />
-                                      )}
-                                    </div>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </Fragment>
-                      ))}
-                    </div>
-                  )}
+            </div>
+            <div className="grid gap-5 mt-10 lg:col-start-1">
+              <div id="comments">
+                <h2 className='title-base text-title-3'>Añadir nuevo comentario</h2>
+                <div className="grid gap-3">
+                  <Controls.InputComponent textarea name="COMENTARIO" value={data} error={errors} onChange={handleInputFormChange} />
+                  <Controls.ButtonComponent title="COMENTAR" onClick={saveComentario} />
                 </div>
               </div>
+
+              <div>
+                <h2 className='title-base text-title-3'>Comentarios</h2>
+
+                {comentarios?.length === 0 ? (
+                  <p className="text-center my-8 block">
+                    Todavía no se agregaron comentarios, <br /> se la primera
+                    persona en comentar
+                  </p>
+                ) : (
+                  <div className="flex flex-col gap-4">
+                    {comentarios?.map((comentario, index) => (
+                      <Fragment key={index}>
+                        <div
+                          key={index}
+                          className={classNames(frontStyles.publicacionComentarios, 'bg-gradient-gris-200')}
+                        >
+                          <div className="flex gap-4">
+                            <div>
+                              <Image
+                                src={comentario.IMAGEN}
+                                className="rounded-full"
+                                style={{ height: "50px", width: "50px" }}
+                                width={100}
+                                height={100}
+                                alt=""
+                                priority
+                              />
+                            </div>
+                            <div className="w-full flex justify-between">
+                              <div>
+                                <h3 className="title-base text-paragraph-2">
+                                  {comentario.USUARIO} <span className="text-span-1 text-gradient-blue-400">{DateUtil().StringToMoment(comentario.FECHA_CREACION, FormatDateConstants.FECHA_HORA)}</span>
+                                </h3>
+                                <p>{comentario.PERFIL}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="mt-2">{comentario.COMENTARIO}</p>
+                          {comentario.FLG_RESPONDER ? (
+                            <div className="grid gap-3">
+                              <Controls.InputComponent
+                                textarea
+                                name={comentario.ID_COMENTARIOS_PUBLICACIONES}
+                                value={dataRespuestas}
+                                error={errorsRespuestas}
+                                onChange={handleChangeRespuestas}
+                              />
+                              <div className="flex gap-3">
+                                <Controls.ButtonComponent
+                                  title="COMENTAR"
+                                  onClick={() =>
+                                    saveComentario(
+                                      comentario.ID_COMENTARIOS_PUBLICACIONES,
+                                      comentario.ID_COMENTARIOS_PUBLICACIONES
+                                    )
+                                  }
+                                />
+                                <Controls.ButtonComponent
+                                  title="CANCELAR"
+                                  className="color-secondary"
+                                  onClick={() =>
+                                    handleClickCancelar(
+                                      comentario.ID_COMENTARIOS_PUBLICACIONES
+                                    )
+                                  }
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <Controls.ButtonComponent
+                              title="Responder"
+                              className={classNames(
+                                frontStyles.publicacionButtonResponse,
+                                "animation-opacity duration-500"
+                              )}
+                              onClick={() =>
+                                handleClickResponder(
+                                  comentario.ID_COMENTARIOS_PUBLICACIONES,
+                                  0
+                                )
+                              }
+                            />
+                          )}
+                        </div>
+
+                        {comentario.RESPUESTAS?.length > 0 && (
+                          <div className={classNames('pl-8')}>
+                            <h2 className="title-base text-title-3">
+                              Respuestas
+                            </h2>
+
+                            <div className="flex flex-col gap-4">
+                              {comentario.RESPUESTAS?.map(
+                                (respuesta, index) => (
+                                  <div
+                                    key={index}
+                                    className={classNames(frontStyles.publicacionComentarios, 'bg-gradient-gris-200')}
+                                  >
+                                    <div className="flex gap-4">
+                                      <div>
+                                        <Image
+                                          src={respuesta.IMAGEN}
+                                          className="rounded-full"
+                                          style={{
+                                            height: "50px",
+                                            width: "50px",
+                                          }}
+                                          width={100}
+                                          height={100}
+                                          alt=""
+                                          priority
+                                        />
+                                      </div>
+                                      <div className="w-full flex justify-between">
+                                        <div>
+                                          <h3 className="title-base text-paragraph-2">
+                                            {respuesta.USUARIO} <span className="text-span-1 text-gradient-blue-400">{DateUtil().StringToMoment(respuesta.FECHA_CREACION, FormatDateConstants.FECHA_HORA)}</span>
+                                          </h3>
+                                          <p>{respuesta.PERFIL}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <p className="mt-2"><span className="text-gradient-blue-400">{respuesta.USUARIO_RESPONDIDO}</span> {respuesta.COMENTARIO}</p>
+                                    {respuesta.FLG_RESPONDER ? (
+                                      <div className="grid gap-3">
+                                        <Controls.InputComponent
+                                          textarea
+                                          name={
+                                            respuesta.ID_COMENTARIOS_PUBLICACIONES
+                                          }
+                                          value={dataRespuestas}
+                                          error={errorsRespuestas}
+                                          onChange={handleChangeRespuestas}
+                                        />
+                                        <div className="flex gap-3">
+                                          <Controls.ButtonComponent
+                                            title="COMENTAR"
+                                            onClick={() =>
+                                              saveComentario(
+                                                respuesta.ID_COMENTARIOS_PUBLICACIONES,
+                                                respuesta.ID_COMENTARIOS_PADRE
+                                              )
+                                            }
+                                          />
+                                          <Controls.ButtonComponent
+                                            title="CANCELAR"
+                                            className="color-secondary"
+                                            onClick={() =>
+                                              handleClickCancelar(
+                                                respuesta.ID_COMENTARIOS_PUBLICACIONES,
+                                                respuesta.ID_COMENTARIOS_PADRE
+                                              )
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <Controls.ButtonComponent
+                                        title="Responder"
+                                        className={classNames(
+                                          frontStyles.publicacionButtonResponse,
+                                          "animation-opacity duration-500"
+                                        )}
+                                        onClick={() =>
+                                          handleClickResponder(
+                                            respuesta.ID_COMENTARIOS_PADRE,
+                                            respuesta.ID_COMENTARIOS_PUBLICACIONES
+                                          )
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </Fragment>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="relative">
-              <div className="p-4 sticky top-20">
+            <div className="relative lg:col-start-2 lg:row-start-1">
+              <div className="sticky top-20">
                 <div className="flex flex-col gap-2">
                   <div className="w-full bg-primary p-2 rounded-md">
                     <span className="text-title-3 font-semibold text-white">Publicaciones recientes</span>
