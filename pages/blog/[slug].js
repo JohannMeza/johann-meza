@@ -79,7 +79,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
       SaveRequestData({
         queryId: 46,
         body: {
-          ID_PUBLICACIONES: dataPublicacion.ID_PUBLICACIONES,
+          ID_PUBLICACIONES: dataPublicacion?.ID_PUBLICACIONES,
           COMENTARIO: dataRespuestas[idComentarioResponder],
           ID_COMENTARIOS_PADRE: idComentarioPadre,
           ID_COMENTARIOS_RESPONDER: idComentarioResponder,
@@ -112,7 +112,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
         setLoader(true)
         SaveRequestData({
           queryId: 46,
-          body: { ...data, ID_PUBLICACIONES: dataPublicacion.ID_PUBLICACIONES },
+          body: { ...data, ID_PUBLICACIONES: dataPublicacion?.ID_PUBLICACIONES },
           success: (resp) => {
             setLoader(false)
             getComentarios()
@@ -132,7 +132,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     setLoader(true)
     ImageRequestData({
       queryId: 43,
-      body: { ID_PUBLICACIONES: dataPublicacion.ID_PUBLICACIONES },
+      body: { ID_PUBLICACIONES: dataPublicacion?.ID_PUBLICACIONES },
       success: (resp) => {
         setLoader(false)
         setComentarios(resp.dataList)
@@ -222,7 +222,7 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
     <>
       <div className={frontStyles.blogBanner}>
         <h1 className="text-title-1 lg:text-[62px] lg:text-center text-white font-Poppins font-extrabold">
-          {dataPublicacion.TITULO}
+          {dataPublicacion?.TITULO}
         </h1>
       </div>
       <BodyComponent>
@@ -231,11 +231,11 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
           <div className="grid grid-cols-1 lg:grid-cols-[1fr,30%] gap-5">
             <div>
               {
-                dataPublicacion.PORTADA &&
+                dataPublicacion?.PORTADA &&
                 <Image 
                   priority
-                  src={dataPublicacion.PORTADA} 
-                  alt={dataPublicacion.TITULO} 
+                  src={dataPublicacion?.PORTADA} 
+                  alt={dataPublicacion?.TITULO} 
                   width={950} 
                   height={450} 
                   className='w-full h-[350px] object-cover rounded-[10px]' 
@@ -244,17 +244,17 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
               <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
                 <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
                   {
-                    dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
+                    dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion?.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
                   }
                   <div className='flex flex-col justify-center'>
                     <span className=''>Publicado por:</span>         
-                    <span className='text-paragraph-1 font-bold'>{ dataPublicacion.AUTOR }</span>
-                    <span className='text-paragraph-3 font-bold'>{ dataPublicacion.PERFIL }</span>
+                    <span className='text-paragraph-1 font-bold'>{ dataPublicacion?.AUTOR }</span>
+                    <span className='text-paragraph-3 font-bold'>{ dataPublicacion?.PERFIL }</span>
                   </div>
                 </div>
                 <div className='flex flex-col lg:text-right font-semibold text-paragraph-3 gap-2 lg:gap-0'>
-                  <span>{ DateUtil().FormatDate(dataPublicacion.FECHA_PUBLICACION) }</span>
-                  <span>{dataPublicacion.UBICACION}</span>
+                  <span>{ DateUtil().FormatDate(dataPublicacion?.FECHA_PUBLICACION) }</span>
+                  <span>{dataPublicacion?.UBICACION}</span>
                   <div className='flex gap-1 lg:flex-row-reverse'>
                     {
                       dataPublicacion?.NETWORKS?.map((el, index) => (
@@ -538,7 +538,7 @@ export async function getStaticPaths() {
   
   try {
     await getPublicaciones()
-    return { paths, fallback: false }
+    return { paths, fallback: true }
   } catch (error) {
     return { paths: [], fallback: false }
   }

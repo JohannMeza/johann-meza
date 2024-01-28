@@ -47,7 +47,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   const { user, isAuthenticated } = useAuthContext();
   const [, setCountMove] = useState(0)
   const [comentarios, setComentarios] = useState()
-  const [cantidadLikes, setCantidadLikes] = useState(dataPublicacion.CANTIDAD_LIKES)
+  const [cantidadLikes, setCantidadLikes] = useState(dataPublicacion?.CANTIDAD_LIKES)
   const alert = useAlert();
   const [isUsuarioLike, setIsUsuarioLike] = useState(false)
   const { quill, quillRef } = useQuill({readOnly: true, modules: {syntax: {
@@ -75,7 +75,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
       SaveRequestData({
         queryId: 63,
         body: {
-          ID_PROYECTOS: dataPublicacion.ID_PROYECTOS,
+          ID_PROYECTOS: dataPublicacion?.ID_PROYECTOS,
           COMENTARIO: dataRespuestas[idComentarioResponder],
           ID_COMENTARIOS_PADRE: idComentarioPadre,
           ID_COMENTARIOS_RESPONDER: idComentarioResponder,
@@ -108,7 +108,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
         setLoader(true)
         SaveRequestData({
           queryId: 63,
-          body: { ...data, ID_PROYECTOS: dataPublicacion.ID_PROYECTOS },
+          body: { ...data, ID_PROYECTOS: dataPublicacion?.ID_PROYECTOS },
           success: (resp) => {
             setLoader(false)
             getComentarios()
@@ -127,7 +127,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   const saveLikeByUser = () => {
     const options = {
       queryId: 65,
-      body: { ID_PROYECTOS: dataPublicacion.ID_PROYECTOS },
+      body: { ID_PROYECTOS: dataPublicacion?.ID_PROYECTOS },
       success: (resp) => {
         setLoader(false)
         setComentarios(resp.dataList)
@@ -148,7 +148,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
   const getIsUsuarioLike = () => {
     const options = {
       queryId: 66,
-      body: { ID_PROYECTOS: dataPublicacion.ID_PROYECTOS },
+      body: { ID_PROYECTOS: dataPublicacion?.ID_PROYECTOS },
       success: (resp) => {
         setLoader(false)
         setIsUsuarioLike(resp.dataObject.USUARIO_LIKE)
@@ -168,7 +168,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     setLoader(true)
     ImageRequestData({
       queryId: 64,
-      body: { ID_PROYECTOS: dataPublicacion.ID_PROYECTOS },
+      body: { ID_PROYECTOS: dataPublicacion?.ID_PROYECTOS },
       success: (resp) => {
         setLoader(false)
         setComentarios(resp.dataList)
@@ -265,7 +265,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
     (quill) && quill.clipboard.dangerouslyPasteHTML(quillContent);
     setCountMove(0);
     getComentarios()
-    getImagesUserAndTech(dataPublicacion.ID_PROYECTOS)
+    getImagesUserAndTech(dataPublicacion?.ID_PROYECTOS)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataPublicacion])
 
@@ -274,7 +274,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
       <div className={frontStyles.blogBanner}>
         <span className="text-title-2 text-white font-Poppins">Proyecto: </span>
         <h1 className="text-title-1 lg:text-[62px] lg:text-center text-white font-Poppins font-extrabold">
-          {dataPublicacion.PROYECTO}
+          {dataPublicacion?.PROYECTO}
         </h1>
       </div>
       <BodyComponent>
@@ -286,7 +286,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                 <Image 
                   priority
                   src={images?.IMAGEN} 
-                  alt={dataPublicacion.PROYECTO} 
+                  alt={dataPublicacion?.PROYECTO} 
                   width={950} 
                   height={450} 
                   className='w-full h-[350px] object-cover rounded-[10px]' 
@@ -295,17 +295,17 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
               <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
                 <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
                   {
-                    dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
+                    dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion?.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
                   }
                   <div className='flex flex-col justify-center'>
                     <span className=''>Publicado por:</span>         
-                    <span className='text-paragraph-1 font-bold'>{ dataPublicacion.AUTOR }</span>
-                    <span className='text-paragraph-3 font-bold'>{ dataPublicacion.PERFIL }</span>
+                    <span className='text-paragraph-1 font-bold'>{ dataPublicacion?.AUTOR }</span>
+                    <span className='text-paragraph-3 font-bold'>{ dataPublicacion?.PERFIL }</span>
                   </div>
                 </div>
                 <div className='flex flex-col lg:text-right font-semibold text-paragraph-3 gap-2 lg:gap-0'>
-                  <span>{ DateUtil().FormatDate(dataPublicacion.FECHA_PUBLICACION) }</span>
-                  <span>{dataPublicacion.UBICACION}</span>
+                  <span>{ DateUtil().FormatDate(dataPublicacion?.FECHA_PUBLICACION) }</span>
+                  <span>{dataPublicacion?.UBICACION}</span>
                   <div className='flex gap-1 lg:flex-row-reverse'>
                     {
                       dataPublicacion?.NETWORKS?.map((el, index) => (
@@ -569,7 +569,7 @@ export async function getStaticPaths() {
   
   try {
     await getPublicaciones()
-    return { paths, fallback: false }
+    return { paths, fallback: true }
   } catch (error) {
     return { paths: [], fallback: false }
   }
