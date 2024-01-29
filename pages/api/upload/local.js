@@ -7,7 +7,7 @@ export const config = { api: { bodyParser: false } };
 
 const UploadLocalController = async (req, res) => {
   const user = await ValidarAuth(req)
-  const options = await UploadFile(req, true, user.ID_USUARIOS.toString());
+  const options = await UploadFile(req, true, user.ID_USUARIOS.toString(), "/public/assets/usuarios");
   
   let pathname = options.files?.IMAGEN[0]?.filepath;
   let data = {};
@@ -21,7 +21,7 @@ const UploadLocalController = async (req, res) => {
     if (result.error) throw({ ...result });
     return res.status(201).json(result)
   } catch (err) {
-    console.log(err)
+    console.error(err)
     return res.status(err.status || 500).json({...MessageUtil.throwExcepctionServer(), ...err})
   }
 }

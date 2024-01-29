@@ -1,413 +1,454 @@
-import { useFormValidation } from "src/hooks/useFormValidation";
-import { useState } from "react";
+import { classNames } from "../src/utils/ClassNames";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from 'swiper/modules';
+import { SendRequestData } from "src/helpers/helpRequestBackend";
+import { CardVerticalComponent } from "src/components/card/FrontcardComponent";
 import { useRouter } from "next/router";
+import Controls from "src/components/Controls";
+import useBreakpoint from "src/hooks/useBreakpoint";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
-import Controls from "src/components/Controls";
-import Icon from "src/components/icon/Icon.js";
+import frontStyles from "src/styles/Frontpage.module.css";
 import Image from "next/image";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Blog", href: "/blog", current: false },
-  { name: "Sobre mí", href: "/about", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
+const ServicesInformation = [
+  {
+    title: "Desarrollo de aplicaciones web",
+    description: "Desarrollo de aplicaciones web a medida, adaptadas a las necesidades específicas de mis clientes.",
+    image: "/assets/iconos/developer.png",
+    bonnus: ["Calidad", "Personalización", "Seguridad", "Escalabilidad"],
+    alt: "tech",
+  },
+  {
+    title: "Sitios web personalizados",
+    description: "Desarrollo sitios web de presentación y blogs hasta soluciones de comercio electrónico completas.",
+    image: "/assets/iconos/web-sites.png",
+    bonnus: ["Funcionalidad", "Adaptabilidad", "Confianza", "Profesionalismo"],
+    alt: "tech"
+  },
+  {
+    title: "Mantenimiento y actualización de sitios web",
+    description: "Mantenimiento y actualización de sitios web que permiten a mis clientes mantener sus presencias en línea de manera efectiva y actualizada.",
+    image: "/assets/iconos/diseno-ux.png",
+    bonnus: ["Seguridad", "Funcionalidad", "Confianza", "Mejora continua"],
+    alt: "tech"
+  },
+]
 
-export default function Home() {
-  const {data,  handleInputFormChange, errors} = useFormValidation();
-  const [isTop, setIsTop] = useState(true);
-  const {push} = useRouter()
+export default function Home({ listProyectosRecientes, listPublicaciones }) {
+  const { breakpoint } = useBreakpoint()
+  const { push } = useRouter();
+
+  const slidesPerViewTech = (() => {
+    if (breakpoint.sm) return 1;
+    else if (breakpoint.md) return 3;
+    else if (breakpoint.lg) return 4;
+    else if (breakpoint.xl) return 4;
+    return 1
+  });
+
+  const slidesPerViewPublish = (() => {
+    if (breakpoint.sm) return 1;
+    else if (breakpoint.md) return 2;
+    else if (breakpoint.lg) return 2;
+    else if (breakpoint.xl) return 2;
+    return 1
+  });
+
   return (
     <BodyComponent>
-      <div className="w-full bg-banner bg-cover bg-no-repeat">
-        <div className="flex items-center justify-start min-h-screen bg-fixed box-base">
-          <div className="flex items-start flex-col w-1/2">
-            <h1 className="title-banner font-Poppins text-yellow-500">
-              Hola!!!
-            </h1>
-            <hr className="w-full border-yellow-500 border-y-2 mt-4 mb-6" />
-            <p className="text-white text-paragraph-1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-              voluptatem unde nemo ea consectetur sapiente facilis iusto
-              deleniti quam nostrum beatae, repellendus a assumenda magnam
-              quibusdam aliquid accusamus possimus totam?
-            </p>
-            <button className="button-base color-secondary mt-4">
-              CONTACTAME
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="min-w-screen my-24 bg-gray-200 flex items-center justify-center box-base">
-        <div className="w-full max-w-3xl">
-          <div className="-mx-2 md:flex">
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      10 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      PROYECTOS COMPLETADOS
-                    </p>
-                  </div>
+      <div className={frontStyles.mainContent}>
+        <div className="w-full bg-banner-opacity bg-cover bg-no-repeat" style={{backgroundAttachment: "fixed"}}>
+          <div className="flex items-center justify-center min-h-screen bg-fixed box-base">
+            <div className="flex items-center flex-col gap-5 w-4/5 lg:w-1/2">
+              <Image priority alt="Johann Meza" className="rounded-full border-[2px] border-white w-[150px] h-[150px] object-cover object-top" src="/assets/imagenes/profile.png" width={130} height={60} />
+              <div className="w-full flex flex-col gap-2 justify-stretch items-center">
+                <h1 className="text-title-3 font-Poppins font-semibold text-white">Johann Meza</h1>
+                <div className={frontStyles.mainContentTitle}>
+                  <h1 className="text-title-2 text-center font-Poppins font-semibold text-white">Full Stack Developer</h1>
                 </div>
               </div>
-            </div>
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      7 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      CLIENTES SATISFECHOS
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-1/3 px-2">
-              <div className="rounded-lg shadow-sm mb-4">
-                <div className="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
-                  <div className="px-3 pt-8 pb-10 text-center relative z-10">
-                    <span className="font-Poppins text-secondary font-semibold text-title-1 my-3">
-                      3 +
-                    </span>
-                    <p className="font-Poppins text-secondary font-semibold text-span-1">
-                      AÑOS DE EXPERIENCIA
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <p className="text-paragraph-1 font-Poppins text-white text-center">React JS | TypeScript | API RESTful | GraphQL | SQL | PostgreSQL | MongoDB | .Net | Node JS | 8+</p>
             </div>
           </div>
         </div>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
-            </div>
 
-            <br />
+        <div className="flex flex-col items-center my-16">
+          <h2 className="text-title-2 text-center font-Poppins font-semibold py-8">Mis Servicios</h2>
+          <div className="w-4/5 grid lg:grid-cols-3 gap-8 mt-3">
+            {
+              ServicesInformation.map(({ title, description, alt, image, bonnus }, index) => (
+                <CardServicesComponent 
+                  key={index}
+                  title={title}
+                  description={description}
+                  bonnus={bonnus}
+                  image={image}
+                  alt={alt}
+                />
+              ))
+            }
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-center">
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center  justify-between  rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance 1
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7] px-4 py-10">
-                <div className="flex flex-col items-center justify-between rounded-lg bg-white">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <h4 className="text-title-3 font-Poppins text-primary text-gray-900 text-lg font-bold mt-6">
-                    Total Ballance
-                  </h4>
-                  <p className="font-OpenSans text-paragraph-2 font-normal text-gray-400">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Modi explicabo veniam voluptates, necessitatibus facilis
-                    laboriosam suscipit{" "}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div className="box-base flex justify-center">
-        <div
-          className="flex items-stretch relative bg-banner-tech bg-no-repeat p-12"
-          style={{ width: "85%", height: "450px", backgroundSize: "contain" }}
-        >
-          <div className="flex justify-center flex-col items-start w-1/2">
-            <h2 className="title-banner text-white font-Poppins text-[60px]">
-              Node JS
-            </h2>
-            <p className="text-white font-OpenSans text-paragraph-2 font-normal mt-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-              quae porro commodi suscipit!
-            </p>
-          </div>
-          <div className="flex justify-center items-center w-1/2">
-            <div
-              className="absolute right-0 rounded-full border-[25px] border-[transparent]"
-              style={{ boxShadow: "0 0 0px 1.5px white" }}
-            >
-              <div
-                className="flex justify-center items-center bg-[#8AC400] w-[350px] h-[350px]"
-                style={{
-                  clipPath:
-                    "polygon(50% 0, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)",
+        <div className="flex flex-col items-center w-full my-16">
+          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Tecnologias en el tengo experiencia</h2>
+  
+          <div className="grid w-[80%] grid-cols-1 lg:grid-cols-2 flex-wrap gap-4 mt-3">
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Front-End</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
                 }}
               >
-                <Image
-                  src="/assets/imagenes/logo.png"
-                  alt=""
-                  width={100}
-                  height={100}
-                />
-              </div>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/html5.png' width={100} height={100} alt="HTML5" />
+                    <span>HTML5</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/css.png' width={100} height={100} alt="CSS3" />
+                    <span>CSS3</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/javascript.png' width={100} height={100} alt="JavaScript" />
+                    <span>JavaScript</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/reactjs.png' width={100} height={100} alt="React JS" />
+                    <span>React JS</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/vuejs.png' width={100} height={100} alt="Vue JS" />
+                    <span>Vue JS</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Back-End</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/php.png' width={100} height={100} alt="PHP" />
+                    <span>PHP</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/laravel.png' width={100} height={100} alt="Laravel" />
+                    <span>Laravel</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/typescript.png' width={100} height={100} alt="TypeScript" />
+                    <span>TypeScript</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/nextjs.png' width={100} height={100} alt="Next JS" />
+                    <span>Next JS</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/net.png' width={100} height={100} alt="Net" />
+                    <span>.Net</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Servidores</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                centerInsufficientSlides={true}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/xampp.png' width={100} height={100} alt="Xampp" />
+                    <span>Xampp</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+            
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Base de Datos</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/mongodb.png' width={100} height={100} alt="Mongo DB" />
+                    <span>Mongo DB</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/sql.png' width={100} height={100} alt="SQL" />
+                    <span>SQL</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/mysql.png' width={100} height={100} alt="MySql" />
+                    <span>MySql</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/postgresql.png' width={100} height={100} alt="PostgreSQL" />
+                    <span>PostgreSQL</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/dynamo.png' width={100} height={100} alt="DynamoDB" />
+                    <span>DynamoDB</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Integraciones</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                centerInsufficientSlides={true}
+                pagination={{ clickable: true }}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/stripe.png' width={100} height={100} alt="tech" />
+                    <span>Stripe</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/niubiz.png' width={130} height={100} alt="Niubiz" />
+                    <span>Niubiz</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/facele.png' width={100} height={100} alt="tech" />
+                    <span>Facele</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
+            </div>
+
+            <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
+              <h3 className="text-title-3 font-Poppins font-semibold">Otros</h3>
+              <Swiper
+                slidesPerView={slidesPerViewTech()}
+                spaceBetween={30}
+                centerInsufficientSlides={true}
+                modules={[Autoplay, Pagination]}
+                className={frontStyles.techContentImg}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
+              >
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/figma.png' width={100} height={100} alt="Figma" />
+                    <span>Figma</span>
+                  </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/wordpress.png' width={100} height={100} alt="WordPress" />
+                    <span>WordPress</span>
+                  </div>
+                </SwiperSlide>
+              </Swiper>
             </div>
           </div>
         </div>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
-            </div>
 
-            <br />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 text-center gap-8 h-[450px]">
-              <div className="hover:shadow-xl hover:text-secondary hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase font-Poppins font-semibold text-start text-text"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col hover:text-secondary rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase font-Poppins font-semibold text-start text-text"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="hover:shadow-xl hover:z-10 relative border-solid border border-[#D7D7D7]">
-                <div className="flex flex-col hover:text-secondary rounded-lg bg-white h-full">
-                  <Image
-                    src="/assets/imagenes/logo.png"
-                    alt=""
-                    width={100}
-                    height={100}
-                  />
-                  <div className="flex flex-col justify-between px-8 h-full">
-                    <h4 className="text-title-3 font-Poppins text-gray-900 text-lg font-bold mt-6 text-start">
-                      Total Ballance 1
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <a
-                        href="#"
-                        className="text-button-1 uppercase text-text font-Poppins font-semibold text-start"
-                      >
-                        READ MORE
-                      </a>
-                      <Icon.ArrowRight className="icon-principal text-text" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="flex flex-col items-center my-16">
+          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Algunos proyectos en los que he trabajado</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-4/5 gap-8 mt-3">
+            {/* PROYECTOS */}
+            {
+              listProyectosRecientes.map((el) => (
+                <CardVerticalComponent
+                  key={el.ID_PROYECTOS}
+                  className="m-auto boxshadow-hover transition-shadow duration-500"
+                  title={el.PROYECTO}
+                  descripcionCorta={el.DESCRIPCION_CORTA}
+                  cantComments={el.CANTIDAD_COMENTARIOS}
+                  tecnologias={el.TECNOLOGIAS}
+                  // fechaCreacion={el.FECHA_CREACION}
+                  img={el.IMAGEN}
+                  slug={`/proyectos/${el.SLUG}`}
+                />
+              ))
+            }
           </div>
-        </section>
-      </div>
-      <div className="box-base">
-        <section className="text-gray-600 body-font">
-          <div className="container">
-            <div className="flex flex-col items-center">
-              <h2 className="text-center text-title-3 font-Poppins font-semibold text-secondary">
-                Valores
-              </h2>
-              <h3 className="text-center text-title-2 font-Poppins font-semibold text-primary">
-                Mis valores diferenciales
-              </h3>
-              <p className="text-center w-2/4 font-OpenSans font-normal text-paragraph-1">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-                facilis et laborum provident quas explicabo aperiam omnis sequi
-                voluptate ut iusto, quia distinctio dolorum natus perferendis
-                odit aliquid minima enim.
-              </p>
-            </div>
 
-            <br />
+          <Controls.ButtonComponent onClick={() => push('/proyectos')} title="LEER MÁS" className="mt-12" />
+        </div>
 
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex flex-col gap-3 w-2/4">
-                <Controls.InputComponent
-                  label="Nombre"
-                  value={data.NOMBRE}
-                  placeholder="Ingresa tu nombre"
-                  onChange={handleInputFormChange}
-                  name="NOMBRE"
-                  error={errors.NOMBRE}
-                />
-                <Controls.InputComponent
-                  label="Email"
-                  name="EMAIL"
-                  value={data.EMAIL}
-                  onChange={handleInputFormChange}
-                  placeholder="Ingresa tu correo tu electrónico"
-                  error={errors.EMAIL}
-                />
-                <Controls.InputComponent
-                  label="Mensaje"
-                  name="MENSAJE"
-                  value={data.MENSAJE}
-                  onChange={handleInputFormChange}
-                  placeholder="Ingresa tu mensaje"
-                  error={errors.MENSAJE}
-                  textarea
-                />
-                <Controls.ButtonComponent title="ENVIAR" className="w-full" />
-              </div>
-            </div>
+        <div className="flex flex-col items-center my-16">
+          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Quizas te pueda interesar</h2>
+          
+          <div className="w-full md:w-4/5 bg-gradient rounded-lg px-4 py-8 md:px-8 md:py-12 mt-3">
+            <Swiper
+              slidesPerView={slidesPerViewPublish()}
+              spaceBetween={30}
+              pagination={{ clickable: true }}
+              modules={[Autoplay, Pagination]}
+              className={frontStyles.lastPublicaciones}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+            >
+              {
+                listPublicaciones.map(el => (
+                  <SwiperSlide key={el.id_publicaciones}>
+                    <CardVerticalComponent
+                      title={el.titulo}
+                      descripcionCorta={el.descripcion_corta}
+                      fechaCreacion={el.fecha_creacion}
+                      cantComments={el.cantidad_comentarios}
+                      img={el.portada}
+                      slug={`/blog/${el.slug}`}
+                    />
+                  </SwiperSlide>
+                ))
+              }
+            </Swiper>
+
+              <Controls.ButtonComponent onClick={() => push('/blog')} title="LEER MÁS" className="mt-10 mx-auto color-secondary" />
+            {/* <div className="flex justify-center mt-12">
+            </div> */}
           </div>
-        </section>
+        </div>
+        
+        <div>
+          <FooterComponent />
+        </div>
       </div>
-      <FooterComponent />
     </BodyComponent>
   );
+}
+
+const CardServicesComponent = ({ title, description, alt, bonnus, image }) => {
+  return (
+    <div className={classNames("p-4 lg:p-8 bg-white boxshadow-base boxshadow-hover flex flex-col items-center gap-4", frontStyles.mainContentServicesCard)}>
+      <Image src={image} width={100} height={100} alt={alt} />
+      <div>
+        <h3 className="text-title-3 text-primary font-semibold">{title}</h3>
+        <p className="text-paragraph-2 text-text my-2">{description}</p>
+        <div className="flex flex-col gap-4 mt-8">
+          <h3 className="text-title-3 text-primary font-semibold">¿Que obtendrás?</h3>
+          <ul className="flex gap-3 flex-wrap">
+            {
+              bonnus.map((el, index) => (
+                <li key={index} className="text-span-1 py-1 px-2 font-semibold rounded-sm text-white bg-gradient-blue-400">{el}</li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const getServerSideProps = async () => {
+  let listProyectosRecientes = []
+  let listPublicaciones = [];
+  
+  const getProyectosRecientes = async () => {
+    await SendRequestData({
+      queryId: 70,
+      body: { },
+      success: (resp) => listProyectosRecientes = resp.dataList || [],
+      error: (err) => {
+        const { message, status } = err;
+        status < 500 && alert.error(message);
+      },
+    });
+  }
+
+  const getLastPublicaciones = async () => {
+    await SendRequestData({
+      queryId: 71,
+      body: { id_categorias: 1 },
+      success: (resp) => (listPublicaciones = resp.dataList || []),
+      error: (err) => {
+        const { message, status } = err;
+        status < 500 && alert.error(message);
+      },
+    });
+  };
+
+  try {
+    await getProyectosRecientes()
+    await getLastPublicaciones()
+    return { props: { listProyectosRecientes, listPublicaciones } }
+  } catch (err) {
+    console.error(err)
+    return { props: { comentarios: [] } }
+  }
 }

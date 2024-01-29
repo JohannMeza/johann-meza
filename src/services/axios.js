@@ -1,4 +1,4 @@
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import axios from 'axios';
 
 export const axiosBase = axios.create({

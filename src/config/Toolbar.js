@@ -1,4 +1,4 @@
-const Toolbar = [
+export const Toolbar = [
   ['bold', 'italic', 'underline', 'strike'],
   [{ align: [] }],
 
@@ -7,10 +7,8 @@ const Toolbar = [
 
   [{ size: ['small', false, 'large', 'huge'] }],
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
-  ['link', 'image', 'video'],
+  ['link', 'image', 'video', 'code-block'],
   [{ color: [] }, { background: [] }],
-
-  ['clean']
 ]
 
-export default Toolbar
+export const formats = ['background','bold','color','font','code','italic','link','size','strike','script','underline','blockquote','header','indent','list','align','direction','code-block','formula','image','video'];

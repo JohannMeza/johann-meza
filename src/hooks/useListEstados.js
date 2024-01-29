@@ -24,6 +24,7 @@ export const useListEstados = (estados) => {
     });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => listEstados(), []);
 
   return data

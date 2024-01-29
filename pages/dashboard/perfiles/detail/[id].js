@@ -3,7 +3,7 @@ import { useAlert } from "react-alert";
 import { useFormValidation } from 'src/hooks/useFormValidation';
 import { useListEstados } from 'src/hooks/useListEstados';
 import { useRouter } from 'next/router';
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import Controls from 'src/components/Controls';
 import ButtonsSaveComponent from 'src/components/form/button/ButtonsSaveComponent';
 import useLoaderContext from 'src/hooks/useLoaderContext';
@@ -91,10 +91,14 @@ export async function getServerSideProps({ req, params }) {
   }
 
   try {
-    await getPerfil()
-    return { props: { dataInitial } }
+    if (isNaN(id)) {
+      return { props: { dataInitial } }
+    } else {
+      await getPerfil()
+      return { props: { dataInitial } }
+    }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 }

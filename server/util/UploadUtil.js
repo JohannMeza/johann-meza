@@ -4,18 +4,18 @@ import os from "os";
 
 const tempDir = os.tmpdir();
 
-const UploadFile = async (req, saveLocally, filename) => {
+const UploadFile = async (req, saveLocally, filename, pathFile) => {
   const options = {};
   if (saveLocally) {
-    options.uploadDir = path.join(process.cwd(), "/public/assets/usuarios");
+    options.uploadDir = path.join(process.cwd(), pathFile);
     options.filename = (name, ext, path, form) => {
-      if (filename) return filename + "." + path.originalFilename.split('.')[1];
+      if (filename) return filename + ".png";
       else return Date.now().toString() + "_" + path.originalFilename;
     };
   } else {
     options.uploadDir = tempDir;
     options.filename = (name, ext, path, form) => {
-      if (filename) return filename + "." + path.originalFilename.split('.')[1];
+      if (filename) return filename + ".png";
       else return Date.now().toString() + "_" + path.originalFilename;
     };
   }

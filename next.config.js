@@ -2,11 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: { domains: ['res.cloudinary.com'], formats: ['image/avif', 'image/webp'], },
-  future: {
-    webpack5: true, // by default, if you customize webpack config, they switch back to version 4. 
-      // Looks like backward compatibility approach.
-  },
+  images: { domains: ['res.cloudinary.com', 'cdn.pixabay.com', ''], formats: ['image/avif', 'image/webp'], },
   webpack(config) {
     config.resolve.fallback = {
       ...config.resolve.fallback, // if you miss it, all the other options in fallback, specified

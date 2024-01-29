@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { SendRequestData, SignInRequestData } from '../helpers/helpRequestBackend';
 import { useRouter } from 'next/router';
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import useLoaderContext from '../hooks/useLoaderContext';
 import PathConstants from 'util/PathConstants';
 
@@ -72,8 +72,10 @@ export default function AuthContextProvider ({children}) {
     user,
     setUser,
     access
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [isAuthenticated, login, user])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => access(), [])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

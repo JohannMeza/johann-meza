@@ -1,23 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SaveRequestData } from 'src/helpers/helpRequestBackend';
 import { useForm } from 'src/hooks/useForm';
 import { useListEstados } from 'src/hooks/useListEstados';
+import { useRouter } from 'next/router';
+import { EnvConstants } from 'util/EnvConstants';
+import { useAlert } from 'react-alert';
 import Controls from 'src/components/Controls';
 import Icon from 'src/components/icon/Icon';
 import ButtonsFilterComponent from 'src/components/form/button/ButtonsFilterComponent';
 import useLoaderContext from 'src/hooks/useLoaderContext';
 import PathConstants from 'util/PathConstants';
 import MainComponent from "src/components/layout/dashboard/main/MainComponent";
-import { useRouter } from 'next/router';
 
 const dataInitial = { TITULO: "", AUTOR: "", ID_ESTADO: 1 }
-
-export default function PublicacionesAdminPage() {
-  const [publicaciones, setPublicaciones] = useState([])
+export default function PublicacionesAdminPage({ listPublicaciones }) {
+  const [publicaciones, setPublicaciones] = useState(listPublicaciones)
   const [data, handleInputChange, resetData] = useForm(dataInitial)
   const { setLoader } = useLoaderContext();
   const { push } = useRouter();
-  const estados = useListEstados('1,2,3')
+  const estados = useListEstados('1,2,3');
+  const alert = useAlert();
 
   const getPublicaciones = () => {
     setLoader(true)
@@ -34,9 +36,7 @@ export default function PublicacionesAdminPage() {
         (status < 500) && alert.error(message)
       }
     })
-  }  
-
-  useEffect(() => getPublicaciones(), [])
+  }
 
   return (
     <MainComponent>
@@ -112,6 +112,12 @@ export default function PublicacionesAdminPage() {
                           icon={<Icon.Edit />}
                           onClick={() => push(PathConstants.publicaciones_detail + el.id_publicaciones)}
                         />
+                        <Controls.ButtonIconComponent
+                          title="Comentarios"
+                          className="color-secondary"
+                          icon={<Icon.Chat />}
+                          onClick={() => push(PathConstants.publicaciones_comentarios + el.id_publicaciones)}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -123,4 +129,26 @@ export default function PublicacionesAdminPage() {
       </div>
     </MainComponent>
   )
+}
+
+export async function getServerSideProps({ req }) {
+  const data = { TITULO: "", AUTOR: "", ID_ESTADO: 1 }
+  let listPublicaciones = []
+  
+  const getPublicaciones = async () => {
+    await SaveRequestData({
+      queryId: 30,
+      body: data,
+      config: { headers: { cookies: req.cookies[EnvConstants.REACT_APP_TOKEN] } },
+      success: (resp) => listPublicaciones = resp.dataList, 
+      error: (err) => console.error(err)
+    })
+  }
+
+  try {
+    await getPublicaciones()
+    return { props: { listPublicaciones } }
+  } catch (error) {
+    return error
+  }
 }

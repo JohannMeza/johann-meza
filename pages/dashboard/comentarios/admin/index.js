@@ -1,27 +1,35 @@
 import { useState } from 'react';
-import { SaveRequestData } from 'src/helpers/helpRequestBackend';
+import { ImageRequestData } from 'src/helpers/helpRequestBackend';
 import { useForm } from 'src/hooks/useForm';
+import { useRouter } from 'next/router';
+import { useListEstados } from 'src/hooks/useListEstados';
+import { ListConstants } from 'src/constants/ListConstants';
+import { FormatDateConstants } from "src/constants/FormatDateConstants";
 import Controls from 'src/components/Controls';
 import Icon from 'src/components/icon/Icon';
 import ButtonsFilterComponent from 'src/components/form/button/ButtonsFilterComponent';
 import useLoaderContext from 'src/hooks/useLoaderContext';
 import PathConstants from 'util/PathConstants';
 import MainComponent from "src/components/layout/dashboard/main/MainComponent";
+import DateUtil from 'src/utils/DateUtil';
+import Image from 'next/image';
 
-const dataInitial = { TITULO: "", AUTOR: "", ID_ESTADO: null }
-export default function ComentariosAdminPage() {
-  const [estados, setEstados] = useState([]);
-  const [publicaciones, setPublicaciones] = useState([])
+const dataInitial = { DESDE: DateUtil().GetFirstDate, HASTA: DateUtil().GetDate, ID_ESTADO: 4, TIPO_COMENTARIO: 1 }
+export default function ComentariosAdminPage({ listComentarios }) {
+  const estados = useListEstados('4,5')
+  const [comentarios, setComentarios] = useState(listComentarios)
   const [data, handleInputChange, resetData] = useForm(dataInitial)
-  const {setLoader} = useLoaderContext();
-  const getPublicaciones = () => {
+  const { setLoader } = useLoaderContext();
+  const { push } = useRouter()
+
+  const getComentarios = () => {
     setLoader(true)
-    SaveRequestData({
-      queryId: 30,
+    ImageRequestData({
+      queryId: 47,
       body: data,
       success: (resp) => {
         setLoader(false)
-        setPublicaciones(resp.dataList)
+        setComentarios(resp.dataList)
       }, 
       error: (err) => {
         setLoader(false)
@@ -30,6 +38,7 @@ export default function ComentariosAdminPage() {
       }
     })
   }  
+
   return (
     <MainComponent>
       <div>
@@ -38,15 +47,26 @@ export default function ComentariosAdminPage() {
           <div>
             <div className="grid grid-cols-3 gap-4">
               <Controls.InputComponent
-                label="Titulo"
+                label="Desde"
+                type="date"
                 value={data}
-                name="TITULO"
+                name="DESDE"
+                max={data.HASTA}
                 onChange={handleInputChange}
               />
               <Controls.InputComponent
-                label="Autor"
+                label="Hasta"
+                type="date"
                 value={data}
-                name="AUTOR"
+                name="HASTA"
+                min={data.DESDE}
+                onChange={handleInputChange}
+              />
+              <Controls.SelectComponent
+                list={ListConstants.LIST_TIPO_COMENTARIO}
+                name="TIPO_COMENTARIO"
+                value={data}
+                label="Tipo Comentario"
                 onChange={handleInputChange}
               />
               <Controls.SelectComponent
@@ -59,7 +79,7 @@ export default function ComentariosAdminPage() {
             </div>
             <ButtonsFilterComponent
               handleClear={resetData}
-              handleFilter={getPublicaciones}
+              handleFilter={getComentarios}
             />
           </div>
         </Controls.CardComponent>
@@ -70,14 +90,14 @@ export default function ComentariosAdminPage() {
             <Controls.ButtonComponent
               title="Nuevo"
               className="color-secondary"
-              onClick={() => navigate(PathConstants.publicaciones_nuevo)}
+              onClick={() => push(PathConstants.publicaciones_nuevo)}
             />
           </div>
           <div>
             <Controls.TableComponent>
               <thead>
                 <tr>
-                  <th className='text-left'>Titulo</th>
+                  <th className='text-left'>Comentario</th>
                   <th className='text-left'>Autor</th>
                   <th className='text-left'>Fecha Publicación</th>
                   <th className='text-left'>Estado</th>
@@ -85,31 +105,35 @@ export default function ComentariosAdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {publicaciones.map((el, index) => (
-                  <tr key={index}>
-                    <td className='text-left'>{el.titulo}</td>
-                    <td className='text-left'>{el.usuario_creacion}</td>
-                    <td className='text-left'>{el.fecha_creacion}</td>
-                    <td>
-                      <Controls.ButtonEstadoComponent
-                        title={el.estado}
-                        colorButton={{ background: el.color }}
-                        colorText={{ color: el.color }}
-                      />
-                    </td>
-                    <td>
-                      <div className="flex gap-2 justify-center">
-                        <Controls.ButtonIconComponent
-                          title="Editar"
-                          icon={<Icon.Edit />}
-                          onClick={() =>
-                            navigate(`${PathConstants.publicaciones_detail}${el.id_publicaciones}`)
-                          }
+                {
+                  comentarios.map((comentario, index) => (
+                    <tr key={index}>
+                      <td className='text-left'>{comentario.COMENTARIO}</td>
+                      <td className='text-left'>
+                        <div className='flex gap-3 items-center'>
+                          <Image src={comentario.IMAGEN} width={100} height={100} alt="" className='w-10 h-10 rounded-full' />
+                          {comentario.USUARIO}
+                        </div>
+                      </td>
+                      <td className='text-left'>{DateUtil().StringToMoment(comentario.FECHA_CREACION, FormatDateConstants.FECHA_HORA)}</td>
+                      <td className='text-left'>
+                        <Controls.ButtonEstadoComponent
+                          title={comentario.ESTADO}
+                          colorButton={{ background: comentario.COLOR }}
+                          colorText={{ color: comentario.COLOR }}
                         />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>
+                        <div className='flex justify-center'>
+                          <Controls.ButtonIconComponent
+                            title="Ver Comentario Completo"
+                            icon={<Icon.Eye />}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                }
               </tbody>
             </Controls.TableComponent>
           </div>
@@ -117,4 +141,25 @@ export default function ComentariosAdminPage() {
       </div>
     </MainComponent>
   )
+}
+
+export const getServerSideProps = async () => {
+  let listComentarios = []
+  
+  const getComentarios = async () => {
+    await ImageRequestData({
+      queryId: 47,
+      body: dataInitial,
+      success: (resp) => listComentarios = resp.dataList, 
+      error: (err) => console.error(err)
+    })
+  }
+
+  try {
+    await getComentarios()
+    return { props: { listComentarios } }
+  } catch (err) {
+    console.error(err)
+    return { props: { comentarios: [] } }
+  }
 }

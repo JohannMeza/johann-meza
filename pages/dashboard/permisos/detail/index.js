@@ -1,28 +1,26 @@
-import React from "react";
 import { useEffect } from "react";
 import { useAlert } from "react-alert";
-import { useNavigate, useParams } from "react-router-dom";
-import Controls from "../../../../components/Controls";
-import ButtonsSaveComponent from "../../../../components/layout/form/ButtonsSaveComponent";
-import { SaveRequestData } from "../../../../helpers/helpRequestBackend";
-import { useFormValidation } from "../../../../hooks/useFormValidation";
-import useLoaderContext from "../../../../hooks/useLoaderContext";
-import { ListConstants } from "../../../../util/ListConstants";
+import { SaveRequestData } from "src/helpers/helpRequestBackend";
+import { useFormValidation } from "src/hooks/useFormValidation";
+import { ListConstants } from "src/constants/ListConstants";
+import Controls from "src/components/Controls";
+import ButtonsSaveComponent from "src/components/form/button/ButtonsSaveComponent";
+import useLoaderContext from "src/hooks/useLoaderContext";
+import { useRouter } from "next/router";
 const dataInitial = { PERMISOS: "", ESTADO: true }
 
 export default function PermisosDetailPage() {
   const {data, handleInputFormChange, errors, setData} = useFormValidation(dataInitial)
   const {setLoader} = useLoaderContext();
-  const navigate = useNavigate();
+  const { push, query } = useRouter()
   const alert = useAlert()
-  const {id} = useParams()
-  const handleBack = () => navigate("/dashboard/permisos/admin")
+  const handleBack = () => push("/dashboard/permisos/admin")
 
   const handleAction = () => {
     setLoader(true)
     SaveRequestData({
       queryId: 16,
-      body: {...data, ID_PERMISOS: id},
+      body: {...data, ID_PERMISOS: query.id},
       success: (resp) => {
         setLoader(false)
         alert.success(resp.message)
@@ -40,7 +38,7 @@ export default function PermisosDetailPage() {
     setLoader(true)
     SaveRequestData({
       queryId: 18,
-      body: {ID_PERMISOS: id},
+      body: {ID_PERMISOS: query.id},
       success: (resp) => {
         setLoader(false)
         setData(resp.dataObject)
@@ -54,7 +52,8 @@ export default function PermisosDetailPage() {
   }
 
   useEffect(() => {
-    if (id) searchPermiso()
+    if (query.id) searchPermiso()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

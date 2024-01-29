@@ -1,7 +1,9 @@
 import { EnvConstants } from "util/EnvConstants";
 import { serialize } from "cookie";
+import { EnabledCors } from "server/util/FunctionUtil"
 
 const AuthLogoutController = async (req, res) => {
+  await EnabledCors(req, res);  
   const TOKEN = req.cookies[EnvConstants.REACT_APP_TOKEN];
   if (!TOKEN) return res.status(401).json({error: 'No token'})
   try {
@@ -15,6 +17,7 @@ const AuthLogoutController = async (req, res) => {
     res.setHeader('Set-Cookie', serialized)
     return res.status(200).json('logout successfully')
   } catch (error) {
+    console.error(error);
     return res.status(401).json({error: 'invalid token'})
   }
 }

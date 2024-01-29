@@ -3,6 +3,7 @@ import { FilePond } from "react-filepond";
 import { classNames } from "../../../utils/ClassNames";
 import Controls from "../../Controls";
 import Icon from "../../icon/Icon";
+import Image from "next/image";
 
 export default function FileComponent({
   error = { empty: "" },
@@ -44,10 +45,13 @@ export default function FileComponent({
               />
             </a>
           </div>
-
-          <img
+          
+          <Image
             src={value[name]}
             alt="Portada"
+            width={80}
+            height={50}
+            style={{ minWidth: 80, objectFit: "cover", borderRadius: "10px" }}
           />
         </div>
       ) : (

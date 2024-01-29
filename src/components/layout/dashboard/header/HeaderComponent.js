@@ -1,4 +1,5 @@
 import { classNames } from "../../../../utils/ClassNames";
+import useAuthContext from "../../../../hooks/useAuthContext";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -6,6 +7,7 @@ const heightHeader = 65;
 const listPerfil = [{ to: '/dashboard/mi_perfil/admin', label: 'Mi Perfil' }]
 export default function HeaderComponent({ menu, setMenu }) {
   const styleHeader = { height: heightHeader + "px" };
+  const {user} = useAuthContext();
 
   return (
     <nav
@@ -117,15 +119,15 @@ export default function HeaderComponent({ menu, setMenu }) {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <Image
-                src="/assets/imagenes/logo.png"
+              {user?.IMAGEN && <Image
+                src={user.IMAGEN}
                 className="rounded-full"
                 style={{ height: "25px", width: "25px" }}
                 width={100}
                 height={100}
                 alt=""
-                loading="lazy"
-              />
+                priority
+              />}
             </Link>
             <ul
               className="dropdown-menu min-w-max absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1 hidden m-0 bg-clip-padding border-none left-auto right-0"

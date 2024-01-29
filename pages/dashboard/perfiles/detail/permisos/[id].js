@@ -127,10 +127,14 @@ export async function getServerSideProps({ req, params }) {
   }
   
   try {
-    await getMenus()
-    await getMenusSave()
-    return { props: { menus, dataInitial } }
+    if (isNaN(id)) {
+      return { props: { menus, dataInitial } }
+    } else {
+      await getMenus()
+      await getMenusSave()
+      return { props: { menus, dataInitial } }
+    }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }

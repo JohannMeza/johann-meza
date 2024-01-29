@@ -1,6 +1,6 @@
 import { SERVICES_POST, UPLOAD_POST } from "../services/services.axios";
 import { AlertUtilMessage } from "../utils/AlertUtil";
-import { EnvConstants } from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
 import { UploadFile } from "../utils/UploadFile";
 
 /**
@@ -10,30 +10,33 @@ import { UploadFile } from "../utils/UploadFile";
  */
 
 export const SaveRequestData = (props) => {
-  let { queryId, body = {}, success, error, pagination, rowsPerPage, page, config } = props;
+  let { queryId, body = {}, success, error, pagination, config } = props;
 
   if (pagination) {
-    let params = {queryId, body: { ...body, rowsPerPage, page, }}
+    let params = {queryId, body, pagination}
     return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_BACK, params, config)
     .then(resp => {
-      success(resp.data)
+      success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
-      error(response.data)
+      let { status, message } = response?.data
+      error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
     })
   } else {
     let params = {queryId, body}
     return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_BACK, params, config)
-    .then(resp => success({...resp.data}))
+    .then(resp => success({...resp?.data}))
     .catch(err => {
-      console.log(err)
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
-      error(response.data)
+      error(response?.data)
     })
   }
 }
@@ -45,29 +48,31 @@ export const SaveRequestData = (props) => {
  */
 
 export const SendRequestData = (props) => { 
-  let { queryId, body = {}, success, error, pagination, rowsPerPage, page, path, config } = props;
+  let { queryId, body = {}, success, error, pagination, path, config } = props;
   if (!path) path = EnvConstants.REACT_APP_URL_BASE_FRONT;
   if (pagination) {
-    let params = {queryId, body: { ...body, rowsPerPage, page, }}
+    let params = {queryId, body, pagination}
     return SERVICES_POST(path, params, config) 
     .then(resp => {
-      success(resp.data)
+      success(resp?.data)
     })
     .catch((err) => {
       let { response } = err;
-      let { status, message } = response.data
-      error(response.data)
+      let { status, message } = response?.data
+      error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
     })
   } else {
     let params = {queryId, body}
     return SERVICES_POST(path, params, config)
-    .then(resp => success({...resp.data}))
+    .then(resp => success({...resp?.data}))
     .catch(err => {
       let { response } = err;
-      let { status, message } = response.data
+      if (!response) return error([]);
+      
+      let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
-      error(response.data)
+      error(response?.data)
     })
   } 
 }
@@ -79,32 +84,104 @@ export const SendRequestData = (props) => {
  */
 
 export const FileRequestData = (config) => {
-  let { queryId, body, success, error, pagination, rowsPerPage, page, path } = config;
+  let { queryId, body, success, error, pagination, path } = config;
 
   if (pagination) {
-    let params = UploadFile({queryId, body: { ...body, rowsPerPage, page, }})
+    let params = UploadFile({queryId, body, pagination})
     return UPLOAD_POST(path, params) 
     .then(resp => {
-      success(resp.data)
+      success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
-      error(response.data)
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
+      error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
     })
   } else {
     let params = UploadFile({queryId, ...body})
     return UPLOAD_POST(path, params)
-    .then(resp => success({...resp.data}))
+    .then(resp => success({...resp?.data}))
     .catch(err => {
       console.error(err)
       let { response } = err;
-      let { status, message } = response.data
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
-      error(response.data)
+      error(response?.data)
     })
   }
+}
+
+export const FormRequestData = (config) => {
+  let { queryId, body, success, error, pagination } = config;
+
+  if (pagination) {
+    let params = UploadFile({queryId, body, pagination})
+    return UPLOAD_POST(EnvConstants.REACT_APP_URL_BASE_FORMDATA, params) 
+    .then(resp => {
+      success(resp?.data)
+    })
+    .catch((err) => {
+      console.error(err)
+      let { response } = err;
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
+      error(response?.data)
+      AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+    })
+  } else {
+    let params = UploadFile({queryId, ...body})
+    return UPLOAD_POST(EnvConstants.REACT_APP_URL_BASE_FORMDATA, params)
+    .then(resp => success({...resp?.data}))
+    .catch(err => {
+      console.error(err)
+      let { response } = err;
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
+      if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+      error(response?.data)
+    })
+  }
+}
+
+export const ImageRequestData = (props) => { 
+  let { queryId, body = {}, success, error, pagination, config } = props;
+  if (pagination) {
+    let params = {queryId, body, pagination }
+    return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_IMAGE, params, config) 
+    .then(resp => {
+      success(resp?.data)
+    })
+    .catch((err) => {
+      console.error(err)
+      let { response } = err;
+      if (!response) return error([]);
+      
+      let { status, message } = response?.data
+      error(response?.data)
+      AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+    })
+  } else {
+    let params = {queryId, body}
+    return SERVICES_POST(EnvConstants.REACT_APP_URL_BASE_IMAGE, params, config)
+    .then(resp => success({...resp?.data}))
+    .catch(err => {
+      console.error(err)
+      let { response } = err;
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
+      if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
+      error(response?.data)
+    })
+  } 
 }
 
 /**
@@ -114,29 +191,35 @@ export const FileRequestData = (config) => {
  */
 
 export const SignInRequestData = (config) => {
-  let { queryId, body = {}, success, error, pagination, rowsPerPage, page } = config;
+  let { queryId, body = {}, success, error, pagination } = config;
 
   if (pagination) {
-    let params = {queryId, body: { ...body, rowsPerPage, page, }}
+    let params = {queryId, body, pagination }
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_IN, params) 
     .then(resp => {
-      success(resp.data)
+      success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
-      error(response.data)
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
+      error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
     })
   } else {
     let params = {queryId, body}
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_IN, params)
-    .then(resp => success({...resp.data}))
+    .then(resp => success({...resp?.data}))
     .catch(err => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
-      error(response.data)
+      error(response?.data)
     })
   }
 }
@@ -148,29 +231,34 @@ export const SignInRequestData = (config) => {
  */
 
 export const SignUpRequestData = (config) => {
-  let { queryId, body = {}, success, error, pagination, rowsPerPage, page } = config;
+  let { queryId, body = {}, success, error, pagination } = config;
 
   if (pagination) {
-    let params = {queryId, body: { ...body, rowsPerPage, page, }}
+    let params = {queryId, body, pagination}
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_UP, params) 
     .then(resp => {
-      success(resp.data)
+      success(resp?.data)
     })
     .catch((err) => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
-      error(response.data)
+      if (!response) return error([]);
+      let { status, message } = response?.data
+      error(response?.data)
       AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
     })
   } else {
     let params = {queryId, body}
     return SERVICES_POST(EnvConstants.REACT_APP_URL_AUTH_SIGN_UP, params)
-    .then(resp => success({...resp.data}))
+    .then(resp => success({...resp?.data}))
     .catch(err => {
+      console.error(err)
       let { response } = err;
-      let { status, message } = response.data
+      if (!response) return error([]);
+
+      let { status, message } = response?.data
       if (status >= 500) AlertUtilMessage({ title: `Error ${status}`, text: message, type: "error" })
-      error(response.data)
+      error(response?.data)
     })
   }
 }

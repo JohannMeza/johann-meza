@@ -74,6 +74,7 @@ export default function MenuDetailPage ({ dataInitial, listMenuPadre }) {
 
   useEffect(() => {
     if (data.ID_ESTADO_MENU === 6) setData((data) => { return { ...data, RUTA: "", COMPONENTE: "" } })  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.ID_ESTADO_MENU])
 
   return (
@@ -121,7 +122,7 @@ export async function getServerSideProps({ req, params }) {
     })
   }
 
-  const listarMenusPadres = async () => {
+  const listarMenusPadres = async (id) => {
     await SaveRequestData({
       queryId: 5,
       body: { ID_MENU: id }, 
@@ -135,11 +136,16 @@ export async function getServerSideProps({ req, params }) {
   }
   
   try {
-    await listarMenusPadres()
-    await searchMenu()
-    return { props: { dataInitial, listMenuPadre } }
+    if (isNaN(id)) {
+      await listarMenusPadres(0)
+      return { props: { dataInitial, listMenuPadre } }
+    } else {
+      await listarMenusPadres(id)
+      await searchMenu()
+      return { props: { dataInitial, listMenuPadre } }
+    }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
   return { props: {  } }

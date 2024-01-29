@@ -43,6 +43,7 @@ export default function PerfilesAdminPage() {
 
   useEffect(() => {
     getPerfiles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -208,6 +209,7 @@ const ModalPermisosComponent = ({ openModal, setOpenModal, idPerfiles, setIdPerf
   useEffect(() => {
     getPermisos()
     listPermisosSave()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
   return (

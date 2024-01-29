@@ -34,6 +34,7 @@ export default function SidebarComponent({menu}) {
     })
   }
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { (Object.entries(user).length) && getMenus() }, [user?.ID_PERFILES])
 
   return (
@@ -43,14 +44,14 @@ export default function SidebarComponent({menu}) {
         <Link href={PathConstants.mi_perfil}>
           <div className="">
             <div className="shrink-0">
-              <Image
+              {user.IMAGEN && <Image
                 priority
-                src="/assets/imagenes/logo.png"
-                className="rounded-full w-10"
+                src={user.IMAGEN}
+                className="rounded-full w-10 h-10"
                 width={100}
                 height={100}
                 alt="Avatar"
-              />
+              />}
             </div>
             <div>
               <p className="text-title-3 font-semibold text-blue-600" style={styleLinkNav}>

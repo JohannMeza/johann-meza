@@ -15,7 +15,11 @@ import {
   UserIcon,
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
-  CameraIcon
+  CameraIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CodeBracketIcon,
+  ChatBubbleLeftRightIcon
 } from "@heroicons/react/24/outline";
 import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 
@@ -26,6 +30,8 @@ const Icon = {
   EyeSlash: EyeSlashIcon,
   ChevronDownIcon: ChevronDownIcon,
   ChevronUpIcon: ChevronUpIcon,
+  ChevronLeftIcon: ChevronLeftIcon,
+  ChevronRightIcon: ChevronRightIcon,
   Edit: PencilSquareIcon,
   XCircle: XCircleIcon,
   Close: XMarkIcon,
@@ -38,6 +44,9 @@ const Icon = {
   UserCircle: UserCircleIcon,
   Logout: ArrowLeftOnRectangleIcon,
   Camera: CameraIcon,
+  Code: CodeBracketIcon,
+  Text: CodeBracketIcon,
+  Chat: ChatBubbleLeftRightIcon,
 };
 
 export default Icon;

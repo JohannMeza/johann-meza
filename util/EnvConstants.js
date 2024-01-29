@@ -44,11 +44,14 @@ export const EnvConstants = {
   
   REACT_APP_URL_BASE_BACK            : "/api/options/back",
   REACT_APP_URL_BASE_FRONT           : "/api/options/front",
+  REACT_APP_URL_BASE_FORMDATA        : "/api/options/formdata",
+  REACT_APP_URL_BASE_IMAGE           : "/api/options/image",
   
   REACT_APP_URL_UPLOAD_CLOUD         : "/api/upload/cloud",
   REACT_APP_URL_UPLOAD_LOCAL         : "/api/upload/local",
 
   REACT_APP_URL_CUSTOMIZE_PROFILE    : "/api/customize/profile",
+  REACT_APP_URL_CUSTOMIZE_TECHNOLOGY : "/api/customize/technology",
 
   REACT_APP_URL_AUTH_SIGN_IN         : "/api/auth/signIn",
   REACT_APP_URL_AUTH_SIGN_UP         : "/api/auth/signUp",

@@ -4,6 +4,7 @@ import InputSearchComponent from "./form/input/InputSearchComponent"
 import InputComponent from "./form/input/InputComponent"
 import FileComponent from "./form/input/FileComponent"
 import CheckboxComponent from "./form/input/CheckboxComponent"
+import RadioboxComponent from "./form/input/RadioboxComponent"
 import ButtonComponent from "./form/button/ButtonComponent"
 import ButtonIconComponent from "./form/button/ButtonIconComponent"
 import ButtonEstadoComponent from './form/button/ButtonEstadoComponent'
@@ -27,6 +28,7 @@ const Controls = {
   CardComponent,
   TableComponent,
   CheckboxComponent,
+  RadioboxComponent,
   AccordionComponents,
   ModalComponent,
   ButtonEstadoComponent,

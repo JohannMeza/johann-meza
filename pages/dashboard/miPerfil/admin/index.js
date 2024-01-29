@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFormValidation } from 'src/hooks/useFormValidation';
 import { useAlert } from 'react-alert';
-import { FileRequestData, SaveRequestData, SendRequestData } from 'src/helpers/helpRequestBackend';
+import { FileRequestData, SaveRequestData, SendRequestData, SignUpRequestData } from 'src/helpers/helpRequestBackend';
 import { EnvConstants } from 'util/EnvConstants';
 import { ListConstants } from 'src/constants/ListConstants';
 import Icon from 'src/components/icon/Icon'
@@ -74,7 +74,7 @@ export default function PerfilAdminPage({ dataOriginal, dataNetworks, datosPerso
       setLoader(true) 
       SaveRequestData({
         queryId: 40,
-        body: { TIPO_DATA: value, ...dataSave }, 
+        body: {  ...dataSave, TIPO_DATA: value, IMAGEN: !dataSave.IMAGEN ? null : 'no-delete' }, 
         success: (resp) => {
           setLoader(false)
           alert.success(resp.message)
@@ -90,7 +90,7 @@ export default function PerfilAdminPage({ dataOriginal, dataNetworks, datosPerso
       FileRequestData({
         queryId: 40,
         path: EnvConstants.REACT_APP_URL_UPLOAD_LOCAL,
-        body: { ...dataSave, TIPO_DATA: value, IMAGEN: files[0].file }, 
+        body: { ...dataSave, NETWORKS: JSON.stringify(dataSave.NETWORKS), TIPO_DATA: value, IMAGEN: files[0].file }, 
         success: (resp) => {
           setLoader(false)
           alert.success(resp.message)
@@ -111,7 +111,6 @@ export default function PerfilAdminPage({ dataOriginal, dataNetworks, datosPerso
       body: dataSave,
       success: (resp) => {
         setLoader(false)
-        getUsuario()
         alert.success(resp.message)
       }, 
       error: (err) => {
@@ -303,7 +302,7 @@ export async function getServerSideProps({ req }) {
     await getUsuario()
     return { props: { dataOriginal, dataNetworks, datosPersonales, datosSeguridad } }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 
 }

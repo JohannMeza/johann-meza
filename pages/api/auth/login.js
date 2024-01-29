@@ -1,8 +1,11 @@
 import { serialize } from "cookie";
-import EnvConstants from "util/EnvConstants.js";
+import { EnvConstants } from "util/EnvConstants";
+import { EnabledCors } from "server/util/FunctionUtil";
 import jwt from "jsonwebtoken";
 
 const AuthLoginController = async (req, res) => {
+  await EnabledCors(req, res);
+
   try {
     const { email, password } = req.body;
     const {myTokenName} = req.cookies;
@@ -33,6 +36,7 @@ const AuthLoginController = async (req, res) => {
 
     return res.status(401).json({error: 'invalid email or password'});
   } catch (error) {
+    console.error(error);
     return res.status(500).json({error: 'error in the server'});
   }
 }
