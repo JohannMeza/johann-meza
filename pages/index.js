@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
 import { SendRequestData } from "src/helpers/helpRequestBackend";
 import { CardVerticalComponent } from "src/components/card/FrontcardComponent";
+import { useRouter } from "next/router";
+import Controls from "src/components/Controls";
 import useBreakpoint from "src/hooks/useBreakpoint";
 import FooterComponent from "src/components/layout/frontpage/footer/FooterComponent";
 import BodyComponent from "src/components/layout/frontpage/body/BodyComponent";
@@ -37,6 +39,8 @@ const ServicesInformation = [
 
 export default function Home({ listProyectosRecientes, listPublicaciones }) {
   const { breakpoint } = useBreakpoint()
+  const { push } = useRouter();
+
   const slidesPerViewTech = (() => {
     if (breakpoint.sm) return 1;
     else if (breakpoint.md) return 3;
@@ -90,7 +94,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
         </div>
 
         <div className="flex flex-col items-center w-full my-16">
-          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Tecnologias</h2>
+          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Tecnologias en el tengo experiencia</h2>
   
           <div className="grid w-[80%] grid-cols-1 lg:grid-cols-2 flex-wrap gap-4 mt-3">
             <div className="bg-white flex flex-col items-center gap-5 boxborder-base p-8">
@@ -320,7 +324,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
         </div>
 
         <div className="flex flex-col items-center my-16">
-          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Proyectos en el que he trabajado</h2>
+          <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Algunos proyectos en los que he trabajado</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-4/5 gap-8 mt-3">
             {/* PROYECTOS */}
@@ -332,6 +336,7 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
                   title={el.PROYECTO}
                   descripcionCorta={el.DESCRIPCION_CORTA}
                   cantComments={el.CANTIDAD_COMENTARIOS}
+                  tecnologias={el.TECNOLOGIAS}
                   // fechaCreacion={el.FECHA_CREACION}
                   img={el.IMAGEN}
                   slug={`/proyectos/${el.SLUG}`}
@@ -339,12 +344,14 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
               ))
             }
           </div>
+
+          <Controls.ButtonComponent onClick={() => push('/proyectos')} title="LEER MÁS" className="mt-12" />
         </div>
 
         <div className="flex flex-col items-center my-16">
           <h2 className="text-title-2 font-Poppins font-semibold text-center py-8">Quizas te pueda interesar</h2>
           
-          <div className="w-full md:w-4/5 bg-gradient rounded-lg px-4 py-8 md:px-8 md:py-16 mt-3">
+          <div className="w-full md:w-4/5 bg-gradient rounded-lg px-4 py-8 md:px-8 md:py-12 mt-3">
             <Swiper
               slidesPerView={slidesPerViewPublish()}
               spaceBetween={30}
@@ -371,6 +378,10 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
                 ))
               }
             </Swiper>
+
+              <Controls.ButtonComponent onClick={() => push('/blog')} title="LEER MÁS" className="mt-10 mx-auto color-secondary" />
+            {/* <div className="flex justify-center mt-12">
+            </div> */}
           </div>
         </div>
         

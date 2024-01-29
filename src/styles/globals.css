@@ -96,7 +96,33 @@ body { background: #fefefe; @apply font-Roboto }
   border: none !important;
 }
 .ql-container.ql-snow.ql-disabled > .ql-editor {
-  padding: 0
+  padding: 0;
+  font-family: 'poppins', sans-serif
+}
+.ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5 {
+  line-height: 3;
+  margin-top: 2rem !important;
+}
+.ql-editor p, .ql-editor p span, .ql-editor li {
+  font-size: 17px;
+  line-height: 1.9
+}
+
+.ql-editor ol, .ql-editor ul {
+  padding-left: 3.5rem !important;
+}
+
+.ql-editor li {
+  list-style-type: disc !important;
+  margin: 20px 0 0 0;
+}
+
+.ql-editor li:not(.ql-direction-rtl)::before {
+  display: none
+}
+
+.ql-editor ol li:not(.ql-direction-rtl), .ql-editor ul li:not(.ql-direction-rtl) {
+  padding: 0 !important;
 }
 
 @tailwind utilities;
