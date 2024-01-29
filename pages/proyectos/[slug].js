@@ -291,7 +291,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                   className='w-full h-[350px] object-cover rounded-[10px]' 
                 />
               }
-              <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
+              <div className='flex justify-between gap-4 flex-col lg:flex-row mt-12'>
                 <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
                   {/* {
                     dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion?.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
@@ -326,7 +326,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
               <article className="!h-auto" ref={quillRef}></article>
               <div className="grid gap-3 mt-10">
                 <h2 className='title-base text-title-3'>Tecnologias Utilizadas</h2>
-                <div className="flex gap-3">
+                <div className="flex gap-1">
                   {
                     dataPublicacion?.TECNOLOGIAS?.map((el, index) => (
                       <>
@@ -341,7 +341,7 @@ export default function ProyectoPage({ dataPublicacion, quillContent }) {
                               height={30} 
                               style={{
                                 width: 'auto',
-                                height: '50px',
+                                height: '30px',
                               }}
                             />
                             <span className="text-paragraph-3 font-bold">{el.TECNOLOGIA}</span>

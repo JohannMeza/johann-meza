@@ -12,6 +12,7 @@ import useLoaderContext from "src/hooks/useLoaderContext";
 import Controls from "src/components/Controls";
 import debounce from 'lodash.debounce';
 import Image from "next/image";
+import Icon from "src/components/icon/Icon";
 import IconAwesome from 'src/components/icon/IconAwesome'
 import frontStyles from "src/styles/Frontpage.module.css";
 import usePagination from 'src/hooks/usePagination';
@@ -25,7 +26,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   const [data, handleInputChange] = useForm({ SEARCH_TECH: "",  SEARCH: "", TIPO_PROYECTO: '0' });
   const [listTecnologias, setListTecnologias] = useState(arrListTecnologias);
   const [listProyectos, setListProyectos] = useState([]);
-  const [checkTecnologias, handleCheckboxChange] = useForm({ });
+  const [checkTecnologias, handleCheckboxChange, _, setCheckTecnologias] = useForm({ });
   const [isSearch, setIsSearch] = useState(false);
   const { setLoader } = useLoaderContext();
   const {isAuthenticated} = useAuthContext();
@@ -60,7 +61,18 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
     isAuthenticated ? SaveRequestData(options) : SendRequestData(options);
   };
 
-  const handleSearchTech = (textSearch) => setListTecnologias((listTech) => textSearch ? listTech.filter(el => el.label.match(new RegExp(textSearch, 'ig'))) : arrListTecnologias)
+  const handleSearchTech = (textSearch) => {
+    setListTecnologias(() => {
+      return textSearch ? arrListTecnologias.filter(el => el.label.match(new RegExp(textSearch, 'ig'))) : arrListTecnologias
+    })
+
+  }
+
+  const handleDeleteTech = (idTech) => {
+    const objTech = checkTecnologias;
+    delete objTech[idTech];
+    setCheckTecnologias({...objTech})
+  }
 
   const debouncedSearchApi = debounce(() => searchProyectos(), 500);
 
@@ -85,8 +97,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
   }, [data.SEARCH]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => searchProyectos(), [data.TIPO_PROYECTO, checkTecnologias])
-
+  useEffect(() => searchProyectos({ ...paginate, page: 0 }), [data.TIPO_PROYECTO, checkTecnologias])
   return (
     <BodyComponent>      
       <div ref={bannerRef} className={frontStyles.blogBanner}>
@@ -158,13 +169,33 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
                 onClickIcon={(value) => handleSearchTech(value)}
                 onChange={(e) => {
                   handleInputChange(e)
-                  !e.target.value && handleSearchTech(e.target.value)
+                  handleSearchTech(e.target.value)
                 }}
                 placeholder="Buscar..."
                 name="SEARCH_TECH"
                 value={data}
                 type="text"
               />
+              <div className="flex gap-3 flex-wrap">
+                {
+                  listTecnologias.map((el, index) => (
+                    <>
+                      {
+                        checkTecnologias[el.value] && 
+                        <div className="flex items-center gap-[2px] select-none" key={index}>
+                          <div 
+                            className="cursor-pointer w-4 h-4 flex justify-center items-center rounded-full hover:bg-text hover:text-white active:scale-95"
+                            onClick={() => handleDeleteTech(el.value)}
+                          >
+                            <Icon.Close className="w-3" />
+                          </div>
+                          <span className="text-span-1 font-bold">{el.label}</span>
+                        </div>  
+                      }
+                    </>
+                  ))
+                }
+              </div>
               <div className="flex flex-col gap-4 mt-2 h-52 overflow-auto">
                 {
                   listTecnologias.length > 0 

@@ -243,9 +243,12 @@ export default function PublicacionesPage({ dataPublicacion, listPublicacionesRe
               }
               <div className='flex justify-between gap-4 flex-col lg:flex-row my-4'>
                 <div className='flex gap-4 flex-col justify-start lg:items-center lg:flex-row'>
-                  {
+                  {/* {
                     dataPublicacion?.IMAGEN && <Image width={100} height={100} src={dataPublicacion?.IMAGEN} alt="" className='w-16 h-16 rounded-full' />
-                  }
+                  } */}
+                  <div className="bg-gradient-gris-300 p-3 w-[75px] h-[75px] rounded-full">
+                    <Icon.User className="text-white" />
+                  </div>
                   <div className='flex flex-col justify-center'>
                     <span className=''>Publicado por:</span>         
                     <span className='text-paragraph-1 font-bold'>{ dataPublicacion?.AUTOR }</span>
