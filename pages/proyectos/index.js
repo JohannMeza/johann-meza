@@ -218,7 +218,7 @@ export default function ProyectosPage({ arrListTecnologias, listEstadosProyecto 
           </div>
           <div>
             <p className="text-title-3 font-bold text-gradient-gris-300">
-              {listProyectos?.length || 0} resultados
+              {paginate?.total_rows || 0} resultados
               { (isSearch && data.SEARCH) && ` para "${data.SEARCH}"` }
             </p> 
             <hr />

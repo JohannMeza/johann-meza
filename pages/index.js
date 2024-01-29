@@ -186,6 +186,12 @@ export default function Home({ listProyectosRecientes, listPublicaciones }) {
                     <span>.Net</span>
                   </div>
                 </SwiperSlide>
+                <SwiperSlide>
+                  <div className={`boxshadow-hover ${frontStyles.techBoxImage}`}>
+                    <Image src='/assets/tech/nodejs.png' width={100} height={100} alt="Net" />
+                    <span>Node JS</span>
+                  </div>
+                </SwiperSlide>
               </Swiper>
             </div>
             
